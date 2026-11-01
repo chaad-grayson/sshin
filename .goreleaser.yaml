@@ -75,26 +75,6 @@ changelog:
   - title: Others
     order: 999
 
-# Homebrew tap configuration (Formula pour CLI)
-brews:
-- name: sshgo
-  repository:
-    owner: chandra-bachtiar
-    name: homebrew-sshgo
-    # Token with repo permissions for your homebrew-sshgo repo
-    token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-  commit_author:
-    name: goreleaserbot
-    email: bot@goreleaser.com
-  commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
-  homepage: "https://github.com/chandra-bachtiar/sshgo"
-  description: "A modern SSH connection manager for your terminal"
-  license: MIT
-  skip_upload: auto
-  # Test command to verify installation
-  test: |
-    system "#{bin}/sshgo --version"
-
 # Release configuration
 release:
   github:
@@ -112,12 +92,6 @@ release:
 
   footer: |
     ## Installation
-
-    ### Homebrew (macOS/Linux)
-    ```bash
-    brew tap chandra-bachtiar/sshgo
-    brew install sshgo
-    ```
 
     ### Installation Script (Recommended)
     **Unix/Linux/macOS:**

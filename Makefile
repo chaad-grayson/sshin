@@ -4,7 +4,8 @@
 VERSION ?= dev
 
 # Go build flags
-LDFLAGS := -s -w -X github.com/chandra-bachtiar/sshgo/cmd.AppVersion=$(VERSION)
+# "=" (not ":="): expand at use, so build-local's git VERSION applies
+LDFLAGS = -s -w -X github.com/chandra-bachtiar/sshgo/cmd.AppVersion=$(VERSION)
 
 # Build with specific version
 build:
