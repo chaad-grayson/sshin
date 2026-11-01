@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chandra-bachtiar/sshgo/internal/secret"
 	"github.com/chandra-bachtiar/sshgo/internal/validation"
 
 	"github.com/charmbracelet/bubbles/textinput"
@@ -38,7 +39,11 @@ type editFormModel struct {
 	actualConfigFile string          // Actual config file to use (either configFile or host.SourceFile)
 	width            int
 	height           int
+	hasPassword      bool // a password is saved in the keyring for this host
+	removePassword   bool // Ctrl+D on the password field: delete it on save
 }
+
+const editPasswordInput = 10
 
 // NewEditForm creates a new edit form model that supports both single and multi-host editing
 func NewEditForm(hostName string, styles Styles, width, height int, configFile string) (*editFormModel, error) {
@@ -91,7 +96,7 @@ func NewEditForm(hostName string, styles Styles, width, height int, configFile s
 		}
 	}
 
-	inputs := make([]textinput.Model, 10)
+	inputs := make([]textinput.Model, 11)
 
 	// Hostname input
 	inputs[0] = textinput.New()
@@ -167,7 +172,15 @@ func NewEditForm(hostName string, styles Styles, width, height int, configFile s
 	inputs[9].Width = 30
 	inputs[9].SetValue(host.RequestTTY)
 
-	return &editFormModel{
+	// Password input: left empty, the saved password (if any) is kept
+	savedPassword, _ := secret.Get(hostName)
+	inputs[editPasswordInput] = textinput.New()
+	inputs[editPasswordInput].EchoMode = textinput.EchoPassword
+	inputs[editPasswordInput].EchoCharacter = '•'
+	inputs[editPasswordInput].CharLimit = 256
+	inputs[editPasswordInput].Width = 50
+
+	m := &editFormModel{
 		hostInputs:       hostInputs,
 		inputs:           inputs,
 		focusArea:        focusAreaHosts, // Start with hosts focused for multi-host editing
@@ -181,7 +194,21 @@ func NewEditForm(hostName string, styles Styles, width, height int, configFile s
 		styles:           styles,
 		width:            width,
 		height:           height,
-	}, nil
+		hasPassword:      savedPassword != "",
+	}
+	m.setPasswordPlaceholder()
+	return m, nil
+}
+
+func (m *editFormModel) setPasswordPlaceholder() {
+	switch {
+	case m.removePassword:
+		m.inputs[editPasswordInput].Placeholder = "will be removed on save (Ctrl+D: undo)"
+	case m.hasPassword:
+		m.inputs[editPasswordInput].Placeholder = "saved • type to replace, Ctrl+D to remove"
+	default:
+		m.inputs[editPasswordInput].Placeholder = "optional, for servers that also ask for one"
+	}
 }
 
 func (m *editFormModel) Init() tea.Cmd {
@@ -260,11 +287,11 @@ func (m *editFormModel) updateFocus() tea.Cmd {
 func (m *editFormModel) getPropertiesForCurrentTab() []int {
 	switch m.currentTab {
 	case 0: // General
-		return []int{0, 1, 2, 3, 4, 5, 7} // hostname, user, port, identity, proxyjump, proxycommand, tags
+		return []int{0, 1, 2, 3, editPasswordInput, 4, 5, 7} // hostname, user, port, identity, password, proxyjump, proxycommand, tags
 	case 1: // Advanced
 		return []int{6, 8, 9} // options, remotecommand, requesttty
 	default:
-		return []int{0, 1, 2, 3, 4, 5, 7}
+		return []int{0, 1, 2, 3, editPasswordInput, 4, 5, 7}
 	}
 }
 
@@ -372,7 +399,7 @@ func (m *editFormModel) getMinimumHeight() int {
 	// Fields in current tab
 	var fieldsCount int
 	if m.currentTab == 0 {
-		fieldsCount = 6 // 6 fields in general tab
+		fieldsCount = 8 // 8 fields in general tab
 	} else {
 		fieldsCount = 3 // 3 fields in advanced tab
 	}
@@ -454,6 +481,12 @@ func (m *editFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, m.addHostInput()
 
 		case "ctrl+d":
+			if m.focusArea == focusAreaProperties && m.focused == editPasswordInput && m.hasPassword {
+				m.removePassword = !m.removePassword
+				m.inputs[editPasswordInput].SetValue("")
+				m.setPasswordPlaceholder()
+				return m, nil
+			}
 			// Delete the currently focused host (if more than one exists)
 			if m.focusArea == focusAreaHosts && len(m.hostInputs) > 1 {
 				return m, m.deleteHostInput()
@@ -589,6 +622,7 @@ func (m *editFormModel) renderEditGeneralTab() string {
 		{1, "User"},
 		{2, "Port"},
 		{3, "Identity File"},
+		{editPasswordInput, "Password (saved in the OS keyring)"},
 		{4, "Proxy Jump"},
 		{5, "Proxy Command"},
 		{7, "Tags (comma-separated)"},
@@ -709,6 +743,7 @@ func (m *editFormModel) submitEditForm() tea.Cmd {
 		options := config.ParseSSHOptionsFromCommand(strings.TrimSpace(m.inputs[6].Value())) // optionsInput
 		remoteCommand := strings.TrimSpace(m.inputs[8].Value())                              // remoteCommandInput
 		requestTTY := strings.TrimSpace(m.inputs[9].Value())                                 // requestTTYInput
+		password := m.inputs[editPasswordInput].Value()                                      // not trimmed: spaces can be part of it
 
 		// Set defaults
 		if port == "" {
@@ -770,6 +805,12 @@ func (m *editFormModel) submitEditForm() tea.Cmd {
 		} else {
 			// Multi-host editing or conversion from single to multi
 			err = config.UpdateMultiHostBlock(m.originalHosts, hostNames, commonHost, m.actualConfigFile)
+		}
+		// Skip the keyring when there is no password to set, move or remove
+		if err == nil && (password != "" || m.hasPassword) {
+			if err = secret.UpdateBlock(m.originalHosts, hostNames, m.originalName, password, m.removePassword && password == ""); err != nil {
+				err = fmt.Errorf("host saved, but not its password: %w", err)
+			}
 		}
 
 		return editFormSubmitMsg{hostname: hostNames[0], err: err}

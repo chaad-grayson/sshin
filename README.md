@@ -146,6 +146,15 @@ The interactive forms will guide you through configuration:
 - **SSH Options** - Additional SSH options in `-o` format (e.g., `-o Compression=yes -o ServerAliveInterval=60`)
 - **Tags** - Comma-separated tags for organization
 
+### Saved Passwords (Key + Password)
+
+Some servers ask for a password on top of your private key (for example with `AuthenticationMethods publickey,password`). Fill the **Password** field when you add or edit a host and SSHGO types it for you on every connection.
+
+- The password is stored in your OS keyring (macOS Keychain, Secret Service such as GNOME Keyring or KWallet on Linux, Windows Credential Manager), never in `~/.ssh/config` or any SSHGO file.
+- SSHGO only answers the password prompt of that host (`user@hostname`), so a ProxyJump host never receives it. Every other prompt, like a key passphrase or a new host key, is still asked on your terminal.
+- In the edit form, leave the field empty to keep the saved password, type a new one to replace it, or press `Ctrl+D` on the field to remove it. Deleting the host removes its password too.
+- Requires OpenSSH 8.4 or newer (`SSH_ASKPASS_REQUIRE`) and a running keyring. Without a keyring, hosts work as before and `ssh` asks for the password itself.
+
 ### Port Forwarding
 
 SSHGO provides an intuitive interface for setting up SSH port forwarding. Press `f` while selecting a host to open the port forwarding setup:

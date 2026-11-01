@@ -10,6 +10,7 @@ import (
 
 	"github.com/chandra-bachtiar/sshgo/internal/config"
 	"github.com/chandra-bachtiar/sshgo/internal/history"
+	"github.com/chandra-bachtiar/sshgo/internal/secret"
 	"github.com/chandra-bachtiar/sshgo/internal/ui"
 
 	"github.com/spf13/cobra"
@@ -198,16 +199,23 @@ func connectToHost(hostName string, remoteCommand []string) {
 		fmt.Printf("Connecting to %s...\n", hostName)
 	}
 
+	env := secret.SSHEnv(configFile, hostName)
+
 	sshPath, lookErr := exec.LookPath("ssh")
 	if lookErr == nil {
 		argv := append([]string{"ssh"}, args...)
 		// On Unix, Exec replaces the process and never returns on success.
 		// On Windows, Exec is not supported and returns an error; fall through to the exec.Command fallback.
-		_ = syscall.Exec(sshPath, argv, os.Environ())
+		execEnv := env
+		if execEnv == nil {
+			execEnv = os.Environ()
+		}
+		_ = syscall.Exec(sshPath, argv, execEnv)
 	}
 
 	// Fallback for Windows or if LookPath failed
 	sshCmd := exec.Command("ssh", args...)
+	sshCmd.Env = env
 	sshCmd.Stdin = os.Stdin
 	sshCmd.Stdout = os.Stdout
 	sshCmd.Stderr = os.Stderr
@@ -226,6 +234,11 @@ func connectToHost(hostName string, remoteCommand []string) {
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
+	// ssh runs sshgo as its askpass program for hosts with a saved password
+	if secret.IsAskpass() {
+		os.Exit(secret.Askpass(os.Args[1:]))
+	}
+
 	// stderr so JSON output on stdout (sshgo info/search) stays parseable
 	if from, err := config.MigrateFromSSHM(); err != nil {
 		fmt.Fprintf(os.Stderr, "Warning: could not import settings from sshm: %v\n", err)

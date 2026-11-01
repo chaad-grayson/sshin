@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chandra-bachtiar/sshgo/internal/secret"
 	"github.com/chandra-bachtiar/sshgo/internal/validation"
 
 	"github.com/charmbracelet/bubbles/textinput"
@@ -49,7 +50,7 @@ func NewAddForm(hostname string, styles Styles, width, height int, configFile st
 		}
 	}
 
-	inputs := make([]textinput.Model, 11)
+	inputs := make([]textinput.Model, 12)
 
 	// Name input
 	inputs[nameInput] = textinput.New()
@@ -84,6 +85,14 @@ func NewAddForm(hostname string, styles Styles, width, height int, configFile st
 	inputs[identityInput].Placeholder = defaultIdentity
 	inputs[identityInput].CharLimit = 200
 	inputs[identityInput].Width = 50
+
+	// Password input: saved in the OS keyring, never in the SSH config
+	inputs[passwordInput] = textinput.New()
+	inputs[passwordInput].Placeholder = "optional, for servers that also ask for one"
+	inputs[passwordInput].EchoMode = textinput.EchoPassword
+	inputs[passwordInput].EchoCharacter = '•'
+	inputs[passwordInput].CharLimit = 256
+	inputs[passwordInput].Width = 50
 
 	// ProxyJump input
 	inputs[proxyJumpInput] = textinput.New()
@@ -150,6 +159,8 @@ const (
 	// Advanced tab inputs
 	remoteCommandInput
 	requestTTYInput
+	// General tab, after Identity File (added last to keep the indexes above)
+	passwordInput
 )
 
 // Messages for communication with parent model
@@ -236,11 +247,11 @@ func (m *addFormModel) getFirstInputForTab(tab int) int {
 func (m *addFormModel) getInputsForCurrentTab() []int {
 	switch m.currentTab {
 	case tabGeneral:
-		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, proxyJumpInput, proxyCommandInput, tagsInput}
+		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, proxyJumpInput, proxyCommandInput, tagsInput}
 	case tabAdvanced:
 		return []int{optionsInput, remoteCommandInput, requestTTYInput}
 	default:
-		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, proxyJumpInput, proxyCommandInput, tagsInput}
+		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, proxyJumpInput, proxyCommandInput, tagsInput}
 	}
 }
 
@@ -362,7 +373,7 @@ func (m *addFormModel) getMinimumHeight() int {
 	// Fields in current tab
 	var fieldsCount int
 	if m.currentTab == tabGeneral {
-		fieldsCount = 7 // 7 fields in general tab
+		fieldsCount = 9 // 9 fields in general tab
 	} else {
 		fieldsCount = 3 // 3 fields in advanced tab
 	}
@@ -425,6 +436,7 @@ func (m *addFormModel) renderGeneralTab() string {
 		{userInput, "User"},
 		{portInput, "Port"},
 		{identityInput, "Identity File"},
+		{passwordInput, "Password (saved in the OS keyring)"},
 		{proxyJumpInput, "ProxyJump"},
 		{proxyCommandInput, "ProxyCommand"},
 		{tagsInput, "Tags (comma-separated)"},
@@ -524,6 +536,7 @@ func (m *addFormModel) submitForm() tea.Cmd {
 		options := strings.TrimSpace(m.inputs[optionsInput].Value())
 		remoteCommand := strings.TrimSpace(m.inputs[remoteCommandInput].Value())
 		requestTTY := strings.TrimSpace(m.inputs[requestTTYInput].Value())
+		password := m.inputs[passwordInput].Value() // not trimmed: spaces can be part of it
 
 		// Set defaults
 		if user == "" {
@@ -571,6 +584,11 @@ func (m *addFormModel) submitForm() tea.Cmd {
 			err = config.AddSSHHostToFile(host, m.configFile)
 		} else {
 			err = config.AddSSHHost(host)
+		}
+		if err == nil && password != "" {
+			if err = secret.Set(name, password); err != nil {
+				err = fmt.Errorf("host saved, but not its password: %w", err)
+			}
 		}
 		return addFormSubmitMsg{hostname: name, err: err}
 	}

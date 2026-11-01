@@ -8,6 +8,7 @@ import (
 
 	"github.com/chandra-bachtiar/sshgo/internal/config"
 	"github.com/chandra-bachtiar/sshgo/internal/connectivity"
+	"github.com/chandra-bachtiar/sshgo/internal/secret"
 	"github.com/chandra-bachtiar/sshgo/internal/version"
 
 	"github.com/charmbracelet/bubbles/textinput"
@@ -355,6 +356,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// Success: execute SSH command with port forwarding
 			if len(msg.sshArgs) > 0 {
 				sshCmd := exec.Command("ssh", msg.sshArgs...)
+				if m.portForwardForm != nil {
+					sshCmd.Env = secret.SSHEnv(m.configFile, m.portForwardForm.hostName)
+				}
 
 				// Record the connection in history
 				if m.historyManager != nil && m.portForwardForm != nil {
@@ -516,6 +520,10 @@ func (m Model) handleListViewKeys(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			var err error
 			if m.deleteHost != nil {
 				err = config.DeleteSSHHostWithLine(*m.deleteHost)
+				if err == nil {
+					// The host is gone either way: a stale keyring entry is harmless
+					_ = secret.Delete(m.deleteHost.Name)
+				}
 			}
 			if err != nil {
 				// Could display an error message here
@@ -810,6 +818,7 @@ func (m Model) connectToSelectedHost() tea.Cmd {
 	} else {
 		sshCmd = exec.Command("ssh", hostName)
 	}
+	sshCmd.Env = secret.SSHEnv(m.configFile, hostName)
 
 	return tea.ExecProcess(sshCmd, func(err error) tea.Msg {
 		return tea.Quit()
