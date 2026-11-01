@@ -1,7 +1,5 @@
-
-
 <p align="center">
-    <img src="images/logo.png" alt="SSHGO Logo" width="120" />
+    <img src="images/logo.svg" alt="Logo SSHGO" width="160" />
 </p>
 
 # 🚀 SSHGO - SSH Manager
@@ -11,57 +9,53 @@
 [![License](https://img.shields.io/github/license/chandra-bachtiar/sshgo?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=for-the-badge)](https://github.com/chandra-bachtiar/sshgo/releases)
 
-> **A modern, interactive SSH Manager for your terminal** 🔥
+> **SSH manager yang modern dan interaktif, langsung dari terminal** 🔥
 
 > [!NOTE]
-> **SSHGO is a fork of [SSHM](https://github.com/Gu1llaum-3/sshm)** by [Guillaume Archambault](https://github.com/Gu1llaum-3), released under the MIT License. All credit for the original project goes to its author and contributors. This fork renames the tool to `sshgo` and adds its own features on top.
+> **SSHGO adalah fork dari [SSHM](https://github.com/Gu1llaum-3/sshm)** buatan [Guillaume Archambault](https://github.com/Gu1llaum-3), yang dirilis dengan Lisensi MIT. Semua kredit untuk proyek aslinya milik pembuat dan para kontributornya. Fork ini mengganti nama tool menjadi `sshgo` dan menambahkan fitur-fitur baru di atasnya.
 
-SSHGO is a beautiful command-line tool that transforms how you manage and connect to your SSH hosts. Built with Go and featuring an intuitive TUI interface, it makes SSH connection management effortless and enjoyable.
+SSHGO adalah tool command-line untuk mengelola dan terhubung ke host SSH kamu. Dibuat dengan Go dan dilengkapi TUI (tampilan interaktif di terminal), SSHGO bikin urusan koneksi SSH jadi lebih cepat dan nyaman.
 
 <p align="center">
     <a href="images/sshgo.gif" target="_blank">
-        <img src="images/sshgo.gif" alt="Demo SSHGO Terminal" width="800" />
+        <img src="images/sshgo.gif" alt="Demo SSHGO di terminal" width="800" />
     </a>
     <br>
-    <em>🖱️ Click on the image to view in full size</em>
+    <em>🖱️ Klik gambar untuk melihat ukuran penuh. Demo ini direkam dari SSHM, jadi perintah yang terlihat masih <code>sshm</code>.</em>
 </p>
 
-## ✨ Features
+## ✨ Fitur
 
-### 🚀 **Core Capabilities**
-- **🎨 Beautiful TUI Interface** - Navigate your SSH hosts with an elegant, interactive terminal UI
-- **⚡ Quick Connect** - Connect to any host instantly through the TUI or the CLI with `sshgo <host>`
-- **🔄 Port Forwarding** - Easy setup for Local, Remote, and Dynamic (SOCKS) forwarding with history persistence
-- **📝 Easy Management** - Add, edit, move, and manage SSH configurations seamlessly
-- **🏷️ Tag Support** - Organize your hosts with custom tags for better categorization; use the special `hidden` tag to exclude hosts from the list while keeping them connectable
-- **🔍 Smart Search** - Find hosts quickly with built-in filtering and search
-- **📝 Connectivity Status** - Color-coded SSH connectivity indicators, checked in the background when the TUI starts and on demand
-- **🔔 Smart Updates** - Automatic version checking with update notifications
-- **📈 Connection History** - Track your SSH connections with last login timestamps
+### 🚀 **Fitur Utama**
+- **🎨 Tampilan TUI** - Jelajahi host SSH kamu lewat antarmuka terminal yang interaktif
+- **⚡ Koneksi Cepat** - Langsung terhubung ke host mana pun lewat TUI atau CLI dengan `sshgo <host>`
+- **🔑 Simpan Password** - Untuk server yang minta private key *dan* password; password disimpan di keyring OS dan diisi otomatis
+- **🔄 Port Forwarding** - Atur forwarding Local, Remote, dan Dynamic (SOCKS) dengan mudah, lengkap dengan riwayatnya
+- **📝 Kelola dengan Mudah** - Tambah, edit, pindah, dan kelola konfigurasi SSH tanpa repot
+- **🏷️ Tag** - Kelompokkan host dengan tag; tag khusus `hidden` menyembunyikan host dari daftar tapi host tetap bisa dikoneksikan
+- **🔍 Pencarian** - Temukan host dengan cepat lewat filter dan pencarian
+- **📝 Status Koneksi** - Indikator warna untuk status SSH tiap host, dicek di background saat TUI dibuka dan kapan pun diminta
+- **🔔 Cek Update** - Pengecekan versi otomatis dengan notifikasi update
+- **📈 Riwayat Koneksi** - Catat koneksi SSH kamu beserta waktu login terakhir
 
-### 🛠️ **Technical Features**
-- **🔒 Secure** - Works directly with your existing `~/.ssh/config` file
-- **📁 Custom Config Support** - Use any SSH configuration file with the `-c` flag
-- **📂 SSH Include Support** - Full support for SSH Include directives to organize configurations across multiple files
-- **⚙️ SSH Options Support** - Add any SSH configuration option through intuitive forms
-- **🔄 Automatic Conversion** - Seamlessly converts between command-line and config formats
-- **🔄 Automatic Backups** - Backup configurations automatically before changes
-- **✅ Validation** - Prevent configuration errors with built-in validation
-- **🔗 ProxyJump/ProxyCommand Support** - Secure connection tunneling through bastion hosts
-- **⌨️ Keyboard Shortcuts** - Power user navigation with vim-like shortcuts
-- **🌐 Cross-platform** - Supports Linux, macOS (Intel & Apple Silicon), and Windows
-- **⚡ Lightweight** - Single binary with no dependencies, zero configuration required
+### 🛠️ **Fitur Teknis**
+- **🔒 Aman** - Langsung bekerja dengan file `~/.ssh/config` yang sudah ada
+- **📁 Config Kustom** - Pakai file konfigurasi SSH mana pun dengan flag `-c`
+- **📂 Dukungan SSH Include** - Dukungan penuh untuk direktif `Include` agar konfigurasi bisa dipecah ke banyak file
+- **⚙️ Opsi SSH** - Tambahkan opsi SSH apa pun lewat form
+- **🔄 Konversi Otomatis** - Otomatis mengubah format command-line ke format config dan sebaliknya
+- **🔄 Backup Otomatis** - Konfigurasi di-backup otomatis sebelum diubah
+- **✅ Validasi** - Mencegah kesalahan konfigurasi dengan validasi bawaan
+- **🔗 ProxyJump/ProxyCommand** - Tunneling koneksi lewat bastion host
+- **⌨️ Shortcut Keyboard** - Navigasi cepat dengan shortcut ala vim
+- **🌐 Lintas Platform** - Jalan di Linux, macOS (Intel & Apple Silicon), dan Windows
+- **⚡ Ringan** - Satu binary tanpa dependency, tanpa perlu konfigurasi apa pun
 
-## 🚀 Quick Start
+## 🚀 Mulai Cepat
 
-### Installation
+### Instalasi
 
-**Homebrew (Recommended for macOS):**
-```bash
-brew install chandra-bachtiar/sshgo/sshgo
-```
-
-**Unix/Linux/macOS (One-line install):**
+**Unix/Linux/macOS (sekali jalan):**
 ```bash
 curl -sSL https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/unix.sh | bash
 ```
@@ -71,372 +65,373 @@ curl -sSL https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/
 irm https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/windows.ps1 | iex
 ```
 
-**Alternative methods:**
+**Cara lain (manual):**
 
 *Linux/macOS:*
 ```bash
-# Download specific release
-wget https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-linux-amd64.tar.gz
+# Download rilis terbaru (ganti Linux_x86_64 sesuai sistem kamu, lihat tabel Rilis di bawah)
+wget https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_x86_64.tar.gz
 
-# Extract and install
-tar -xzf sshgo-linux-amd64.tar.gz
-sudo mv sshgo-linux-amd64 /usr/local/bin/sshgo
+# Ekstrak dan install
+tar -xzf sshgo_Linux_x86_64.tar.gz sshgo
+sudo mv sshgo /usr/local/bin/sshgo
 ```
 
 *Windows:*
 ```powershell
-# Download and extract
-Invoke-WebRequest -Uri "https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-windows-amd64.zip" -OutFile "sshgo-windows-amd64.zip"
-Expand-Archive sshgo-windows-amd64.zip -DestinationPath C:\tools\
-# Add C:\tools to your PATH environment variable
+# Download dan ekstrak
+Invoke-WebRequest -Uri "https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Windows_x86_64.zip" -OutFile "sshgo_Windows_x86_64.zip"
+Expand-Archive sshgo_Windows_x86_64.zip -DestinationPath C:\tools\
+# Tambahkan C:\tools ke environment variable PATH
 ```
 
-### Coming from SSHM
+### Pindah dari SSHM
 
-Nothing to do. The first time `sshgo` runs, it copies your SSHM settings, connection history, port forwards and backups from `~/.config/sshm` (`%APPDATA%\sshm` on Windows) to `~/.config/sshgo`. It only does this when `~/.config/sshgo` does not exist yet, and it never changes the SSHM directory, so `sshm` keeps working. Your `~/.ssh/config` is shared as is: hosts and tags written by SSHM work in SSHGO.
+Nggak perlu melakukan apa-apa. Saat `sshgo` pertama kali dijalankan, pengaturan, riwayat koneksi, riwayat port forwarding, dan backup SSHM kamu disalin dari `~/.config/sshm` (`%APPDATA%\sshm` di Windows) ke `~/.config/sshgo`. Penyalinan ini cuma terjadi kalau `~/.config/sshgo` belum ada, dan direktori SSHM tidak diubah sama sekali, jadi `sshm` tetap bisa dipakai. File `~/.ssh/config` dipakai bersama apa adanya: host dan tag yang ditulis SSHM langsung terbaca di SSHGO.
 
-## 📖 Usage
+## 📖 Cara Pakai
 
-### Interactive Mode
+### Mode Interaktif
 
-Launch SSHGO without arguments to enter the beautiful TUI interface:
+Jalankan SSHGO tanpa argumen untuk membuka TUI:
 
 ```bash
 sshgo
 ```
 
-**Search (focused at startup):**
-- Type to filter hosts by name, hostname or tag
-- `↑/↓` or `Ctrl+P/Ctrl+N` - Select a host without leaving the search
-- `Enter` - Connect to the selected host
-- `Esc` - Clear the search (quits when the search is empty)
-- `Tab` - Switch to the host table, where the shortcuts below work
+**Pencarian (aktif saat TUI dibuka):**
+- Ketik untuk memfilter host berdasarkan nama, hostname, atau tag
+- `↑/↓` atau `Ctrl+P/Ctrl+N` - Pilih host tanpa keluar dari pencarian
+- `Enter` - Konek ke host yang dipilih
+- `Esc` - Kosongkan pencarian (keluar dari aplikasi kalau pencarian sudah kosong)
+- `Tab` - Pindah ke tabel host, tempat shortcut di bawah berlaku
 
-**Host table:**
-- `↑/↓` or `j/k` - Navigate hosts
-- `Enter` - Connect to selected host
-- `a` - Add new host
-- `e` - Edit selected host
-- `d` - Delete selected host
-- `m` - Move host to another config file (requires SSH Include directives)
-- `f` - Port forwarding setup
-- `p` - Check the status of all hosts again
-- `H` - Toggle hidden hosts visibility
-- `q` - Quit
-- `/` or `Tab` - Back to the search
+**Tabel host:**
+- `↑/↓` atau `j/k` - Navigasi host
+- `Enter` - Konek ke host yang dipilih
+- `a` - Tambah host baru
+- `e` - Edit host yang dipilih
+- `d` - Hapus host yang dipilih
+- `m` - Pindahkan host ke file config lain (butuh direktif SSH Include)
+- `f` - Atur port forwarding
+- `p` - Cek ulang status semua host
+- `H` - Tampilkan/sembunyikan host `hidden`
+- `q` - Keluar
+- `/` atau `Tab` - Kembali ke pencarian
 
-**Status Indicators** (checked when the TUI starts, and again with `p`):
-- 🟢 **Online** - Host is reachable via SSH
-- 🟡 **Connecting** - Currently checking host connectivity
-- 🔴 **Offline** - Host is unreachable or SSH connection failed
-- ⚫ **Unknown** - Connectivity status not yet determined
+**Indikator Status** (dicek saat TUI dibuka, dan lagi dengan `p`):
+- 🟢 **Online** - Host bisa dijangkau lewat SSH
+- 🟡 **Connecting** - Sedang mengecek koneksi ke host
+- 🔴 **Offline** - Host tidak bisa dijangkau atau koneksi SSH gagal
+- ⚫ **Unknown** - Status koneksi belum diketahui
 
-**Sorting & Filtering:**
-- `s` - Switch between sorting modes (name ↔ last login)
-- `n` - Sort by **name** (alphabetical)
-- `r` - Sort by **recent** (last login time)
+**Urutan & Filter:**
+- `s` - Ganti mode urutan (nama ↔ login terakhir)
+- `n` - Urutkan berdasarkan **nama** (alfabet)
+- `r` - Urutkan berdasarkan **terbaru** (waktu login terakhir)
 
-The interactive forms will guide you through configuration:
-- **Hostname/IP** - Server address
-- **Username** - SSH user
-- **Port** - SSH port (default: 22)
-- **Identity File** - Private key path
-- **ProxyJump** - Jump server for connection tunneling
-- **ProxyCommand** - Jump command for connection tunneling
-- **SSH Options** - Additional SSH options in `-o` format (e.g., `-o Compression=yes -o ServerAliveInterval=60`)
-- **Tags** - Comma-separated tags for organization
+Form interaktif akan memandu kamu mengisi konfigurasi:
+- **Hostname/IP** - Alamat server
+- **User** - User SSH
+- **Port** - Port SSH (default: 22)
+- **Identity File** - Lokasi private key
+- **Password** - Opsional, untuk server yang juga minta password (disimpan di keyring OS)
+- **ProxyJump** - Jump server untuk tunneling koneksi
+- **ProxyCommand** - Perintah jump untuk tunneling koneksi
+- **SSH Options** - Opsi SSH tambahan dalam format `-o` (contoh: `-o Compression=yes -o ServerAliveInterval=60`)
+- **Tags** - Tag dipisahkan koma untuk mengelompokkan host
 
-### Saved Passwords (Key + Password)
+### Simpan Password (Key + Password)
 
-Some servers ask for a password on top of your private key (for example with `AuthenticationMethods publickey,password`). Fill the **Password** field when you add or edit a host and SSHGO types it for you on every connection.
+Beberapa server minta password selain private key (misalnya dengan `AuthenticationMethods publickey,password`). Isi kolom **Password** saat menambah atau mengedit host, dan SSHGO akan mengetikkannya untuk kamu setiap kali konek.
 
-- The password is stored in your OS keyring (macOS Keychain, Secret Service such as GNOME Keyring or KWallet on Linux, Windows Credential Manager), never in `~/.ssh/config` or any SSHGO file.
-- SSHGO only answers the password prompt of that host (`user@hostname`), so a ProxyJump host never receives it. Every other prompt, like a key passphrase or a new host key, is still asked on your terminal.
-- In the edit form, leave the field empty to keep the saved password, type a new one to replace it, or press `Ctrl+D` on the field to remove it. Deleting the host removes its password too.
-- Requires OpenSSH 8.4 or newer (`SSH_ASKPASS_REQUIRE`) and a running keyring. Without a keyring, hosts work as before and `ssh` asks for the password itself.
+- Password disimpan di keyring OS (Keychain di macOS, Secret Service seperti GNOME Keyring atau KWallet di Linux, Credential Manager di Windows), tidak pernah di `~/.ssh/config` atau file SSHGO mana pun.
+- SSHGO hanya menjawab prompt password milik host itu (`user@hostname`), jadi host ProxyJump tidak akan pernah menerimanya. Prompt lain, seperti passphrase key atau konfirmasi host key baru, tetap ditanyakan di terminal kamu.
+- Di form edit: biarkan kolom kosong untuk mempertahankan password yang tersimpan, ketik password baru untuk menggantinya, atau tekan `Ctrl+D` di kolom itu untuk menghapusnya. Menghapus host juga ikut menghapus password-nya.
+- Butuh OpenSSH 8.4 atau lebih baru (`SSH_ASKPASS_REQUIRE`) dan keyring yang aktif. Tanpa keyring, host tetap jalan seperti biasa dan `ssh` sendiri yang akan menanyakan password.
 
 ### Port Forwarding
 
-SSHGO provides an intuitive interface for setting up SSH port forwarding. Press `f` while selecting a host to open the port forwarding setup:
+SSHGO menyediakan tampilan untuk mengatur port forwarding SSH. Tekan `f` saat sebuah host dipilih untuk membuka pengaturan port forwarding:
 
-**Forward Types:**
-- **Local (-L)** - Forward a local port to a remote host/port through the SSH connection
-  - Example: Access a remote database on `localhost:5432` via local port `15432`
-  - Use case: `ssh -L 15432:localhost:5432 server` → Database accessible on `localhost:15432`
+**Jenis Forwarding:**
+- **Local (-L)** - Meneruskan port lokal ke host/port remote lewat koneksi SSH
+  - Contoh: Mengakses database remote di `localhost:5432` lewat port lokal `15432`
+  - Penggunaan: `ssh -L 15432:localhost:5432 server` → Database bisa diakses di `localhost:15432`
 
-- **Remote (-R)** - Forward a remote port back to a local host/port
-  - Example: Expose local web server on remote host's port `8080`
-  - Use case: `ssh -R 8080:localhost:3000 server` → Local app accessible from remote host's port 8080
-  - ⚠️ **Requirements for external access:**
-    - **SSH Server Config**: Add `GatewayPorts yes` to `/etc/ssh/sshd_config` and restart SSH service
-    - **Firewall**: Open the remote port in the server's firewall (`ufw allow 8080` or equivalent)
-    - **Port Availability**: Ensure the remote port is not already in use
-    - **Bind Address**: Use `0.0.0.0` for external access, `127.0.0.1` for local-only
+- **Remote (-R)** - Meneruskan port remote kembali ke host/port lokal
+  - Contoh: Membuka web server lokal di port `8080` milik host remote
+  - Penggunaan: `ssh -R 8080:localhost:3000 server` → Aplikasi lokal bisa diakses dari port 8080 di host remote
+  - ⚠️ **Syarat agar bisa diakses dari luar:**
+    - **Config SSH Server**: Tambahkan `GatewayPorts yes` ke `/etc/ssh/sshd_config` lalu restart service SSH
+    - **Firewall**: Buka port remote di firewall server (`ufw allow 8080` atau yang setara)
+    - **Ketersediaan Port**: Pastikan port remote belum dipakai
+    - **Bind Address**: Pakai `0.0.0.0` untuk akses dari luar, `127.0.0.1` untuk akses lokal saja
 
-- **Dynamic (-D)** - Create a SOCKS proxy for secure browsing
-  - Example: Route web traffic through the SSH connection
-  - Use case: `ssh -D 1080 server` → Configure browser to use `localhost:1080` as SOCKS proxy
-  - ⚠️ **Configuration requirements:**
-    - **Browser Setup**: Configure SOCKS v5 proxy in browser settings
-    - **DNS**: Enable "Proxy DNS when using SOCKS v5" for full privacy
-    - **Applications**: Only SOCKS-aware applications will use the proxy
-    - **Bind Address**: Use `127.0.0.1` for security (local access only)
+- **Dynamic (-D)** - Membuat proxy SOCKS untuk browsing yang aman
+  - Contoh: Melewatkan trafik web lewat koneksi SSH
+  - Penggunaan: `ssh -D 1080 server` → Atur browser untuk memakai `localhost:1080` sebagai proxy SOCKS
+  - ⚠️ **Yang perlu diatur:**
+    - **Browser**: Atur proxy SOCKS v5 di pengaturan browser
+    - **DNS**: Aktifkan "Proxy DNS when using SOCKS v5" untuk privasi penuh
+    - **Aplikasi**: Hanya aplikasi yang mendukung SOCKS yang akan memakai proxy ini
+    - **Bind Address**: Pakai `127.0.0.1` demi keamanan (akses lokal saja)
 
-**Port Forwarding Interface:**
-- Choose forward type with ←/→ arrow keys
-- Configure ports and addresses with guided forms
-- Optional bind address configuration (defaults to 127.0.0.1)
-- Real-time validation of port numbers and addresses
-- **Port forwarding history** - Save frequently used configurations for quick reuse
-- Connect automatically with configured forwarding options
+**Tampilan Port Forwarding:**
+- Pilih jenis forwarding dengan tombol panah ←/→
+- Atur port dan alamat lewat form yang memandu
+- Bind address opsional (default: 127.0.0.1)
+- Validasi nomor port dan alamat secara langsung
+- **Riwayat port forwarding** - Konfigurasi yang sering dipakai tersimpan untuk dipakai lagi
+- Langsung konek dengan opsi forwarding yang sudah diatur
 
 **Troubleshooting Port Forwarding:**
 
-*Remote Forwarding Issues:*
+*Masalah Remote Forwarding:*
 ```bash
 # Error: "remote port forwarding failed for listen port X"
-# Solutions:
-1. Check if port is already in use: ssh server "netstat -tln | grep :X"
-2. Use a different port that's available
-3. Enable GatewayPorts in SSH config for external access
+# Solusi:
+1. Cek apakah port sudah dipakai: ssh server "netstat -tln | grep :X"
+2. Pakai port lain yang masih kosong
+3. Aktifkan GatewayPorts di config SSH untuk akses dari luar
 ```
 
-*SSH Server Configuration for Remote Forwarding:*
+*Konfigurasi SSH Server untuk Remote Forwarding:*
 ```bash
-# Edit SSH daemon config on the server:
+# Edit config SSH daemon di server:
 sudo nano /etc/ssh/sshd_config
 
-# Add or uncomment:
+# Tambahkan atau aktifkan:
 GatewayPorts yes
 
-# Restart SSH service:
+# Restart service SSH:
 sudo systemctl restart sshd  # Ubuntu/Debian/CentOS 7+
-# OR
-sudo service ssh restart     # Older systems
+# ATAU
+sudo service ssh restart     # Sistem lama
 ```
 
-*Firewall Configuration:*
+*Konfigurasi Firewall:*
 ```bash
 # Ubuntu/Debian (UFW):
-sudo ufw allow [port_number]
+sudo ufw allow [nomor_port]
 
 # CentOS/RHEL/Rocky (firewalld):
-sudo firewall-cmd --add-port=[port_number]/tcp --permanent
+sudo firewall-cmd --add-port=[nomor_port]/tcp --permanent
 sudo firewall-cmd --reload
 
-# Check if port is accessible:
-telnet [server_ip] [port_number]
+# Cek apakah port bisa diakses:
+telnet [ip_server] [nomor_port]
 ```
 
-*Dynamic Forwarding (SOCKS) Browser Setup:*
+*Pengaturan Browser untuk Dynamic Forwarding (SOCKS):*
 ```
 Firefox: about:preferences → Network Settings
 - Manual proxy configuration
-- SOCKS Host: localhost, Port: [your_port]
+- SOCKS Host: localhost, Port: [port_kamu]
 - SOCKS v5: ✓
 - Proxy DNS when using SOCKS v5: ✓
 
-Chrome: Launch with proxy
-chrome --proxy-server="socks5://localhost:[your_port]"
+Chrome: Jalankan dengan proxy
+chrome --proxy-server="socks5://localhost:[port_kamu]"
 ```
 
-### CLI Usage
+### Penggunaan CLI
 
-SSHGO provides both command-line operations and an interactive TUI interface:
+SSHGO bisa dipakai lewat perintah command-line maupun TUI interaktif:
 
 ```bash
-# Launch interactive TUI mode for browsing and connecting to hosts
+# Buka TUI untuk menjelajahi dan konek ke host
 sshgo
 
-# Connect directly to a specific host (with history tracking)
+# Konek langsung ke host tertentu (tercatat di riwayat)
 sshgo my-server
 
-# Execute a command on a remote host
+# Jalankan perintah di host remote
 sshgo my-server uptime
 
-# Execute command with arguments
+# Jalankan perintah dengan argumen
 sshgo my-server ls -la /var/log
 
-# Force TTY allocation for interactive commands
+# Paksa alokasi TTY untuk perintah interaktif
 sshgo -t my-server sudo systemctl restart nginx
 
-# Launch TUI with custom SSH config file
+# Buka TUI dengan file config SSH kustom
 sshgo -c /path/to/custom/ssh_config
 
-# Connect directly with custom SSH config file
+# Konek langsung dengan file config SSH kustom
 sshgo my-server -c /path/to/custom/ssh_config
 
-# Add a new host using interactive form
+# Tambah host baru lewat form interaktif
 sshgo add
 
-# Add a new host with pre-filled hostname
+# Tambah host baru dengan hostname yang sudah terisi
 sshgo add hostname
 
-# Add a new host with custom SSH config file
+# Tambah host baru ke file config SSH kustom
 sshgo add hostname -c /path/to/custom/ssh_config
 
-# Edit an existing host configuration
+# Edit konfigurasi host yang sudah ada
 sshgo edit my-server
 
-# Edit host with custom SSH config file
+# Edit host di file config SSH kustom
 sshgo edit my-server -c /path/to/custom/ssh_config
 
-# Move a host to another SSH config file (requires Include directives)
+# Pindahkan host ke file config SSH lain (butuh direktif Include)
 sshgo move my-server
 
-# Move host with custom SSH config file (requires Include directives)
+# Pindahkan host di file config SSH kustom (butuh direktif Include)
 sshgo move my-server -c /path/to/custom/ssh_config
 
-# Search for hosts (interactive filter)
+# Cari host (filter interaktif)
 sshgo search
 
-# Print machine-readable info (JSON) for scripting
+# Tampilkan info host dalam format JSON untuk scripting
 sshgo info prod-server
 sshgo info prod-server --pretty
 
-# With a custom SSH config file
+# Dengan file config SSH kustom
 sshgo -c /path/to/custom/ssh_config info prod-server
 
-# Pipe to jq
+# Teruskan ke jq
 sshgo info prod-server | jq -r '.result.target.hostname'
 sshgo info prod-server | jq -r '.result.target.user'
 
-# Show version information
+# Tampilkan versi
 sshgo --version
 
-# Disable automatic update check (useful on air-gapped machines)
+# Matikan pengecekan update (berguna di mesin tanpa internet)
 sshgo --no-update-check
 
-# Show help and available commands
+# Tampilkan bantuan dan daftar perintah
 sshgo --help
 ```
 
-### Host Info (JSON)
+### Info Host (JSON)
 
-`sshgo info <hostname>` prints a single JSON object to stdout so you can script against it with `jq`.
+`sshgo info <hostname>` mencetak satu objek JSON ke stdout supaya bisa diolah di script dengan `jq`.
 
 ```bash
-# Extract fields
+# Ambil field tertentu
 sshgo info prod-server | jq -r '.result.target.hostname'
 sshgo info prod-server | jq -r '.result.target.port'
 
-# Check not-found (exit code 2)
+# Cek host yang tidak ditemukan (exit code 2)
 sshgo info does-not-exist | jq -r '.error.code'
 ```
 
 ### Shell Completion
 
-SSHGO supports shell completion for host names, making it easy to connect to hosts without typing full names:
+SSHGO mendukung shell completion untuk nama host, jadi kamu bisa konek tanpa mengetik nama lengkapnya:
 
 ```bash
-sshgo <TAB>           # Lists all available hosts
-sshgo pro<TAB>        # Completes to hosts starting with "pro" (e.g., prod-server)
+sshgo <TAB>           # Tampilkan semua host
+sshgo pro<TAB>        # Lengkapi host yang diawali "pro" (misalnya prod-server)
 ```
 
-**Setup Instructions:**
+**Cara Mengaktifkan:**
 
 **Bash:**
 ```bash
-# Enable for current session
+# Aktifkan untuk sesi ini
 source <(sshgo completion bash)
 
-# Enable permanently (add to ~/.bashrc)
+# Aktifkan permanen (tambahkan ke ~/.bashrc)
 echo 'source <(sshgo completion bash)' >> ~/.bashrc
 ```
 
 **Zsh:**
 ```bash
-# Enable for current session
+# Aktifkan untuk sesi ini
 source <(sshgo completion zsh)
 
-# Enable permanently (add to ~/.zshrc)
+# Aktifkan permanen (tambahkan ke ~/.zshrc)
 echo 'source <(sshgo completion zsh)' >> ~/.zshrc
 ```
 
 **Fish:**
 ```bash
-# Enable for current session
+# Aktifkan untuk sesi ini
 sshgo completion fish | source
 
-# Enable permanently
+# Aktifkan permanen
 sshgo completion fish > ~/.config/fish/completions/sshgo.fish
 ```
 
 **PowerShell:**
 ```powershell
-# Enable for current session
+# Aktifkan untuk sesi ini
 sshgo completion powershell | Out-String | Invoke-Expression
 
-# Enable permanently (add to your PowerShell profile)
+# Aktifkan permanen (tambahkan ke profil PowerShell)
 Add-Content $PROFILE 'sshgo completion powershell | Out-String | Invoke-Expression'
 ```
 
-### Direct Host Connection
+### Koneksi Langsung ke Host
 
-SSHGO supports direct connection to hosts via the command line, making it easy to integrate into your existing workflow:
+SSHGO bisa langsung konek ke host dari command line, jadi gampang dipakai di alur kerja yang sudah ada:
 
 ```bash
-# Connect directly to any configured host
+# Konek langsung ke host mana pun yang sudah dikonfigurasi
 sshgo production-server
 sshgo db-staging
 sshgo web-01
 
-# All direct connections are tracked in your history
-# Use the TUI to see your most recently connected hosts
+# Semua koneksi langsung tercatat di riwayat
+# Buka TUI untuk melihat host yang terakhir kamu koneksikan
 ```
 
-**Features of Direct Connection:**
-- **Instant connection** - No TUI navigation required
-- **History tracking** - All connections are recorded with timestamps
-- **Error handling** - Clear messages if host doesn't exist or configuration issues
-- **Config file support** - Works with custom config files using `-c` flag
+**Keunggulan Koneksi Langsung:**
+- **Langsung konek** - Tanpa perlu navigasi di TUI
+- **Tercatat di riwayat** - Semua koneksi dicatat beserta waktunya
+- **Pesan error yang jelas** - Kalau host tidak ada atau konfigurasinya bermasalah
+- **Dukungan file config** - Bisa dipakai dengan file config kustom lewat flag `-c`
 
-### Remote Command Execution
+### Menjalankan Perintah di Remote
 
-Execute commands on remote hosts without opening an interactive shell:
+Jalankan perintah di host remote tanpa membuka shell interaktif:
 
 ```bash
-# Execute a single command
+# Jalankan satu perintah
 sshgo prod-server uptime
 
-# Execute command with arguments
+# Jalankan perintah dengan argumen
 sshgo prod-server ls -la /var/log
 
-# Check disk usage
+# Cek pemakaian disk
 sshgo prod-server df -h
 
-# View logs (pipe to local commands)
+# Lihat log (teruskan ke perintah lokal)
 sshgo prod-server 'cat /var/log/nginx/access.log' | grep 404
 
-# Force TTY allocation for interactive commands (sudo, vim, etc.)
+# Paksa alokasi TTY untuk perintah interaktif (sudo, vim, dll.)
 sshgo -t prod-server sudo systemctl restart nginx
 ```
 
-**Features:**
-- **Exit code propagation** - Remote command exit codes are passed through
-- **TTY support** - Use `-t` flag for commands requiring terminal interaction
-- **Pipe-friendly** - Output can be piped to local commands for processing
-- **History tracking** - Command executions are recorded in connection history
+**Keunggulan:**
+- **Exit code diteruskan** - Exit code dari perintah remote ikut dikembalikan
+- **Dukungan TTY** - Pakai flag `-t` untuk perintah yang butuh interaksi terminal
+- **Bisa di-pipe** - Output bisa diteruskan ke perintah lokal
+- **Tercatat di riwayat** - Eksekusi perintah dicatat di riwayat koneksi
 
-### Backup Configuration
+### Backup Konfigurasi
 
-SSHGO automatically creates backups of your SSH configuration files before making any changes to ensure your configurations are safe.
+SSHGO otomatis membuat backup file konfigurasi SSH sebelum melakukan perubahan apa pun, supaya konfigurasi kamu tetap aman.
 
-**Backup Location:**
-- **Unix/Linux/macOS**: `~/.config/sshgo/backups/` (or `$XDG_CONFIG_HOME/sshgo/backups/` if set)
-- **Windows**: `%APPDATA%\sshgo\backups\` (fallback: `%USERPROFILE%\.config\sshgo\backups\`)
+**Lokasi Backup:**
+- **Unix/Linux/macOS**: `~/.config/sshgo/backups/` (atau `$XDG_CONFIG_HOME/sshgo/backups/` kalau di-set)
+- **Windows**: `%APPDATA%\sshgo\backups\` (cadangan: `%USERPROFILE%\.config\sshgo\backups\`)
 
-**Key Features:**
-- Automatic backup before any modification
-- One backup per file (overwrites previous backup)
-- Stored separately to avoid SSH Include conflicts
-- Easy manual recovery if needed
+**Fitur Utama:**
+- Backup otomatis sebelum setiap perubahan
+- Satu backup per file (backup sebelumnya ditimpa)
+- Disimpan terpisah supaya tidak bentrok dengan SSH Include
+- Mudah dipulihkan secara manual kalau perlu
 
-**Additional Storage:**
-- **Connection History**: Stored in the same config directory for persistent tracking
-- **Port Forwarding History**: Saved configurations for quick reuse of common forwarding setups
+**Data Lain yang Disimpan:**
+- **Riwayat Koneksi**: Disimpan di direktori config yang sama
+- **Riwayat Port Forwarding**: Konfigurasi forwarding yang sering dipakai, untuk dipakai lagi dengan cepat
 
-**Quick Recovery:**
+**Pemulihan Cepat:**
 ```bash
 # Unix/Linux/macOS
 cp ~/.config/sshgo/backups/config.backup ~/.ssh/config
@@ -445,53 +440,53 @@ cp ~/.config/sshgo/backups/config.backup ~/.ssh/config
 copy "%APPDATA%\sshgo\backups\config.backup" "%USERPROFILE%\.ssh\config"
 ```
 
-### Configuration File Options
+### Opsi File Konfigurasi
 
-By default, SSHGO uses the standard SSH configuration file at `~/.ssh/config`. You can specify a different configuration file using the `-c` flag:
+Secara default, SSHGO memakai file konfigurasi SSH standar di `~/.ssh/config`. Kamu bisa memakai file konfigurasi lain dengan flag `-c`:
 
 ```bash
-# Use custom config file in TUI mode
+# Pakai file config kustom di mode TUI
 sshgo -c /path/to/custom/ssh_config
 
-# Use custom config file with commands
+# Pakai file config kustom dengan perintah lain
 sshgo add hostname -c /path/to/custom/ssh_config
 sshgo edit hostname -c /path/to/custom/ssh_config
 sshgo move hostname -c /path/to/custom/ssh_config
 ```
 
-### Advanced Features
+### Fitur Lanjutan
 
-#### Host Movement Between Config Files
+#### Memindahkan Host Antar File Config
 
-SSHGO provides a powerful `move` command to relocate SSH hosts between different configuration files. **This feature requires SSH Include directives to be present in your SSH configuration.**
+SSHGO punya perintah `move` untuk memindahkan host SSH antar file konfigurasi. **Fitur ini butuh direktif SSH Include di konfigurasi SSH kamu.**
 
 ```bash
-# Move a host to another config file (requires Include directives)
+# Pindahkan host ke file config lain (butuh direktif Include)
 sshgo move my-server
 
-# Move with custom config file (requires Include directives)
+# Pindahkan dengan file config kustom (butuh direktif Include)
 sshgo move my-server -c /path/to/custom/ssh_config
 ```
 
-**⚠️ Important Requirements:**
-- **SSH Include directives must be present** in your SSH config file (either `~/.ssh/config` or the file specified with `-c`)
-- The config file must contain `Include` statements referencing other SSH configuration files
-- Without Include directives, the move command will display an error message
+**⚠️ Syarat Penting:**
+- **Direktif SSH Include harus ada** di file config SSH kamu (`~/.ssh/config` atau file yang ditentukan dengan `-c`)
+- File config harus berisi baris `Include` yang merujuk ke file konfigurasi SSH lain
+- Tanpa direktif Include, perintah move akan menampilkan pesan error
 
-**Features:**
-- **Interactive file selector** - Choose destination config file from Include directives
-- **Include support** - Works seamlessly with SSH Include directives structure
-- **Atomic operations** - Safe host movement with automatic backups
-- **Validation** - Prevents conflicts and ensures configuration integrity
-- **Error handling** - Clear messages when Include files are needed but not found
+**Keunggulan:**
+- **Pemilih file interaktif** - Pilih file config tujuan dari daftar direktif Include
+- **Dukungan Include** - Bekerja mulus dengan struktur direktif SSH Include
+- **Operasi atomik** - Pemindahan host yang aman dengan backup otomatis
+- **Validasi** - Mencegah konflik dan menjaga konfigurasi tetap utuh
+- **Penanganan error** - Pesan yang jelas kalau file Include dibutuhkan tapi tidak ditemukan
 
-**Use Cases:**
-- Reorganize hosts from main config to specialized include files
-- Move development hosts to separate environment-specific configs
-- Consolidate configurations for better organization
+**Contoh Penggunaan:**
+- Merapikan host dari config utama ke file include khusus
+- Memindahkan host development ke config terpisah per environment
+- Menggabungkan konfigurasi supaya lebih teratur
 
-**Example Setup Required:**
-Your main SSH config file must contain Include directives like:
+**Contoh Setup yang Dibutuhkan:**
+File config SSH utama kamu harus berisi direktif Include seperti ini:
 ```ssh
 # ~/.ssh/config
 Include ~/.ssh/config.d/*
@@ -503,102 +498,102 @@ Host personal-server
     User myuser
 ```
 
-#### Connectivity Status
+#### Status Koneksi
 
-SSHGO features asynchronous SSH connectivity checking that provides visual indicators of host availability:
+SSHGO mengecek koneksi SSH secara asinkron dan menampilkan indikator ketersediaan host:
 
-**Status Indicators:**
-- 🟢 **Online** - SSH connection successful (shows response time)
-- 🟡 **Connecting** - Currently testing connectivity
-- 🔴 **Offline** - SSH connection failed or host unreachable
-- ⚫ **Unknown** - Status not yet determined
+**Indikator Status:**
+- 🟢 **Online** - Koneksi SSH berhasil (menampilkan waktu respons)
+- 🟡 **Connecting** - Sedang mengetes koneksi
+- 🔴 **Offline** - Koneksi SSH gagal atau host tidak bisa dijangkau
+- ⚫ **Unknown** - Status belum diketahui
 
-**Features:**
-- **Non-blocking checks** - Status updates happen in the background
-- **Response time tracking** - See connection latency for online hosts
-- **Checked at startup** - Every visible host is checked when the TUI starts; press `p` to check again. Set `ping_on_start` to `false` to check only on demand
-- **Error details** - Detailed error information for failed connections
+**Keunggulan:**
+- **Tidak memblokir** - Status diperbarui di background
+- **Waktu respons** - Lihat latensi koneksi untuk host yang online
+- **Dicek saat dibuka** - Semua host yang terlihat dicek saat TUI dibuka; tekan `p` untuk cek ulang. Set `ping_on_start` ke `false` kalau mau cek hanya saat diminta
+- **Detail error** - Informasi error yang lengkap untuk koneksi yang gagal
 
-#### Automatic Update Checking
+#### Cek Update Otomatis
 
-SSHGO includes built-in version checking that notifies you of available updates:
+SSHGO punya pengecekan versi bawaan yang memberi tahu kalau ada update:
 
-**Features:**
-- **Background checking** - Version check happens asynchronously, never blocking startup
-- **Release notifications** - Clear indicators when updates are available
-- **Pre-release detection** - Identifies beta and development versions
-- **GitHub integration** - Direct links to release pages
-- **Non-intrusive** - Updates don't interrupt your workflow
-- **Configurable** - Can be disabled for air-gapped or offline environments
+**Keunggulan:**
+- **Di background** - Pengecekan versi berjalan asinkron, tidak pernah menghambat saat aplikasi dibuka
+- **Notifikasi rilis** - Tanda yang jelas kalau ada update
+- **Deteksi pre-release** - Mengenali versi beta dan development
+- **Integrasi GitHub** - Link langsung ke halaman rilis
+- **Tidak mengganggu** - Update tidak menginterupsi pekerjaan kamu
+- **Bisa diatur** - Bisa dimatikan untuk lingkungan offline atau tanpa internet
 
-**Update notifications appear:**
-- In the main TUI interface as a subtle notification
-- Only when a newer stable version is available
+**Notifikasi update muncul:**
+- Di TUI utama sebagai notifikasi kecil
+- Hanya kalau ada versi stabil yang lebih baru
 
-**Disabling update checks:**
+**Mematikan pengecekan update:**
 
-Via the CLI flag (one-time):
+Lewat flag CLI (sekali jalan):
 ```bash
 sshgo --no-update-check
 ```
 
-Via `~/.config/sshgo/config.json` (persistent):
+Lewat `~/.config/sshgo/config.json` (permanen):
 ```json
 {
   "check_for_updates": false
 }
 ```
 
-#### Port Forwarding History
+#### Riwayat Port Forwarding
 
-SSHGO remembers your port forwarding configurations for easy reuse:
+SSHGO mengingat konfigurasi port forwarding kamu supaya mudah dipakai lagi:
 
-**Features:**
-- **Automatic saving** - Successful forwarding setups are saved automatically
-- **Quick reuse** - Previously used configurations appear as suggestions
-- **Per-host history** - Forwarding history is tracked per SSH host
-- **All forward types** - Supports Local (-L), Remote (-R), and Dynamic (-D) forwarding history
-- **Persistent storage** - History survives application restarts
+**Keunggulan:**
+- **Tersimpan otomatis** - Setup forwarding yang berhasil disimpan otomatis
+- **Pakai ulang dengan cepat** - Konfigurasi sebelumnya muncul sebagai saran
+- **Riwayat per host** - Riwayat forwarding dicatat untuk tiap host SSH
+- **Semua jenis forwarding** - Mendukung riwayat Local (-L), Remote (-R), dan Dynamic (-D)
+- **Tersimpan permanen** - Riwayat tetap ada walau aplikasi ditutup
 
-### Platform-Specific Notes
+### Catatan per Platform
 
 **Windows:**
-- SSHGO works with the built-in OpenSSH client (Windows 10/11)
-- Configuration file location: `%USERPROFILE%\.ssh\config`
-- Compatible with WSL SSH configurations
-- Supports the same SSH options as Unix systems
+- SSHGO bekerja dengan client OpenSSH bawaan (Windows 10/11)
+- Lokasi file konfigurasi: `%USERPROFILE%\.ssh\config`
+- Kompatibel dengan konfigurasi SSH di WSL
+- Mendukung opsi SSH yang sama dengan sistem Unix
 
 **Unix/Linux/macOS:**
-- Standard SSH configuration file: `~/.ssh/config`
-- Full compatibility with OpenSSH features
-- Preserves file permissions automatically
+- File konfigurasi SSH standar: `~/.ssh/config`
+- Kompatibel penuh dengan fitur OpenSSH
+- Permission file dijaga secara otomatis
 
-## 🏗️ Configuration
+## 🏗️ Konfigurasi
 
-SSHGO works directly with your standard SSH configuration file (`~/.ssh/config`). It adds special comment tags for enhanced functionality while maintaining full compatibility with standard SSH tools.
+SSHGO bekerja langsung dengan file konfigurasi SSH standar kamu (`~/.ssh/config`). SSHGO menambahkan komentar khusus (seperti `# Tags:`) untuk fitur tambahan, tanpa merusak kompatibilitas dengan tool SSH standar.
 
-### SSH Include Support
+### Dukungan SSH Include
 
-SSHGO fully supports SSH Include directives, allowing you to organize your SSH configurations across multiple files. This is particularly useful for managing large numbers of hosts or organizing configurations by environment, project, or team.
+SSHGO mendukung penuh direktif SSH Include, jadi konfigurasi SSH bisa dipecah ke banyak file. Ini sangat membantu kalau host kamu banyak, atau kalau ingin mengelompokkan konfigurasi per environment, proyek, atau tim.
 
-**Include Examples:**
+**Contoh Include:**
 ```ssh
-# Main ~/.ssh/config file
+# File utama ~/.ssh/config
 Host personal-server
     HostName personal.example.com
     User myuser
 
-# Include work-related configurations
+# Sertakan konfigurasi kantor
 Include work-servers.conf
 
-# Include all configurations from a directory
+# Sertakan semua konfigurasi dari satu direktori
 Include projects/*
 
-# Include with relative paths
+# Include dengan path relatif ke home
 Include ~/.ssh/configs/production.conf
 ```
 
-**Organization Examples:**
+**Contoh Pengelompokan:**
 
 *work-servers.conf:*
 ```ssh
@@ -608,7 +603,7 @@ Host prod-web-01
     User deploy
     ProxyJump bastion.company.com
 
-# Tags: work, staging  
+# Tags: work, staging
 Host staging-api
     HostName staging-api.company.com
     User developer
@@ -623,10 +618,10 @@ Host client-alpha-dev
     Port 2222
 ```
 
-**Example configuration:**
+**Contoh konfigurasi:**
+```ssh
 Include ~/.ssh/conf.d/*
 
-```ssh
 # Tags: production, web, frontend
 Host web-prod-01
     HostName 192.168.1.10
@@ -658,59 +653,61 @@ Host backend-prod
     BatchMode yes
 ```
 
-### Supported SSH Options
+### Opsi SSH yang Didukung
 
-SSHGO supports all standard SSH configuration options:
+SSHGO mendukung semua opsi konfigurasi SSH standar:
 
-**Built-in Fields:**
-- `HostName` - Server hostname or IP address
-- `User` - Username for SSH connection
-- `Port` - SSH port number
-- `IdentityFile` - Path to private key file
-- `ProxyJump` - Jump server for connection tunneling (e.g., `user@jumphost:port`)
-- `ProxyCommand` - Jump command for connection tunneling (e.g, `ssh -W %h:%p Jumphost`)
-- `Tags` - Custom tags (SSHGO extension); the special tag `hidden` hides the host from the TUI and `sshgo search` while keeping it connectable via `sshgo <host>`
+**Kolom Bawaan:**
+- `HostName` - Hostname atau alamat IP server
+- `User` - Username untuk koneksi SSH
+- `Port` - Nomor port SSH
+- `IdentityFile` - Lokasi file private key
+- `ProxyJump` - Jump server untuk tunneling koneksi (contoh: `user@jumphost:port`)
+- `ProxyCommand` - Perintah jump untuk tunneling koneksi (contoh: `ssh -W %h:%p Jumphost`)
+- `Tags` - Tag kustom (ekstensi SSHGO); tag khusus `hidden` menyembunyikan host dari TUI dan `sshgo search`, tapi host tetap bisa dikoneksikan lewat `sshgo <host>`
 
-**Additional SSH Options:**
-You can add any valid SSH option using the "SSH Options" field in the interactive forms. Enter them in command-line format (e.g., `-o Compression=yes -o ServerAliveInterval=60`) and SSHGO will automatically convert them to the proper SSH config format.
+Password tidak termasuk di sini karena tidak ditulis ke config SSH; lihat [Simpan Password](#simpan-password-key--password).
 
-**Common SSH Options:**
-- `Compression` - Enable/disable compression (`yes`/`no`)
-- `ServerAliveInterval` - Interval in seconds for keepalive messages
-- `ServerAliveCountMax` - Maximum number of keepalive messages
-- `StrictHostKeyChecking` - Host key verification (`yes`/`no`/`ask`)
-- `UserKnownHostsFile` - Path to known hosts file
-- `BatchMode` - Disable interactive prompts (`yes`/`no`)
-- `ConnectTimeout` - Connection timeout in seconds
-- `ControlMaster` - Connection multiplexing (`yes`/`no`/`auto`)
-- `ControlPath` - Path for control socket
-- `ControlPersist` - Keep connection alive duration
-- `ForwardAgent` - Forward SSH agent (`yes`/`no`)
-- `LocalForward` - Local port forwarding (e.g., `8080:localhost:80`)
-- `RemoteForward` - Remote port forwarding
-- `DynamicForward` - SOCKS proxy port forwarding
+**Opsi SSH Tambahan:**
+Kamu bisa menambahkan opsi SSH apa pun lewat kolom "SSH Options" di form interaktif. Tulis dalam format command-line (contoh: `-o Compression=yes -o ServerAliveInterval=60`) dan SSHGO akan otomatis mengubahnya ke format config SSH yang benar.
 
-**Example usage in forms:**
+**Opsi SSH yang Sering Dipakai:**
+- `Compression` - Aktifkan/matikan kompresi (`yes`/`no`)
+- `ServerAliveInterval` - Interval (detik) pengiriman pesan keepalive
+- `ServerAliveCountMax` - Jumlah maksimum pesan keepalive
+- `StrictHostKeyChecking` - Verifikasi host key (`yes`/`no`/`ask`)
+- `UserKnownHostsFile` - Lokasi file known hosts
+- `BatchMode` - Matikan prompt interaktif (`yes`/`no`)
+- `ConnectTimeout` - Batas waktu koneksi (detik)
+- `ControlMaster` - Multiplexing koneksi (`yes`/`no`/`auto`)
+- `ControlPath` - Lokasi socket kontrol
+- `ControlPersist` - Lama koneksi dibiarkan tetap hidup
+- `ForwardAgent` - Teruskan SSH agent (`yes`/`no`)
+- `LocalForward` - Port forwarding lokal (contoh: `8080:localhost:80`)
+- `RemoteForward` - Port forwarding remote
+- `DynamicForward` - Port forwarding proxy SOCKS
+
+**Contoh pengisian di form:**
 ```
 SSH Options: -o Compression=yes -o ServerAliveInterval=60 -o StrictHostKeyChecking=no
 ```
 
-This will be automatically converted to:
+Akan otomatis diubah menjadi:
 ```ssh
     Compression yes
     ServerAliveInterval 60
     StrictHostKeyChecking no
 ```
 
-### Application Configuration
+### Konfigurasi Aplikasi
 
-SSHGO supports a configuration file to customize its behavior, including key bindings and update checking.
+SSHGO punya file konfigurasi untuk mengatur perilakunya, termasuk key binding dan pengecekan update.
 
-**Configuration File Location:**
+**Lokasi File Konfigurasi:**
 - **Linux/macOS**: `~/.config/sshgo/config.json`
 - **Windows**: `%APPDATA%\sshgo\config.json`
 
-**Example Configuration:**
+**Contoh Konfigurasi:**
 ```json
 {
   "check_for_updates": false,
@@ -723,151 +720,168 @@ SSHGO supports a configuration file to customize its behavior, including key bin
 }
 ```
 
-**Available Options:**
-- **check_for_updates**: Boolean to enable or disable the automatic update check at startup. Default: `true`. Set to `false` on air-gapped or offline machines to avoid connection delays.
-- **focus_search_on_start**: Boolean to choose where the focus is when the TUI starts. Default: `true` (the search bar). Set to `false` to start on the host table; the `-s` / `--search` flag still starts on the search bar.
-- **ping_on_start**: Boolean to check the status of every visible host when the TUI starts. Default: `true`. Set to `false` to check only when you press `p` (for example with many hosts, or hosts behind a slow ProxyJump).
-- **quit_keys**: Array of keys that will quit the application. Default: `["q", "ctrl+c"]`
-- **disable_esc_quit**: Boolean flag to disable ESC key from quitting the application. Default: `false`
+**Opsi yang Tersedia:**
+- **check_for_updates**: Boolean untuk mengaktifkan atau mematikan pengecekan update saat aplikasi dibuka. Default: `true`. Set ke `false` di mesin offline atau tanpa internet supaya tidak ada jeda koneksi.
+- **focus_search_on_start**: Boolean untuk menentukan fokus saat TUI dibuka. Default: `true` (kolom pencarian). Set ke `false` untuk mulai di tabel host; flag `-s` / `--search` tetap membuka di kolom pencarian.
+- **ping_on_start**: Boolean untuk mengecek status semua host yang terlihat saat TUI dibuka. Default: `true`. Set ke `false` untuk cek hanya saat kamu menekan `p` (misalnya kalau host-nya banyak, atau ada host di balik ProxyJump yang lambat).
+- **quit_keys**: Array tombol untuk keluar dari aplikasi. Default: `["q", "ctrl+c"]`
+- **disable_esc_quit**: Boolean untuk mencegah tombol ESC menutup aplikasi. Default: `false`
 
-**For Vim Users:**
-If you frequently press ESC accidentally causing the application to quit, set `disable_esc_quit` to `true`. This will disable ESC as a quit key while preserving all other functionality.
+**Untuk Pengguna Vim:**
+Kalau kamu sering tidak sengaja menekan ESC sampai aplikasinya tertutup, set `disable_esc_quit` ke `true`. ESC tidak lagi menutup aplikasi, sementara fungsi lainnya tetap jalan.
 
-**For Air-gapped Machines:**
-If SSHGO is slow to start due to DNS timeouts when reaching GitHub, set `check_for_updates` to `false`. You can also use the `--no-update-check` CLI flag for a one-time override without editing the config file.
+**Untuk Mesin Tanpa Internet:**
+Kalau SSHGO lambat dibuka karena timeout DNS saat menghubungi GitHub, set `check_for_updates` ke `false`. Kamu juga bisa memakai flag `--no-update-check` untuk sekali jalan tanpa mengubah file config.
 
-**Default Configuration:**
-If no configuration file exists, SSHGO will automatically create one with default settings that maintain backward compatibility.
+**Konfigurasi Default:**
+Kalau file konfigurasi belum ada, SSHGO otomatis membuatnya dengan pengaturan default.
 
-## 🛠️ Development
+## 🛠️ Pengembangan
 
-### Prerequisites
+### Prasyarat
 
-- Go 1.27+ 
+- Go 1.27+
 - Git
 
-### Build from Source
+### Build dari Source
 
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/chandra-bachtiar/sshgo.git
 cd sshgo
 
-# Build the binary
-go build -o sshgo .
+# Build binary (dengan versi dari git)
+make build-local
 
-# Run
-./sshgo
+# Jalankan
+./dist/sshgo
+
+# Jalankan test
+make test
 ```
 
-### Project Structure
+Test dijalankan dengan direktori home sementara, jadi tidak pernah menyentuh `~/.ssh` atau `~/.config/sshgo` milikmu.
+
+### Struktur Proyek
 
 ```
 sshgo/
-├── main.go             # Application entry point
-├── cmd/                # CLI commands (Cobra)
-│   ├── root.go         # Root command and interactive mode
-│   ├── add.go          # Add host command
-│   ├── edit.go         # Edit host command
-│   ├── move.go         # Move host command
-│   └── search.go       # Search command
+├── main.go               # Entry point aplikasi
+├── cmd/                  # Perintah CLI (Cobra)
+│   ├── root.go           # Perintah utama, mode interaktif, dan koneksi langsung
+│   ├── add.go            # Perintah tambah host
+│   ├── edit.go           # Perintah edit host
+│   ├── move.go           # Perintah pindah host
+│   ├── search.go         # Perintah cari host
+│   ├── info.go           # Perintah info host (JSON)
+│   └── completion.go     # Shell completion
 ├── internal/
-│   ├── config/         # SSH configuration management
-│   │   └── ssh.go      # Config parsing and manipulation
-│   ├── connectivity/   # SSH connectivity checking
-│   │   └── ping.go     # Asynchronous SSH ping functionality
-│   ├── history/        # Connection history tracking
-│   │   ├── history.go  # History management and last login tracking
-│   │   └── port_forward_test.go # Port forwarding history tests
-│   ├── version/        # Version checking and updates
-│   │   ├── version.go  # GitHub release checking and version comparison
-│   │   └── version_test.go # Version parsing and comparison tests
-│   ├── ui/             # Terminal UI components (Bubble Tea)
-│   │   ├── tui.go      # Main TUI interface and program setup
-│   │   ├── model.go    # Core TUI model and state
-│   │   ├── update.go   # Message handling and state updates
-│   │   ├── view.go     # UI rendering and layout
-│   │   ├── table.go    # Host list table component with status indicators
-│   │   ├── add_form.go # Add host form interface
-│   │   ├── edit_form.go# Edit host form interface
-│   │   ├── move_form.go# Move host form interface
-│   │   ├── port_forward_form.go # Port forwarding setup with history
-│   │   ├── styles.go   # Lip Gloss styling definitions
-│   │   ├── sort.go     # Sorting and filtering logic
-│   │   └── utils.go    # UI utility functions
-│   └── validation/     # Input validation
-│       └── ssh.go      # SSH config validation
-├── images/             # Documentation assets
-│   ├── logo.png        # Project logo
-│   └── sshgo.gif        # Demo animation
-├── install/            # Installation scripts
-│   ├── unix.sh         # Unix/Linux/macOS installer
-│   └── README.md       # Installation guide
-├── .github/            # GitHub configuration
-│   ├── copilot-instructions.md # Development guidelines
-│   └── workflows/      # CI/CD pipelines
-│       └── build.yml   # Multi-platform builds
-├── go.mod              # Go module definition
-├── go.sum              # Go module checksums
-├── LICENSE             # MIT license
-└── README.md           # Project documentation
+│   ├── config/           # Manajemen konfigurasi
+│   │   ├── ssh.go        # Parsing dan pengubahan config SSH
+│   │   ├── appconfig.go  # config.json milik SSHGO
+│   │   └── migrate.go    # Impor pengaturan dari SSHM
+│   ├── connectivity/     # Pengecekan koneksi SSH
+│   │   └── ping.go       # Ping SSH asinkron
+│   ├── history/          # Riwayat koneksi dan port forwarding
+│   │   └── history.go
+│   ├── secret/           # Password host di keyring OS
+│   │   ├── secret.go     # Simpan, ambil, hapus password
+│   │   └── askpass.go    # Mengisi prompt password ssh (SSH_ASKPASS)
+│   ├── testhome/         # Direktori home sementara untuk test
+│   ├── ui/               # Komponen TUI (Bubble Tea)
+│   │   ├── tui.go        # Setup program TUI
+│   │   ├── model.go      # Model dan state TUI
+│   │   ├── update.go     # Penanganan pesan dan perubahan state
+│   │   ├── view.go       # Rendering tampilan
+│   │   ├── table.go      # Tabel host dengan indikator status
+│   │   ├── add_form.go   # Form tambah host
+│   │   ├── edit_form.go  # Form edit host
+│   │   ├── move_form.go  # Form pindah host
+│   │   ├── info_form.go  # Tampilan info host
+│   │   ├── port_forward_form.go # Pengaturan port forwarding dengan riwayat
+│   │   ├── styles.go     # Definisi style Lip Gloss
+│   │   └── sort.go       # Logika urutan dan filter
+│   ├── validation/       # Validasi input
+│   │   └── ssh.go
+│   └── version/          # Pengecekan versi dan update
+│       └── version.go
+├── images/               # Aset dokumentasi
+│   ├── logo.svg          # Logo proyek
+│   └── sshgo.gif         # Animasi demo
+├── install/              # Script instalasi
+│   ├── unix.sh           # Installer Unix/Linux/macOS
+│   ├── windows.ps1       # Installer Windows
+│   └── README.md         # Panduan instalasi
+├── .github/workflows/
+│   ├── ci.yml            # gofmt, vet, dan test di Linux, macOS, Windows
+│   └── release.yml       # Rilis dengan GoReleaser saat tag di-push
+├── .goreleaser.yaml      # Konfigurasi build rilis
+├── Makefile
+├── go.mod
+├── LICENSE               # Lisensi MIT
+└── README.md             # Dokumentasi proyek
 ```
 
-### Dependencies
+### Dependency
 
-- [Cobra](https://github.com/spf13/cobra) - CLI framework
-- [Bubble Tea](https://github.com/charmbracelet/bubbletea) - TUI framework
-- [Bubbles](https://github.com/charmbracelet/bubbles) - TUI components
+- [Cobra](https://github.com/spf13/cobra) - Framework CLI
+- [Bubble Tea](https://github.com/charmbracelet/bubbletea) - Framework TUI
+- [Bubbles](https://github.com/charmbracelet/bubbles) - Komponen TUI
 - [Lipgloss](https://github.com/charmbracelet/lipgloss) - Styling
-- [Go Crypto SSH](https://golang.org/x/crypto/ssh) - SSH connectivity checking
+- [go-keyring](https://github.com/zalando/go-keyring) - Akses keyring OS untuk password
+- [Go Crypto](https://pkg.go.dev/golang.org/x/crypto) dan [x/term](https://pkg.go.dev/golang.org/x/term) - Utilitas SSH dan terminal
 
-## 📦 Releases
+## 📦 Rilis
 
-Automated releases are built for multiple platforms:
+Rilis dibuat otomatis untuk beberapa platform:
 
-| Platform | Architecture | Download |
-|----------|-------------|----------|
-| Linux | AMD64 | [sshgo-linux-amd64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-linux-amd64.tar.gz) |
-| Linux | ARM64 | [sshgo-linux-arm64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-linux-arm64.tar.gz) |
-| macOS | Intel | [sshgo-darwin-amd64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-darwin-amd64.tar.gz) |
-| macOS | Apple Silicon | [sshgo-darwin-arm64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-darwin-arm64.tar.gz) |
-| Windows | AMD64 | [sshgo-windows-amd64.zip](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-windows-amd64.zip) |
-| Windows | ARM64 | [sshgo-windows-arm64.zip](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-windows-arm64.zip) |
+| Platform | Arsitektur | Download |
+|----------|------------|----------|
+| Linux | AMD64 | [sshgo_Linux_x86_64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_x86_64.tar.gz) |
+| Linux | ARM64 | [sshgo_Linux_arm64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_arm64.tar.gz) |
+| Linux | ARMv7 | [sshgo_Linux_armv7.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_armv7.tar.gz) |
+| Linux | i386 | [sshgo_Linux_i386.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_i386.tar.gz) |
+| macOS | Intel | [sshgo_Darwin_x86_64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Darwin_x86_64.tar.gz) |
+| macOS | Apple Silicon | [sshgo_Darwin_arm64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Darwin_arm64.tar.gz) |
+| Windows | AMD64 | [sshgo_Windows_x86_64.zip](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Windows_x86_64.zip) |
+| Windows | i386 | [sshgo_Windows_i386.zip](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Windows_i386.zip) |
 
-## 🤝 Contributing
+Setiap rilis juga menyertakan `checksums.txt` (SHA-256) untuk memverifikasi file yang kamu download.
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+## 🤝 Kontribusi
 
-### Development Workflow
+Kontribusi sangat diterima! Silakan kirim Pull Request. Untuk perubahan besar, buka issue dulu untuk mendiskusikan apa yang ingin kamu ubah.
 
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
+### Alur Kerja Pengembangan
 
-## 📝 License
+1. **Fork** repository ini
+2. **Buat** branch fitur (`git checkout -b feature/fitur-keren`)
+3. **Commit** perubahan kamu (`git commit -m 'feat: tambah fitur keren'`)
+4. **Push** ke branch tersebut (`git push origin feature/fitur-keren`)
+5. **Buka** Pull Request
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📝 Lisensi
 
-SSHGO is derived from [SSHM](https://github.com/Gu1llaum-3/sshm), Copyright (c) 2025 Guillaume Archambault, also MIT licensed. The original copyright and permission notice are kept in [LICENSE](LICENSE) as the license requires.
+Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file [LICENSE](LICENSE) untuk detailnya.
 
-## 🙏 Acknowledgments
+SSHGO diturunkan dari [SSHM](https://github.com/Gu1llaum-3/sshm), Copyright (c) 2025 Guillaume Archambault, yang juga berlisensi MIT. Pemberitahuan hak cipta dan izin aslinya tetap disimpan di [LICENSE](LICENSE) sesuai syarat lisensi.
 
-- [Guillaume Archambault](https://github.com/Gu1llaum-3) for creating [SSHM](https://github.com/Gu1llaum-3/sshm), the project SSHGO is forked from
-- [Charm](https://charm.sh/) for the amazing TUI libraries
-- [Cobra](https://cobra.dev/) for the excellent CLI framework
-- [@yimeng](https://github.com/yimeng) for contributing SSH Include directive support
-- [@ldreux](https://github.com/ldreux) for contributing multi-word search functionality
-- [@qingfengzxr](https://github.com/qingfengzxr) for contributing custom key bindings support
-- The Go community for building such fantastic tools
+## 🙏 Terima Kasih
+
+- [Guillaume Archambault](https://github.com/Gu1llaum-3) yang membuat [SSHM](https://github.com/Gu1llaum-3/sshm), proyek asal fork SSHGO
+- [Charm](https://charm.sh/) untuk library TUI-nya yang luar biasa
+- [Cobra](https://cobra.dev/) untuk framework CLI-nya
+- [@yimeng](https://github.com/yimeng) yang menyumbangkan dukungan direktif SSH Include
+- [@ldreux](https://github.com/ldreux) yang menyumbangkan pencarian multi-kata
+- [@qingfengzxr](https://github.com/qingfengzxr) yang menyumbangkan dukungan key binding kustom
+- Komunitas Go yang membangun tool-tool hebat
 
 ---
 
 <div align="center">
 
-**SSHGO is maintained by [chandra-bachtiar](https://github.com/chandra-bachtiar), based on [SSHM](https://github.com/Gu1llaum-3/sshm) made with ❤️ by [Guillaume](https://github.com/Gu1llaum-3)**
+**SSHGO dikelola oleh [chandra-bachtiar](https://github.com/chandra-bachtiar), berdasarkan [SSHM](https://github.com/Gu1llaum-3/sshm) yang dibuat dengan ❤️ oleh [Guillaume](https://github.com/Gu1llaum-3)**
 
-⭐ **Star this repo if you found it useful!** ⭐
+⭐ **Kasih bintang repo ini kalau menurutmu bermanfaat!** ⭐
 
 </div>
