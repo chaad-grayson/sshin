@@ -1,23 +1,26 @@
 
 
 <p align="center">
-    <img src="images/logo.png" alt="SSHM Logo" width="120" />
+    <img src="images/logo.png" alt="SSHGO Logo" width="120" />
 </p>
 
-# 🚀 SSHM - SSH Manager
+# 🚀 SSHGO - SSH Manager
 
 [![Go](https://img.shields.io/badge/Go-1.27+-00ADD8?style=for-the-badge&logo=go)](https://golang.org/)
-[![Release](https://img.shields.io/github/v/release/Gu1llaum-3/sshm?style=for-the-badge)](https://github.com/Gu1llaum-3/sshm/releases)
-[![License](https://img.shields.io/github/license/Gu1llaum-3/sshm?style=for-the-badge)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=for-the-badge)](https://github.com/Gu1llaum-3/sshm/releases)
+[![Release](https://img.shields.io/github/v/release/chandra-bachtiar/sshgo?style=for-the-badge)](https://github.com/chandra-bachtiar/sshgo/releases)
+[![License](https://img.shields.io/github/license/chandra-bachtiar/sshgo?style=for-the-badge)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=for-the-badge)](https://github.com/chandra-bachtiar/sshgo/releases)
 
 > **A modern, interactive SSH Manager for your terminal** 🔥
 
-SSHM is a beautiful command-line tool that transforms how you manage and connect to your SSH hosts. Built with Go and featuring an intuitive TUI interface, it makes SSH connection management effortless and enjoyable.
+> [!NOTE]
+> **SSHGO is a fork of [SSHM](https://github.com/Gu1llaum-3/sshm)** by [Guillaume Archambault](https://github.com/Gu1llaum-3), released under the MIT License. All credit for the original project goes to its author and contributors. This fork renames the tool to `sshgo` and adds its own features on top.
+
+SSHGO is a beautiful command-line tool that transforms how you manage and connect to your SSH hosts. Built with Go and featuring an intuitive TUI interface, it makes SSH connection management effortless and enjoyable.
 
 <p align="center">
-    <a href="images/sshm.gif" target="_blank">
-        <img src="images/sshm.gif" alt="Demo SSHM Terminal" width="800" />
+    <a href="images/sshgo.gif" target="_blank">
+        <img src="images/sshgo.gif" alt="Demo SSHGO Terminal" width="800" />
     </a>
     <br>
     <em>🖱️ Click on the image to view in full size</em>
@@ -27,7 +30,7 @@ SSHM is a beautiful command-line tool that transforms how you manage and connect
 
 ### 🚀 **Core Capabilities**
 - **🎨 Beautiful TUI Interface** - Navigate your SSH hosts with an elegant, interactive terminal UI
-- **⚡ Quick Connect** - Connect to any host instantly through the TUI or the CLI with `sshm <host>`
+- **⚡ Quick Connect** - Connect to any host instantly through the TUI or the CLI with `sshgo <host>`
 - **🔄 Port Forwarding** - Easy setup for Local, Remote, and Dynamic (SOCKS) forwarding with history persistence
 - **📝 Easy Management** - Add, edit, move, and manage SSH configurations seamlessly
 - **🏷️ Tag Support** - Organize your hosts with custom tags for better categorization; use the special `hidden` tag to exclude hosts from the list while keeping them connectable
@@ -55,17 +58,17 @@ SSHM is a beautiful command-line tool that transforms how you manage and connect
 
 **Homebrew (Recommended for macOS):**
 ```bash
-brew install Gu1llaum-3/sshm/sshm
+brew install chandra-bachtiar/sshgo/sshgo
 ```
 
 **Unix/Linux/macOS (One-line install):**
 ```bash
-curl -sSL https://raw.githubusercontent.com/Gu1llaum-3/sshm/main/install/unix.sh | bash
+curl -sSL https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/unix.sh | bash
 ```
 
 **Windows (PowerShell):**
 ```powershell
-irm https://raw.githubusercontent.com/Gu1llaum-3/sshm/main/install/windows.ps1 | iex
+irm https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/windows.ps1 | iex
 ```
 
 **Alternative methods:**
@@ -73,18 +76,18 @@ irm https://raw.githubusercontent.com/Gu1llaum-3/sshm/main/install/windows.ps1 |
 *Linux/macOS:*
 ```bash
 # Download specific release
-wget https://github.com/Gu1llaum-3/sshm/releases/latest/download/sshm-linux-amd64.tar.gz
+wget https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-linux-amd64.tar.gz
 
 # Extract and install
-tar -xzf sshm-linux-amd64.tar.gz
-sudo mv sshm-linux-amd64 /usr/local/bin/sshm
+tar -xzf sshgo-linux-amd64.tar.gz
+sudo mv sshgo-linux-amd64 /usr/local/bin/sshgo
 ```
 
 *Windows:*
 ```powershell
 # Download and extract
-Invoke-WebRequest -Uri "https://github.com/Gu1llaum-3/sshm/releases/latest/download/sshm-windows-amd64.zip" -OutFile "sshm-windows-amd64.zip"
-Expand-Archive sshm-windows-amd64.zip -DestinationPath C:\tools\
+Invoke-WebRequest -Uri "https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-windows-amd64.zip" -OutFile "sshgo-windows-amd64.zip"
+Expand-Archive sshgo-windows-amd64.zip -DestinationPath C:\tools\
 # Add C:\tools to your PATH environment variable
 ```
 
@@ -92,10 +95,10 @@ Expand-Archive sshm-windows-amd64.zip -DestinationPath C:\tools\
 
 ### Interactive Mode
 
-Launch SSHM without arguments to enter the beautiful TUI interface:
+Launch SSHGO without arguments to enter the beautiful TUI interface:
 
 ```bash
-sshm
+sshgo
 ```
 
 **Search (focused at startup):**
@@ -141,7 +144,7 @@ The interactive forms will guide you through configuration:
 
 ### Port Forwarding
 
-SSHM provides an intuitive interface for setting up SSH port forwarding. Press `f` while selecting a host to open the port forwarding setup:
+SSHGO provides an intuitive interface for setting up SSH port forwarding. Press `f` while selecting a host to open the port forwarding setup:
 
 **Forward Types:**
 - **Local (-L)** - Forward a local port to a remote host/port through the SSH connection
@@ -226,95 +229,95 @@ chrome --proxy-server="socks5://localhost:[your_port]"
 
 ### CLI Usage
 
-SSHM provides both command-line operations and an interactive TUI interface:
+SSHGO provides both command-line operations and an interactive TUI interface:
 
 ```bash
 # Launch interactive TUI mode for browsing and connecting to hosts
-sshm
+sshgo
 
 # Connect directly to a specific host (with history tracking)
-sshm my-server
+sshgo my-server
 
 # Execute a command on a remote host
-sshm my-server uptime
+sshgo my-server uptime
 
 # Execute command with arguments
-sshm my-server ls -la /var/log
+sshgo my-server ls -la /var/log
 
 # Force TTY allocation for interactive commands
-sshm -t my-server sudo systemctl restart nginx
+sshgo -t my-server sudo systemctl restart nginx
 
 # Launch TUI with custom SSH config file
-sshm -c /path/to/custom/ssh_config
+sshgo -c /path/to/custom/ssh_config
 
 # Connect directly with custom SSH config file
-sshm my-server -c /path/to/custom/ssh_config
+sshgo my-server -c /path/to/custom/ssh_config
 
 # Add a new host using interactive form
-sshm add
+sshgo add
 
 # Add a new host with pre-filled hostname
-sshm add hostname
+sshgo add hostname
 
 # Add a new host with custom SSH config file
-sshm add hostname -c /path/to/custom/ssh_config
+sshgo add hostname -c /path/to/custom/ssh_config
 
 # Edit an existing host configuration
-sshm edit my-server
+sshgo edit my-server
 
 # Edit host with custom SSH config file
-sshm edit my-server -c /path/to/custom/ssh_config
+sshgo edit my-server -c /path/to/custom/ssh_config
 
 # Move a host to another SSH config file (requires Include directives)
-sshm move my-server
+sshgo move my-server
 
 # Move host with custom SSH config file (requires Include directives)
-sshm move my-server -c /path/to/custom/ssh_config
+sshgo move my-server -c /path/to/custom/ssh_config
 
 # Search for hosts (interactive filter)
-sshm search
+sshgo search
 
 # Print machine-readable info (JSON) for scripting
-sshm info prod-server
-sshm info prod-server --pretty
+sshgo info prod-server
+sshgo info prod-server --pretty
 
 # With a custom SSH config file
-sshm -c /path/to/custom/ssh_config info prod-server
+sshgo -c /path/to/custom/ssh_config info prod-server
 
 # Pipe to jq
-sshm info prod-server | jq -r '.result.target.hostname'
-sshm info prod-server | jq -r '.result.target.user'
+sshgo info prod-server | jq -r '.result.target.hostname'
+sshgo info prod-server | jq -r '.result.target.user'
 
 # Show version information
-sshm --version
+sshgo --version
 
 # Disable automatic update check (useful on air-gapped machines)
-sshm --no-update-check
+sshgo --no-update-check
 
 # Show help and available commands
-sshm --help
+sshgo --help
 ```
 
 ### Host Info (JSON)
 
-`sshm info <hostname>` prints a single JSON object to stdout so you can script against it with `jq`.
+`sshgo info <hostname>` prints a single JSON object to stdout so you can script against it with `jq`.
 
 ```bash
 # Extract fields
-sshm info prod-server | jq -r '.result.target.hostname'
-sshm info prod-server | jq -r '.result.target.port'
+sshgo info prod-server | jq -r '.result.target.hostname'
+sshgo info prod-server | jq -r '.result.target.port'
 
 # Check not-found (exit code 2)
-sshm info does-not-exist | jq -r '.error.code'
+sshgo info does-not-exist | jq -r '.error.code'
 ```
 
 ### Shell Completion
 
-SSHM supports shell completion for host names, making it easy to connect to hosts without typing full names:
+SSHGO supports shell completion for host names, making it easy to connect to hosts without typing full names:
 
 ```bash
-sshm <TAB>           # Lists all available hosts
-sshm pro<TAB>        # Completes to hosts starting with "pro" (e.g., prod-server)
+sshgo <TAB>           # Lists all available hosts
+sshgo pro<TAB>        # Completes to hosts starting with "pro" (e.g., prod-server)
 ```
 
 **Setup Instructions:**
@@ -322,48 +325,48 @@ sshm pro<TAB>        # Completes to hosts starting with "pro" (e.g., prod-server
 **Bash:**
 ```bash
 # Enable for current session
-source <(sshm completion bash)
+source <(sshgo completion bash)
 
 # Enable permanently (add to ~/.bashrc)
-echo 'source <(sshm completion bash)' >> ~/.bashrc
+echo 'source <(sshgo completion bash)' >> ~/.bashrc
 ```
 
 **Zsh:**
 ```bash
 # Enable for current session
-source <(sshm completion zsh)
+source <(sshgo completion zsh)
 
 # Enable permanently (add to ~/.zshrc)
-echo 'source <(sshm completion zsh)' >> ~/.zshrc
+echo 'source <(sshgo completion zsh)' >> ~/.zshrc
 ```
 
 **Fish:**
 ```bash
 # Enable for current session
-sshm completion fish | source
+sshgo completion fish | source
 
 # Enable permanently
-sshm completion fish > ~/.config/fish/completions/sshm.fish
+sshgo completion fish > ~/.config/fish/completions/sshgo.fish
 ```
 
 **PowerShell:**
 ```powershell
 # Enable for current session
-sshm completion powershell | Out-String | Invoke-Expression
+sshgo completion powershell | Out-String | Invoke-Expression
 
 # Enable permanently (add to your PowerShell profile)
-Add-Content $PROFILE 'sshm completion powershell | Out-String | Invoke-Expression'
+Add-Content $PROFILE 'sshgo completion powershell | Out-String | Invoke-Expression'
 ```
 
 ### Direct Host Connection
 
-SSHM supports direct connection to hosts via the command line, making it easy to integrate into your existing workflow:
+SSHGO supports direct connection to hosts via the command line, making it easy to integrate into your existing workflow:
 
 ```bash
 # Connect directly to any configured host
-sshm production-server
-sshm db-staging
-sshm web-01
+sshgo production-server
+sshgo db-staging
+sshgo web-01
 
 # All direct connections are tracked in your history
 # Use the TUI to see your most recently connected hosts
@@ -381,19 +384,19 @@ Execute commands on remote hosts without opening an interactive shell:
 
 ```bash
 # Execute a single command
-sshm prod-server uptime
+sshgo prod-server uptime
 
 # Execute command with arguments
-sshm prod-server ls -la /var/log
+sshgo prod-server ls -la /var/log
 
 # Check disk usage
-sshm prod-server df -h
+sshgo prod-server df -h
 
 # View logs (pipe to local commands)
-sshm prod-server 'cat /var/log/nginx/access.log' | grep 404
+sshgo prod-server 'cat /var/log/nginx/access.log' | grep 404
 
 # Force TTY allocation for interactive commands (sudo, vim, etc.)
-sshm -t prod-server sudo systemctl restart nginx
+sshgo -t prod-server sudo systemctl restart nginx
 ```
 
 **Features:**
@@ -404,11 +407,11 @@ sshm -t prod-server sudo systemctl restart nginx
 
 ### Backup Configuration
 
-SSHM automatically creates backups of your SSH configuration files before making any changes to ensure your configurations are safe.
+SSHGO automatically creates backups of your SSH configuration files before making any changes to ensure your configurations are safe.
 
 **Backup Location:**
-- **Unix/Linux/macOS**: `~/.config/sshm/backups/` (or `$XDG_CONFIG_HOME/sshm/backups/` if set)
-- **Windows**: `%APPDATA%\sshm\backups\` (fallback: `%USERPROFILE%\.config\sshm\backups\`)
+- **Unix/Linux/macOS**: `~/.config/sshgo/backups/` (or `$XDG_CONFIG_HOME/sshgo/backups/` if set)
+- **Windows**: `%APPDATA%\sshgo\backups\` (fallback: `%USERPROFILE%\.config\sshgo\backups\`)
 
 **Key Features:**
 - Automatic backup before any modification
@@ -423,38 +426,38 @@ SSHM automatically creates backups of your SSH configuration files before making
 **Quick Recovery:**
 ```bash
 # Unix/Linux/macOS
-cp ~/.config/sshm/backups/config.backup ~/.ssh/config
+cp ~/.config/sshgo/backups/config.backup ~/.ssh/config
 
 # Windows
-copy "%APPDATA%\sshm\backups\config.backup" "%USERPROFILE%\.ssh\config"
+copy "%APPDATA%\sshgo\backups\config.backup" "%USERPROFILE%\.ssh\config"
 ```
 
 ### Configuration File Options
 
-By default, SSHM uses the standard SSH configuration file at `~/.ssh/config`. You can specify a different configuration file using the `-c` flag:
+By default, SSHGO uses the standard SSH configuration file at `~/.ssh/config`. You can specify a different configuration file using the `-c` flag:
 
 ```bash
 # Use custom config file in TUI mode
-sshm -c /path/to/custom/ssh_config
+sshgo -c /path/to/custom/ssh_config
 
 # Use custom config file with commands
-sshm add hostname -c /path/to/custom/ssh_config
-sshm edit hostname -c /path/to/custom/ssh_config
-sshm move hostname -c /path/to/custom/ssh_config
+sshgo add hostname -c /path/to/custom/ssh_config
+sshgo edit hostname -c /path/to/custom/ssh_config
+sshgo move hostname -c /path/to/custom/ssh_config
 ```
 
 ### Advanced Features
 
 #### Host Movement Between Config Files
 
-SSHM provides a powerful `move` command to relocate SSH hosts between different configuration files. **This feature requires SSH Include directives to be present in your SSH configuration.**
+SSHGO provides a powerful `move` command to relocate SSH hosts between different configuration files. **This feature requires SSH Include directives to be present in your SSH configuration.**
 
 ```bash
 # Move a host to another config file (requires Include directives)
-sshm move my-server
+sshgo move my-server
 
 # Move with custom config file (requires Include directives)
-sshm move my-server -c /path/to/custom/ssh_config
+sshgo move my-server -c /path/to/custom/ssh_config
 ```
 
 **⚠️ Important Requirements:**
@@ -489,7 +492,7 @@ Host personal-server
 
 #### Connectivity Status
 
-SSHM features asynchronous SSH connectivity checking that provides visual indicators of host availability:
+SSHGO features asynchronous SSH connectivity checking that provides visual indicators of host availability:
 
 **Status Indicators:**
 - 🟢 **Online** - SSH connection successful (shows response time)
@@ -505,7 +508,7 @@ SSHM features asynchronous SSH connectivity checking that provides visual indica
 
 #### Automatic Update Checking
 
-SSHM includes built-in version checking that notifies you of available updates:
+SSHGO includes built-in version checking that notifies you of available updates:
 
 **Features:**
 - **Background checking** - Version check happens asynchronously, never blocking startup
@@ -523,10 +526,10 @@ SSHM includes built-in version checking that notifies you of available updates:
 
 Via the CLI flag (one-time):
 ```bash
-sshm --no-update-check
+sshgo --no-update-check
 ```
 
-Via `~/.config/sshm/config.json` (persistent):
+Via `~/.config/sshgo/config.json` (persistent):
 ```json
 {
   "check_for_updates": false
@@ -535,7 +538,7 @@ Via `~/.config/sshm/config.json` (persistent):
 
 #### Port Forwarding History
 
-SSHM remembers your port forwarding configurations for easy reuse:
+SSHGO remembers your port forwarding configurations for easy reuse:
 
 **Features:**
 - **Automatic saving** - Successful forwarding setups are saved automatically
@@ -547,7 +550,7 @@ SSHM remembers your port forwarding configurations for easy reuse:
 ### Platform-Specific Notes
 
 **Windows:**
-- SSHM works with the built-in OpenSSH client (Windows 10/11)
+- SSHGO works with the built-in OpenSSH client (Windows 10/11)
 - Configuration file location: `%USERPROFILE%\.ssh\config`
 - Compatible with WSL SSH configurations
 - Supports the same SSH options as Unix systems
@@ -559,11 +562,11 @@ SSHM remembers your port forwarding configurations for easy reuse:
 
 ## 🏗️ Configuration
 
-SSHM works directly with your standard SSH configuration file (`~/.ssh/config`). It adds special comment tags for enhanced functionality while maintaining full compatibility with standard SSH tools.
+SSHGO works directly with your standard SSH configuration file (`~/.ssh/config`). It adds special comment tags for enhanced functionality while maintaining full compatibility with standard SSH tools.
 
 ### SSH Include Support
 
-SSHM fully supports SSH Include directives, allowing you to organize your SSH configurations across multiple files. This is particularly useful for managing large numbers of hosts or organizing configurations by environment, project, or team.
+SSHGO fully supports SSH Include directives, allowing you to organize your SSH configurations across multiple files. This is particularly useful for managing large numbers of hosts or organizing configurations by environment, project, or team.
 
 **Include Examples:**
 ```ssh
@@ -644,7 +647,7 @@ Host backend-prod
 
 ### Supported SSH Options
 
-SSHM supports all standard SSH configuration options:
+SSHGO supports all standard SSH configuration options:
 
 **Built-in Fields:**
 - `HostName` - Server hostname or IP address
@@ -653,10 +656,10 @@ SSHM supports all standard SSH configuration options:
 - `IdentityFile` - Path to private key file
 - `ProxyJump` - Jump server for connection tunneling (e.g., `user@jumphost:port`)
 - `ProxyCommand` - Jump command for connection tunneling (e.g, `ssh -W %h:%p Jumphost`)
-- `Tags` - Custom tags (SSHM extension); the special tag `hidden` hides the host from the TUI and `sshm search` while keeping it connectable via `sshm <host>`
+- `Tags` - Custom tags (SSHGO extension); the special tag `hidden` hides the host from the TUI and `sshgo search` while keeping it connectable via `sshgo <host>`
 
 **Additional SSH Options:**
-You can add any valid SSH option using the "SSH Options" field in the interactive forms. Enter them in command-line format (e.g., `-o Compression=yes -o ServerAliveInterval=60`) and SSHM will automatically convert them to the proper SSH config format.
+You can add any valid SSH option using the "SSH Options" field in the interactive forms. Enter them in command-line format (e.g., `-o Compression=yes -o ServerAliveInterval=60`) and SSHGO will automatically convert them to the proper SSH config format.
 
 **Common SSH Options:**
 - `Compression` - Enable/disable compression (`yes`/`no`)
@@ -688,11 +691,11 @@ This will be automatically converted to:
 
 ### Application Configuration
 
-SSHM supports a configuration file to customize its behavior, including key bindings and update checking.
+SSHGO supports a configuration file to customize its behavior, including key bindings and update checking.
 
 **Configuration File Location:**
-- **Linux/macOS**: `~/.config/sshm/config.json`
-- **Windows**: `%APPDATA%\sshm\config.json`
+- **Linux/macOS**: `~/.config/sshgo/config.json`
+- **Windows**: `%APPDATA%\sshgo\config.json`
 
 **Example Configuration:**
 ```json
@@ -718,10 +721,10 @@ SSHM supports a configuration file to customize its behavior, including key bind
 If you frequently press ESC accidentally causing the application to quit, set `disable_esc_quit` to `true`. This will disable ESC as a quit key while preserving all other functionality.
 
 **For Air-gapped Machines:**
-If SSHM is slow to start due to DNS timeouts when reaching GitHub, set `check_for_updates` to `false`. You can also use the `--no-update-check` CLI flag for a one-time override without editing the config file.
+If SSHGO is slow to start due to DNS timeouts when reaching GitHub, set `check_for_updates` to `false`. You can also use the `--no-update-check` CLI flag for a one-time override without editing the config file.
 
 **Default Configuration:**
-If no configuration file exists, SSHM will automatically create one with default settings that maintain backward compatibility.
+If no configuration file exists, SSHGO will automatically create one with default settings that maintain backward compatibility.
 
 ## 🛠️ Development
 
@@ -734,20 +737,20 @@ If no configuration file exists, SSHM will automatically create one with default
 
 ```bash
 # Clone the repository
-git clone https://github.com/Gu1llaum-3/sshm.git
-cd sshm
+git clone https://github.com/chandra-bachtiar/sshgo.git
+cd sshgo
 
 # Build the binary
-go build -o sshm .
+go build -o sshgo .
 
 # Run
-./sshm
+./sshgo
 ```
 
 ### Project Structure
 
 ```
-sshm/
+sshgo/
 ├── main.go             # Application entry point
 ├── cmd/                # CLI commands (Cobra)
 │   ├── root.go         # Root command and interactive mode
@@ -783,7 +786,7 @@ sshm/
 │       └── ssh.go      # SSH config validation
 ├── images/             # Documentation assets
 │   ├── logo.png        # Project logo
-│   └── sshm.gif        # Demo animation
+│   └── sshgo.gif        # Demo animation
 ├── install/            # Installation scripts
 │   ├── unix.sh         # Unix/Linux/macOS installer
 │   └── README.md       # Installation guide
@@ -811,12 +814,12 @@ Automated releases are built for multiple platforms:
 
 | Platform | Architecture | Download |
 |----------|-------------|----------|
-| Linux | AMD64 | [sshm-linux-amd64.tar.gz](https://github.com/Gu1llaum-3/sshm/releases/latest/download/sshm-linux-amd64.tar.gz) |
-| Linux | ARM64 | [sshm-linux-arm64.tar.gz](https://github.com/Gu1llaum-3/sshm/releases/latest/download/sshm-linux-arm64.tar.gz) |
-| macOS | Intel | [sshm-darwin-amd64.tar.gz](https://github.com/Gu1llaum-3/sshm/releases/latest/download/sshm-darwin-amd64.tar.gz) |
-| macOS | Apple Silicon | [sshm-darwin-arm64.tar.gz](https://github.com/Gu1llaum-3/sshm/releases/latest/download/sshm-darwin-arm64.tar.gz) |
-| Windows | AMD64 | [sshm-windows-amd64.zip](https://github.com/Gu1llaum-3/sshm/releases/latest/download/sshm-windows-amd64.zip) |
-| Windows | ARM64 | [sshm-windows-arm64.zip](https://github.com/Gu1llaum-3/sshm/releases/latest/download/sshm-windows-arm64.zip) |
+| Linux | AMD64 | [sshgo-linux-amd64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-linux-amd64.tar.gz) |
+| Linux | ARM64 | [sshgo-linux-arm64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-linux-arm64.tar.gz) |
+| macOS | Intel | [sshgo-darwin-amd64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-darwin-amd64.tar.gz) |
+| macOS | Apple Silicon | [sshgo-darwin-arm64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-darwin-arm64.tar.gz) |
+| Windows | AMD64 | [sshgo-windows-amd64.zip](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-windows-amd64.zip) |
+| Windows | ARM64 | [sshgo-windows-arm64.zip](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo-windows-arm64.zip) |
 
 ## 🤝 Contributing
 
@@ -834,8 +837,11 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+SSHGO is derived from [SSHM](https://github.com/Gu1llaum-3/sshm), Copyright (c) 2025 Guillaume Archambault, also MIT licensed. The original copyright and permission notice are kept in [LICENSE](LICENSE) as the license requires.
+
 ## 🙏 Acknowledgments
 
+- [Guillaume Archambault](https://github.com/Gu1llaum-3) for creating [SSHM](https://github.com/Gu1llaum-3/sshm), the project SSHGO is forked from
 - [Charm](https://charm.sh/) for the amazing TUI libraries
 - [Cobra](https://cobra.dev/) for the excellent CLI framework
 - [@yimeng](https://github.com/yimeng) for contributing SSH Include directive support
@@ -847,7 +853,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Made with ❤️ by [Guillaume](https://github.com/Gu1llaum-3)**
+**SSHGO is maintained by [chandra-bachtiar](https://github.com/chandra-bachtiar), based on [SSHM](https://github.com/Gu1llaum-3/sshm) made with ❤️ by [Guillaume](https://github.com/Gu1llaum-3)**
 
 ⭐ **Star this repo if you found it useful!** ⭐
 

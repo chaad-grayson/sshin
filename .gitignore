@@ -47,9 +47,9 @@ temp/
 *.log
 
 # Project specific
-sshm
-sshm-*
-!sshm-test
+sshgo
+sshgo-*
+!sshgo-test
 release/
 
 # Backup files

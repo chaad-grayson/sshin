@@ -61,8 +61,8 @@ func GetDefaultSSHConfigPath() (string, error) {
 	}
 }
 
-// GetSSHMConfigDir returns the SSHM config directory
-func GetSSHMConfigDir() (string, error) {
+// GetSSHGOConfigDir returns the SSHGO config directory
+func GetSSHGOConfigDir() (string, error) {
 	homeDir, err := getHomeDir()
 	if err != nil {
 		return "", err
@@ -71,29 +71,29 @@ func GetSSHMConfigDir() (string, error) {
 	var configDir string
 	switch runtime.GOOS {
 	case "windows":
-		// Use %APPDATA%/sshm on Windows
+		// Use %APPDATA%/sshgo on Windows
 		appData := os.Getenv("APPDATA")
 		if appData != "" {
-			configDir = filepath.Join(appData, "sshm")
+			configDir = filepath.Join(appData, "sshgo")
 		} else {
-			configDir = filepath.Join(homeDir, ".config", "sshm")
+			configDir = filepath.Join(homeDir, ".config", "sshgo")
 		}
 	default:
 		// Use XDG Base Directory specification
 		xdgConfigDir := os.Getenv("XDG_CONFIG_HOME")
 		if xdgConfigDir != "" {
-			configDir = filepath.Join(xdgConfigDir, "sshm")
+			configDir = filepath.Join(xdgConfigDir, "sshgo")
 		} else {
-			configDir = filepath.Join(homeDir, ".config", "sshm")
+			configDir = filepath.Join(homeDir, ".config", "sshgo")
 		}
 	}
 
 	return configDir, nil
 }
 
-// GetSSHMBackupDir returns the SSHM backup directory
-func GetSSHMBackupDir() (string, error) {
-	configDir, err := GetSSHMConfigDir()
+// GetSSHGOBackupDir returns the SSHGO backup directory
+func GetSSHGOBackupDir() (string, error) {
+	configDir, err := GetSSHGOConfigDir()
 	if err != nil {
 		return "", err
 	}
@@ -127,10 +127,10 @@ func ensureSSHDirectory() error {
 // configMutex protects SSH config file operations from race conditions
 var configMutex sync.Mutex
 
-// backupConfig creates a backup of the SSH config file in ~/.config/sshm/backups/
+// backupConfig creates a backup of the SSH config file in ~/.config/sshgo/backups/
 func backupConfig(configPath string) error {
 	// Get backup directory and ensure it exists
-	backupDir, err := GetSSHMBackupDir()
+	backupDir, err := GetSSHGOBackupDir()
 	if err != nil {
 		return fmt.Errorf("failed to get backup directory: %w", err)
 	}
@@ -266,7 +266,7 @@ func parseSSHConfigFileWithProcessedFiles(configPath string, processedFiles map[
 		if isVerbatimKeyword(key) {
 			raw = parsed.raw
 		}
-		// sshm stays lenient: a single-value keyword written with several
+		// sshgo stays lenient: a single-value keyword written with several
 		// unquoted words (e.g. a path with spaces) keeps them all
 		value := strings.Join(parsed.args, " ")
 
@@ -283,7 +283,7 @@ func parseSSHConfigFileWithProcessedFiles(configPath string, processedFiles map[
 			}
 		case "match":
 			// A Match block ends the current Host block; its directives
-			// depend on conditions sshm does not evaluate, so they are skipped
+			// depend on conditions sshgo does not evaluate, so they are skipped
 			hosts = appendHostWithAliases(hosts, currentHost)
 			currentHost = nil
 			pendingTags = nil
@@ -427,7 +427,7 @@ func processIncludeDirective(pattern string, baseConfigPath string, processedFil
 			continue
 		}
 
-		// Skip backup files created by sshm (*.backup)
+		// Skip backup files created by sshgo (*.backup)
 		if strings.HasSuffix(match, ".backup") {
 			continue
 		}
@@ -586,7 +586,7 @@ func formatHostNames(names ...string) string {
 }
 
 // hostDirectiveLines returns the indented directive lines of a host block,
-// everything after the Host line, in the order sshm writes them.
+// everything after the Host line, in the order sshgo writes them.
 func hostDirectiveLines(host SSHHost) []string {
 	lines := []string{"    HostName " + formatSSHConfigValue(host.Hostname)}
 	if host.User != "" {

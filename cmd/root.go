@@ -8,9 +8,9 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/Gu1llaum-3/sshm/internal/config"
-	"github.com/Gu1llaum-3/sshm/internal/history"
-	"github.com/Gu1llaum-3/sshm/internal/ui"
+	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chandra-bachtiar/sshgo/internal/history"
+	"github.com/chandra-bachtiar/sshgo/internal/ui"
 
 	"github.com/spf13/cobra"
 )
@@ -32,25 +32,25 @@ var noUpdateCheck bool
 
 // RootCmd is the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "sshm [host] [command...]",
+	Use:   "sshgo [host] [command...]",
 	Short: "SSH Manager - A modern SSH connection manager",
-	Long: `SSHM is a modern SSH manager for your terminal.
+	Long: `SSHGO is a modern SSH manager for your terminal.
 
 Main usage:
-  Running 'sshm' (without arguments) opens the interactive TUI window to browse, search, and connect to your SSH hosts graphically.
-  Running 'sshm <host>' connects directly to the specified host and records the connection in your history.
-  Running 'sshm <host> <command>' executes the command on the remote host and returns the output.
+  Running 'sshgo' (without arguments) opens the interactive TUI window to browse, search, and connect to your SSH hosts graphically.
+  Running 'sshgo <host>' connects directly to the specified host and records the connection in your history.
+  Running 'sshgo <host> <command>' executes the command on the remote host and returns the output.
 
-You can also use sshm in CLI mode for other operations like adding, editing, or searching hosts.
+You can also use sshgo in CLI mode for other operations like adding, editing, or searching hosts.
 
 Hosts are read from your ~/.ssh/config file by default.
 
 Examples:
-  sshm                           # Open interactive TUI
-  sshm prod-server               # Connect to host interactively
-  sshm prod-server uptime        # Execute 'uptime' on remote host
-  sshm prod-server ls -la /var   # Execute command with arguments
-  sshm -t prod-server sudo reboot # Force TTY for interactive commands`,
+  sshgo                           # Open interactive TUI
+  sshgo prod-server               # Connect to host interactively
+  sshgo prod-server uptime        # Execute 'uptime' on remote host
+  sshgo prod-server ls -la /var   # Execute command with arguments
+  sshgo -t prod-server sudo reboot # Force TTY for interactive commands`,
 	Version:       AppVersion,
 	Args:          cobra.ArbitraryArgs,
 	SilenceUsage:  true,
@@ -166,7 +166,7 @@ func connectToHost(hostName string, remoteCommand []string) {
 
 	if !hostFound {
 		fmt.Printf("Error: Host '%s' not found in SSH configuration.\n", hostName)
-		fmt.Println("Use 'sshm' to see available hosts.")
+		fmt.Println("Use 'sshgo' to see available hosts.")
 		os.Exit(1)
 	}
 

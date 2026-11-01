@@ -6,9 +6,9 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/Gu1llaum-3/sshm/internal/config"
-	"github.com/Gu1llaum-3/sshm/internal/connectivity"
-	"github.com/Gu1llaum-3/sshm/internal/version"
+	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chandra-bachtiar/sshgo/internal/connectivity"
+	"github.com/chandra-bachtiar/sshgo/internal/version"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"

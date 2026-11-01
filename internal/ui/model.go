@@ -1,10 +1,10 @@
 package ui
 
 import (
-	"github.com/Gu1llaum-3/sshm/internal/config"
-	"github.com/Gu1llaum-3/sshm/internal/connectivity"
-	"github.com/Gu1llaum-3/sshm/internal/history"
-	"github.com/Gu1llaum-3/sshm/internal/version"
+	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chandra-bachtiar/sshgo/internal/connectivity"
+	"github.com/chandra-bachtiar/sshgo/internal/history"
+	"github.com/chandra-bachtiar/sshgo/internal/version"
 
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/charmbracelet/bubbles/textinput"

@@ -9,33 +9,33 @@ import (
 var completionCmd = &cobra.Command{
 	Use:   "completion [bash|zsh|fish|powershell]",
 	Short: "Generate shell completion script",
-	Long: `Generate shell completion script for sshm.
+	Long: `Generate shell completion script for sshgo.
 
 To load completions:
 
 Bash:
-  $ source <(sshm completion bash)
+  $ source <(sshgo completion bash)
   
   # To load completions for each session, add to your ~/.bashrc:
-  # echo 'source <(sshm completion bash)' >> ~/.bashrc
+  # echo 'source <(sshgo completion bash)' >> ~/.bashrc
 
 Zsh:
-  $ source <(sshm completion zsh)
+  $ source <(sshgo completion zsh)
   
   # To load completions for each session, add to your ~/.zshrc:
-  # echo 'source <(sshm completion zsh)' >> ~/.zshrc
+  # echo 'source <(sshgo completion zsh)' >> ~/.zshrc
 
 Fish:
-  $ sshm completion fish | source
+  $ sshgo completion fish | source
   
   # To load completions for each session:
-  $ sshm completion fish > ~/.config/fish/completions/sshm.fish
+  $ sshgo completion fish > ~/.config/fish/completions/sshgo.fish
 
 PowerShell:
-  PS> sshm completion powershell | Out-String | Invoke-Expression
+  PS> sshgo completion powershell | Out-String | Invoke-Expression
   
   # To load completions for each session, add to your PowerShell profile:
-  # Add-Content $PROFILE 'sshm completion powershell | Out-String | Invoke-Expression'
+  # Add-Content $PROFILE 'sshgo completion powershell | Out-String | Invoke-Expression'
 `,
 	DisableFlagsInUseLine: true,
 	ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},

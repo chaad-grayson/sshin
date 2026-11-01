@@ -2,8 +2,8 @@ package ui
 
 import (
 	"fmt"
+	"github.com/chandra-bachtiar/sshgo/internal/config"
 	"path/filepath"
-	"github.com/Gu1llaum-3/sshm/internal/config"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
