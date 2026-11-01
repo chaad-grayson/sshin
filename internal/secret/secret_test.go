@@ -34,6 +34,11 @@ func TestParseTarget(t *testing.T) {
 	if err != nil || got != "deploy@10.0.0.5" {
 		t.Errorf("parseTarget() = %q, %v", got, err)
 	}
+	// Windows ssh ends its lines with \r\n
+	got, err = parseTarget("user deploy\r\nhostname 10.0.0.5\r\n")
+	if err != nil || got != "deploy@10.0.0.5" {
+		t.Errorf("parseTarget() with CRLF = %q, %v", got, err)
+	}
 	if _, err := parseTarget("port 22\n"); err == nil {
 		t.Error("parseTarget() without user/hostname should fail")
 	}
