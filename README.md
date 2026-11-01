@@ -91,6 +91,10 @@ Expand-Archive sshgo-windows-amd64.zip -DestinationPath C:\tools\
 # Add C:\tools to your PATH environment variable
 ```
 
+### Coming from SSHM
+
+Nothing to do. The first time `sshgo` runs, it copies your SSHM settings, connection history, port forwards and backups from `~/.config/sshm` (`%APPDATA%\sshm` on Windows) to `~/.config/sshgo`. It only does this when `~/.config/sshgo` does not exist yet, and it never changes the SSHM directory, so `sshm` keeps working. Your `~/.ssh/config` is shared as is: hosts and tags written by SSHM work in SSHGO.
+
 ## 📖 Usage
 
 ### Interactive Mode

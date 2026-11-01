@@ -226,6 +226,13 @@ func connectToHost(hostName string, remoteCommand []string) {
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
+	// stderr so JSON output on stdout (sshgo info/search) stays parseable
+	if from, err := config.MigrateFromSSHM(); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: could not import settings from sshm: %v\n", err)
+	} else if from != "" {
+		fmt.Fprintf(os.Stderr, "Imported settings and history from sshm (%s)\n", from)
+	}
+
 	if err := RootCmd.Execute(); err != nil {
 		errStr := err.Error()
 		if strings.Contains(errStr, "unknown command") {

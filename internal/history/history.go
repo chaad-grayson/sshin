@@ -75,7 +75,7 @@ func NewHistoryManager() (*HistoryManager, error) {
 	return hm, nil
 }
 
-// migrateOldHistoryFile migrates the old history file from ~/.ssh to ~/.config/sshgo
+// migrateOldHistoryFile copies the history file of sshm < 1.6 (~/.ssh/sshm_history.json) to ~/.config/sshgo
 // TODO: Remove this migration logic in v2.0.0 (introduced in v1.6.0)
 func migrateOldHistoryFile(newHistoryPath string) error {
 	// Check if new file already exists, skip migration
@@ -88,7 +88,7 @@ func migrateOldHistoryFile(newHistoryPath string) error {
 	if err != nil {
 		return err
 	}
-	oldHistoryPath := filepath.Join(sshDir, "sshgo_history.json")
+	oldHistoryPath := filepath.Join(sshDir, "sshm_history.json")
 
 	// Check if old file exists
 	if _, err := os.Stat(oldHistoryPath); os.IsNotExist(err) {
@@ -106,12 +106,7 @@ func migrateOldHistoryFile(newHistoryPath string) error {
 		return err
 	}
 
-	// Remove old file only if write was successful
-	if err := os.Remove(oldHistoryPath); err != nil {
-		// Don't fail if we can't remove the old file
-		// The migration was successful even if cleanup failed
-	}
-
+	// The old file is left in place: it belongs to sshm
 	return nil
 }
 

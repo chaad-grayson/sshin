@@ -63,32 +63,29 @@ func GetDefaultSSHConfigPath() (string, error) {
 
 // GetSSHGOConfigDir returns the SSHGO config directory
 func GetSSHGOConfigDir() (string, error) {
+	return appConfigDir("sshgo")
+}
+
+// appConfigDir returns the per-user config directory for the named app
+func appConfigDir(name string) (string, error) {
 	homeDir, err := getHomeDir()
 	if err != nil {
 		return "", err
 	}
 
-	var configDir string
 	switch runtime.GOOS {
 	case "windows":
-		// Use %APPDATA%/sshgo on Windows
-		appData := os.Getenv("APPDATA")
-		if appData != "" {
-			configDir = filepath.Join(appData, "sshgo")
-		} else {
-			configDir = filepath.Join(homeDir, ".config", "sshgo")
+		// Use %APPDATA%/<name> on Windows
+		if appData := os.Getenv("APPDATA"); appData != "" {
+			return filepath.Join(appData, name), nil
 		}
 	default:
 		// Use XDG Base Directory specification
-		xdgConfigDir := os.Getenv("XDG_CONFIG_HOME")
-		if xdgConfigDir != "" {
-			configDir = filepath.Join(xdgConfigDir, "sshgo")
-		} else {
-			configDir = filepath.Join(homeDir, ".config", "sshgo")
+		if xdgConfigDir := os.Getenv("XDG_CONFIG_HOME"); xdgConfigDir != "" {
+			return filepath.Join(xdgConfigDir, name), nil
 		}
 	}
-
-	return configDir, nil
+	return filepath.Join(homeDir, ".config", name), nil
 }
 
 // GetSSHGOBackupDir returns the SSHGO backup directory
