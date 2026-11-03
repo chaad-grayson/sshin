@@ -103,3 +103,28 @@ func extractHostNameFromTableRow(firstColumn string) string {
 	// Fallback: if there's no space, return the whole string
 	return firstColumn
 }
+
+// focusMarker starts the label of the focused form field; fitToHeight scrolls to it
+const focusMarker = "▸ "
+
+// fitToHeight cuts a form view to height lines when it is taller, keeping
+// the last footer lines (key help) and scrolling the rest to the focused field
+func fitToHeight(view string, height, footer int) string {
+	lines := strings.Split(strings.TrimRight(view, "\n"), "\n")
+	if height <= 0 || len(lines) <= height || height <= footer {
+		return view
+	}
+	body, foot := lines[:len(lines)-footer], lines[len(lines)-footer:]
+	room := height - footer
+	focus := 0
+	for i, l := range body {
+		if strings.Contains(l, focusMarker) {
+			focus = i
+			break
+		}
+	}
+	// show the label, its input and a bit of context below
+	start := focus - room/2
+	start = max(0, min(start, len(body)-room))
+	return strings.Join(append(body[start:start+room], foot...), "\n")
+}

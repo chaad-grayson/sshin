@@ -336,11 +336,6 @@ func (m *addFormModel) View() string {
 		return ""
 	}
 
-	// Check if terminal height is sufficient
-	if !m.isHeightSufficient() {
-		return m.renderHeightWarning()
-	}
-
 	var b strings.Builder
 
 	b.WriteString(m.styles.FormTitle.Render("Add SSH Host Configuration"))
@@ -370,51 +365,7 @@ func (m *addFormModel) View() string {
 	b.WriteString("\n")
 	b.WriteString(m.styles.FormHelp.Render("* Required fields"))
 
-	return b.String()
-}
-
-// getMinimumHeight calculates the minimum height needed to display the form
-func (m *addFormModel) getMinimumHeight() int {
-	// Title: 1 line + 2 newlines = 3
-	titleLines := 3
-	// Tabs: 1 line + 2 newlines = 3
-	tabLines := 3
-	// Fields in current tab
-	var fieldsCount int
-	if m.currentTab == tabGeneral {
-		fieldsCount = 10 // 10 fields in general tab
-	} else {
-		fieldsCount = 3 // 3 fields in advanced tab
-	}
-	// Each field: label (1) + input (1) + spacing (2) = 4 lines per field, but let's be more conservative
-	fieldsLines := fieldsCount * 3 // Reduced from 4 to 3
-	// Help text: 3 lines
-	helpLines := 3
-	// Error message space when needed: 2 lines
-	errorLines := 0 // Only count when there's actually an error
-	if m.err != "" {
-		errorLines = 2
-	}
-
-	return titleLines + tabLines + fieldsLines + helpLines + errorLines + 1 // +1 minimal safety margin
-}
-
-// isHeightSufficient checks if the current terminal height is sufficient
-func (m *addFormModel) isHeightSufficient() bool {
-	return m.height >= m.getMinimumHeight()
-}
-
-// renderHeightWarning renders a warning message when height is insufficient
-func (m *addFormModel) renderHeightWarning() string {
-	required := m.getMinimumHeight()
-	current := m.height
-
-	warning := m.styles.ErrorText.Render("⚠️  Terminal height is too small!")
-	details := m.styles.FormField.Render(fmt.Sprintf("Current: %d lines, Required: %d lines", current, required))
-	instruction := m.styles.FormHelp.Render("Please resize your terminal window and try again.")
-	instruction2 := m.styles.FormHelp.Render("Press Ctrl+C to cancel or resize terminal window.")
-
-	return warning + "\n\n" + details + "\n\n" + instruction + "\n" + instruction2
+	return fitToHeight(b.String(), m.height, 3)
 }
 
 // renderTabs renders the tab headers
@@ -453,11 +404,13 @@ func (m *addFormModel) renderGeneralTab() string {
 	}
 
 	for _, field := range fields {
+		label := field.label
 		fieldStyle := m.styles.FormField
 		if m.focused == field.index {
 			fieldStyle = m.styles.FocusedLabel
+			label = focusMarker + label
 		}
-		b.WriteString(fieldStyle.Render(field.label))
+		b.WriteString(fieldStyle.Render(label))
 		b.WriteString("\n")
 		b.WriteString(m.inputs[field.index].View())
 		b.WriteString("\n")
@@ -485,11 +438,13 @@ func (m *addFormModel) renderAdvancedTab() string {
 	}
 
 	for _, field := range fields {
+		label := field.label
 		fieldStyle := m.styles.FormField
 		if m.focused == field.index {
 			fieldStyle = m.styles.FocusedLabel
+			label = focusMarker + label
 		}
-		b.WriteString(fieldStyle.Render(field.label))
+		b.WriteString(fieldStyle.Render(label))
 		b.WriteString("\n")
 		b.WriteString(m.inputs[field.index].View())
 		b.WriteString("\n\n")

@@ -410,61 +410,6 @@ func (m *editFormModel) handleEditNavigation(key string) tea.Cmd {
 	return m.updateFocus()
 }
 
-// getMinimumHeight calculates the minimum height needed to display the edit form
-func (m *editFormModel) getMinimumHeight() int {
-	// Title: 1 line + 2 newlines = 3
-	titleLines := 3
-	// Config file info: 1 line + 2 newlines = 3
-	configLines := 3
-	// Host Names section: title (1) + spacing (2) = 3
-	hostSectionLines := 3
-	// Host inputs: number of hosts * 3 lines each (reduced from 4)
-	hostLines := len(m.hostInputs) * 3
-	// Properties section: title (1) + spacing (2) = 3
-	propertiesSectionLines := 3
-	// Tabs: 1 line + 2 newlines = 3
-	tabLines := 3
-	// Fields in current tab
-	var fieldsCount int
-	if m.currentTab == 0 {
-		fieldsCount = 9 // 9 fields in general tab
-	} else {
-		fieldsCount = 3 // 3 fields in advanced tab
-	}
-	// Each field: reduced from 4 to 3 lines per field
-	fieldsLines := fieldsCount * 3
-	if m.currentTab == 0 && m.host != nil {
-		fieldsLines += len(m.host.ExtraIdentities) // read-only extra keys under Identity File
-	}
-	// Help text: 3 lines
-	helpLines := 3
-	// Error message space when needed: 2 lines
-	errorLines := 0 // Only count when there's actually an error
-	if m.err != "" {
-		errorLines = 2
-	}
-
-	return titleLines + configLines + hostSectionLines + hostLines + propertiesSectionLines + tabLines + fieldsLines + helpLines + errorLines + 1 // +1 minimal safety margin
-}
-
-// isHeightSufficient checks if the current terminal height is sufficient
-func (m *editFormModel) isHeightSufficient() bool {
-	return m.height >= m.getMinimumHeight()
-}
-
-// renderHeightWarning renders a warning message when height is insufficient
-func (m *editFormModel) renderHeightWarning() string {
-	required := m.getMinimumHeight()
-	current := m.height
-
-	warning := m.styles.ErrorText.Render("⚠️  Terminal height is too small!")
-	details := m.styles.FormField.Render(fmt.Sprintf("Current: %d lines, Required: %d lines", current, required))
-	instruction := m.styles.FormHelp.Render("Please resize your terminal window and try again.")
-	instruction2 := m.styles.FormHelp.Render("Press Ctrl+C to cancel or resize terminal window.")
-
-	return warning + "\n\n" + details + "\n\n" + instruction + "\n" + instruction2
-}
-
 func (m *editFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
@@ -550,17 +495,7 @@ func (m *editFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *editFormModel) View() string {
-	// Check if terminal height is sufficient
-	if !m.isHeightSufficient() {
-		return m.renderHeightWarning()
-	}
-
 	var b strings.Builder
-
-	if m.err != "" {
-		b.WriteString(m.styles.Error.Render("Error: " + m.err))
-		b.WriteString("\n\n")
-	}
 
 	b.WriteString(m.styles.Header.Render("Edit SSH Host"))
 	b.WriteString("\n\n")
@@ -580,10 +515,12 @@ func (m *editFormModel) View() string {
 
 	for i, hostInput := range m.hostInputs {
 		hostStyle := m.styles.FormField
+		label := fmt.Sprintf("Host Name %d *", i+1)
 		if m.focusArea == focusAreaHosts && m.focused == i {
 			hostStyle = m.styles.FocusedLabel
+			label = focusMarker + label
 		}
-		b.WriteString(hostStyle.Render(fmt.Sprintf("Host Name %d *", i+1)))
+		b.WriteString(hostStyle.Render(label))
 		b.WriteString("\n")
 		b.WriteString(hostInput.View())
 		b.WriteString("\n\n")
@@ -620,7 +557,7 @@ func (m *editFormModel) View() string {
 	}
 	b.WriteString(m.styles.FormHelp.Render("Ctrl+S: save • Ctrl+C/Esc: cancel • * Required fields"))
 
-	return b.String()
+	return fitToHeight(b.String(), m.height, 2)
 }
 
 // renderEditTabs renders the tab headers for properties
@@ -658,11 +595,13 @@ func (m *editFormModel) renderEditGeneralTab() string {
 	}
 
 	for _, field := range fields {
+		label := field.label
 		fieldStyle := m.styles.FormField
 		if m.focusArea == focusAreaProperties && m.focused == field.index {
 			fieldStyle = m.styles.FocusedLabel
+			label = focusMarker + label
 		}
-		b.WriteString(fieldStyle.Render(field.label))
+		b.WriteString(fieldStyle.Render(label))
 		b.WriteString("\n")
 		b.WriteString(m.inputs[field.index].View())
 		b.WriteString("\n")
@@ -696,11 +635,13 @@ func (m *editFormModel) renderEditAdvancedTab() string {
 	}
 
 	for _, field := range fields {
+		label := field.label
 		fieldStyle := m.styles.FormField
 		if m.focusArea == focusAreaProperties && m.focused == field.index {
 			fieldStyle = m.styles.FocusedLabel
+			label = focusMarker + label
 		}
-		b.WriteString(fieldStyle.Render(field.label))
+		b.WriteString(fieldStyle.Render(label))
 		b.WriteString("\n")
 		b.WriteString(m.inputs[field.index].View())
 		b.WriteString("\n\n")

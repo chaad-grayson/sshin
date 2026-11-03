@@ -59,8 +59,9 @@ func (m Model) renderListView() string {
 	// Build the interface components
 	components := []string{}
 
-	// Add the ASCII title
-	components = append(components, m.styles.Header.Render(asciiTitle))
+	if m.showBanner() {
+		components = append(components, m.styles.Header.Render(asciiTitle))
+	}
 
 	// Add update notification if available (between title and search)
 	if m.updateInfo != nil && m.updateInfo.Available {
@@ -109,9 +110,9 @@ func (m Model) renderListView() string {
 	}
 
 	// Add the search bar with the appropriate style based on focus
-	searchPrompt := "Search (/ or Tab to focus): "
+	// same prompt in both modes so the box does not resize on focus
+	searchPrompt := "Search: "
 	if m.searchMode {
-		searchPrompt = "Search: "
 		components = append(components, m.styles.SearchFocused.Render(searchPrompt+m.searchInput.View()))
 	} else {
 		components = append(components, m.styles.SearchUnfocused.Render(searchPrompt+m.searchInput.View()))
@@ -131,7 +132,7 @@ func (m Model) renderListView() string {
 	// Add the help text
 	var helpText string
 	if !m.searchMode {
-		helpText = " ↑/↓: navigate • Enter: connect • Tab: search • i: info • h: help • q: quit"
+		helpText = " ↑/↓: navigate • Enter: connect • /: search • i: info • h: help • q: quit"
 	} else {
 		helpText = " ↑/↓: select • Enter: connect • Tab: table shortcuts • Esc: clear/quit"
 	}
@@ -244,4 +245,12 @@ func (m Model) renderUpdateNotification() string {
 		BorderForeground(lipgloss.Color("#00AA00")) // Darker green border
 
 	return notificationStyle.Render(message)
+}
+
+// bannerHeight is the number of lines of the ASCII title (with its blank lines)
+const bannerHeight = 5
+
+// showBanner hides the ASCII title on short terminals to leave room for hosts
+func (m Model) showBanner() bool {
+	return m.height >= 30
 }

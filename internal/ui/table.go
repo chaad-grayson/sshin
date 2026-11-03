@@ -182,8 +182,8 @@ const (
 	iconTOTP       = "📱"
 	// "🔑? 🔒 📱" (9 columns) and the cell padding
 	securityWidth  = 11
-	securityLegend = " " + iconKey + " key (IdentityFile) • " + iconDefaultKey + " default key (~/.ssh/id_*, agent) • " +
-		iconPassword + " password • " + iconTOTP + " 2FA (TOTP)"
+	securityLegend = " " + iconKey + " IdentityFile • " + iconDefaultKey + " default key/agent • " +
+		iconPassword + " password • " + iconTOTP + " TOTP"
 )
 
 // hasDefaultKey reports whether ssh has a key to try on a host without
@@ -249,6 +249,9 @@ func (m *Model) updateTableHeight() {
 	// - Safety margin: 3 lines (to ensure UI elements are always visible)
 	// Total reserved: 14 lines minimum to preserve essential UI elements
 	reservedHeight := 16 // + 1 for the SSH / Tunnels tabs, + 1 for the icon legend
+	if !m.showBanner() {
+		reservedHeight -= bannerHeight
+	}
 	availableHeight := m.height - reservedHeight
 	hostCount := len(m.table.Rows())
 
