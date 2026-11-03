@@ -67,8 +67,8 @@ func TestCompletionBashOutput(t *testing.T) {
 	buf.ReadFrom(r)
 	output := buf.String()
 
-	if !strings.Contains(output, "bash completion") || !strings.Contains(output, "sshgo") {
-		t.Error("Bash completion output should contain bash completion markers and sshgo")
+	if !strings.Contains(output, "bash completion") || !strings.Contains(output, "sshin") {
+		t.Error("Bash completion output should contain bash completion markers and sshin")
 	}
 }
 
@@ -91,8 +91,8 @@ func TestCompletionZshOutput(t *testing.T) {
 	buf.ReadFrom(r)
 	output := buf.String()
 
-	if !strings.Contains(output, "compdef") || !strings.Contains(output, "sshgo") {
-		t.Error("Zsh completion output should contain compdef and sshgo")
+	if !strings.Contains(output, "compdef") || !strings.Contains(output, "sshin") {
+		t.Error("Zsh completion output should contain compdef and sshin")
 	}
 }
 
@@ -115,8 +115,8 @@ func TestCompletionFishOutput(t *testing.T) {
 	buf.ReadFrom(r)
 	output := buf.String()
 
-	if !strings.Contains(output, "complete") || !strings.Contains(output, "sshgo") {
-		t.Error("Fish completion output should contain complete command and sshgo")
+	if !strings.Contains(output, "complete") || !strings.Contains(output, "sshin") {
+		t.Error("Fish completion output should contain complete command and sshin")
 	}
 }
 
@@ -139,8 +139,8 @@ func TestCompletionPowershellOutput(t *testing.T) {
 	buf.ReadFrom(r)
 	output := buf.String()
 
-	if !strings.Contains(output, "Register-ArgumentCompleter") || !strings.Contains(output, "sshgo") {
-		t.Error("PowerShell completion output should contain Register-ArgumentCompleter and sshgo")
+	if !strings.Contains(output, "Register-ArgumentCompleter") || !strings.Contains(output, "sshin") {
+		t.Error("PowerShell completion output should contain Register-ArgumentCompleter and sshin")
 	}
 }
 

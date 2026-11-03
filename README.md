@@ -1,24 +1,24 @@
 <p align="center">
-    <img src="images/logo.svg" alt="Logo SSHGO" width="160" />
+    <img src="images/logo.svg" alt="Logo SSHIN" width="160" />
 </p>
 
-# 🚀 SSHGO - SSH Manager
+# 🚀 SSHIN - SSH Manager
 
 [![Go](https://img.shields.io/badge/Go-1.27+-00ADD8?style=for-the-badge&logo=go)](https://golang.org/)
-[![Release](https://img.shields.io/github/v/release/chandra-bachtiar/sshgo?style=for-the-badge)](https://github.com/chandra-bachtiar/sshgo/releases)
-[![License](https://img.shields.io/github/license/chandra-bachtiar/sshgo?style=for-the-badge)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=for-the-badge)](https://github.com/chandra-bachtiar/sshgo/releases)
+[![Release](https://img.shields.io/github/v/release/chaad-grayson/sshin?style=for-the-badge)](https://github.com/chaad-grayson/sshin/releases)
+[![License](https://img.shields.io/github/license/chaad-grayson/sshin?style=for-the-badge)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=for-the-badge)](https://github.com/chaad-grayson/sshin/releases)
 
 > **SSH manager yang modern dan interaktif, langsung dari terminal** 🔥
 
 > [!NOTE]
-> **SSHGO adalah fork dari [SSHM](https://github.com/Gu1llaum-3/sshm)** buatan [Guillaume Archambault](https://github.com/Gu1llaum-3), yang dirilis dengan Lisensi MIT. Semua kredit untuk proyek aslinya milik pembuat dan para kontributornya. Fork ini mengganti nama tool menjadi `sshgo` dan menambahkan fitur-fitur baru di atasnya.
+> **SSHIN adalah fork dari [SSHM](https://github.com/Gu1llaum-3/sshm)** buatan [Guillaume Archambault](https://github.com/Gu1llaum-3), yang dirilis dengan Lisensi MIT. Semua kredit untuk proyek aslinya milik pembuat dan para kontributornya. Fork ini mengganti nama tool menjadi `sshin` dan menambahkan fitur-fitur baru di atasnya.
 
-SSHGO adalah tool command-line untuk mengelola dan terhubung ke host SSH kamu. Dibuat dengan Go dan dilengkapi TUI (tampilan interaktif di terminal), SSHGO bikin urusan koneksi SSH jadi lebih cepat dan nyaman.
+SSHIN adalah tool command-line untuk mengelola dan terhubung ke host SSH kamu. Dibuat dengan Go dan dilengkapi TUI (tampilan interaktif di terminal), SSHIN bikin urusan koneksi SSH jadi lebih cepat dan nyaman.
 
 <p align="center">
-    <a href="images/sshgo.gif" target="_blank">
-        <img src="images/sshgo.gif" alt="Demo SSHGO di terminal" width="800" />
+    <a href="images/sshin.gif" target="_blank">
+        <img src="images/sshin.gif" alt="Demo SSHIN di terminal" width="800" />
     </a>
     <br>
     <em>🖱️ Klik gambar untuk melihat ukuran penuh. Demo ini direkam dari SSHM, jadi perintah yang terlihat masih <code>sshm</code>.</em>
@@ -28,7 +28,7 @@ SSHGO adalah tool command-line untuk mengelola dan terhubung ke host SSH kamu. D
 
 ### 🚀 **Fitur Utama**
 - **🎨 Tampilan TUI** - Jelajahi host SSH kamu lewat antarmuka terminal yang interaktif
-- **⚡ Koneksi Cepat** - Langsung terhubung ke host mana pun lewat TUI atau CLI dengan `sshgo <host>`
+- **⚡ Koneksi Cepat** - Langsung terhubung ke host mana pun lewat TUI atau CLI dengan `sshin <host>`
 - **🔑 Simpan Password & 2FA** - Untuk server yang minta private key *dan* password atau kode verifikasi; password dan secret TOTP disimpan di keyring OS dan diisi otomatis
 - **🔄 Port Forwarding** - Atur forwarding Local, Remote, dan Dynamic (SOCKS) dengan mudah, lengkap dengan riwayatnya
 - **📝 Kelola dengan Mudah** - Tambah, edit, pindah, dan kelola konfigurasi SSH tanpa repot
@@ -57,12 +57,12 @@ SSHGO adalah tool command-line untuk mengelola dan terhubung ke host SSH kamu. D
 
 **Unix/Linux/macOS (sekali jalan):**
 ```bash
-curl -sSL https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/unix.sh | bash
+curl -sSL https://raw.githubusercontent.com/chaad-grayson/sshin/main/install/unix.sh | bash
 ```
 
 **Windows (PowerShell):**
 ```powershell
-irm https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/windows.ps1 | iex
+irm https://raw.githubusercontent.com/chaad-grayson/sshin/main/install/windows.ps1 | iex
 ```
 
 **Cara lain (manual):**
@@ -70,33 +70,33 @@ irm https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/window
 *Linux/macOS:*
 ```bash
 # Download rilis terbaru (ganti Linux_x86_64 sesuai sistem kamu, lihat tabel Rilis di bawah)
-wget https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_x86_64.tar.gz
+wget https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Linux_x86_64.tar.gz
 
 # Ekstrak dan install
-tar -xzf sshgo_Linux_x86_64.tar.gz sshgo
-sudo mv sshgo /usr/local/bin/sshgo
+tar -xzf sshin_Linux_x86_64.tar.gz sshin
+sudo mv sshin /usr/local/bin/sshin
 ```
 
 *Windows:*
 ```powershell
 # Download dan ekstrak
-Invoke-WebRequest -Uri "https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Windows_x86_64.zip" -OutFile "sshgo_Windows_x86_64.zip"
-Expand-Archive sshgo_Windows_x86_64.zip -DestinationPath C:\tools\
+Invoke-WebRequest -Uri "https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Windows_x86_64.zip" -OutFile "sshin_Windows_x86_64.zip"
+Expand-Archive sshin_Windows_x86_64.zip -DestinationPath C:\tools\
 # Tambahkan C:\tools ke environment variable PATH
 ```
 
 ### Pindah dari SSHM
 
-Nggak perlu melakukan apa-apa. Saat `sshgo` pertama kali dijalankan, pengaturan, riwayat koneksi, riwayat port forwarding, dan backup SSHM kamu disalin dari `~/.config/sshm` (`%APPDATA%\sshm` di Windows) ke `~/.config/sshgo`. Penyalinan ini cuma terjadi kalau `~/.config/sshgo` belum ada, dan direktori SSHM tidak diubah sama sekali, jadi `sshm` tetap bisa dipakai. File `~/.ssh/config` dipakai bersama apa adanya: host dan tag yang ditulis SSHM langsung terbaca di SSHGO.
+Nggak perlu melakukan apa-apa. Saat `sshin` pertama kali dijalankan, pengaturan, riwayat koneksi, riwayat port forwarding, dan backup SSHM kamu disalin dari `~/.config/sshm` (`%APPDATA%\sshm` di Windows) ke `~/.config/sshin`. Penyalinan ini cuma terjadi kalau `~/.config/sshin` belum ada, dan direktori SSHM tidak diubah sama sekali, jadi `sshm` tetap bisa dipakai. File `~/.ssh/config` dipakai bersama apa adanya: host dan tag yang ditulis SSHM langsung terbaca di SSHIN.
 
 ## 📖 Cara Pakai
 
 ### Mode Interaktif
 
-Jalankan SSHGO tanpa argumen untuk membuka TUI:
+Jalankan SSHIN tanpa argumen untuk membuka TUI:
 
 ```bash
-sshgo
+sshin
 ```
 
 **Pencarian (aktif saat TUI dibuka):**
@@ -145,24 +145,24 @@ Form interaktif akan memandu kamu mengisi konfigurasi:
 
 ### Simpan Password (Key + Password)
 
-Beberapa server minta password selain private key (misalnya dengan `AuthenticationMethods publickey,password`). Isi kolom **Password** saat menambah atau mengedit host, dan SSHGO akan mengetikkannya untuk kamu setiap kali konek.
+Beberapa server minta password selain private key (misalnya dengan `AuthenticationMethods publickey,password`). Isi kolom **Password** saat menambah atau mengedit host, dan SSHIN akan mengetikkannya untuk kamu setiap kali konek.
 
-- Password disimpan di keyring OS (Keychain di macOS, Secret Service seperti GNOME Keyring atau KWallet di Linux, Credential Manager di Windows), tidak pernah di `~/.ssh/config` atau file SSHGO mana pun.
-- SSHGO hanya menjawab prompt password milik host itu (`user@hostname`), jadi host ProxyJump tidak akan pernah menerimanya. Prompt lain, seperti passphrase key atau konfirmasi host key baru, tetap ditanyakan di terminal kamu.
+- Password disimpan di keyring OS (Keychain di macOS, Secret Service seperti GNOME Keyring atau KWallet di Linux, Credential Manager di Windows), tidak pernah di `~/.ssh/config` atau file SSHIN mana pun.
+- SSHIN hanya menjawab prompt password milik host itu (`user@hostname`), jadi host ProxyJump tidak akan pernah menerimanya. Prompt lain, seperti passphrase key atau konfirmasi host key baru, tetap ditanyakan di terminal kamu.
 - Di form edit: biarkan kolom kosong untuk mempertahankan password yang tersimpan, ketik password baru untuk menggantinya, atau tekan `Ctrl+D` di kolom itu untuk menghapusnya. Menghapus host juga ikut menghapus password-nya.
 - Kolom **Security** di tabel menunjukkan cara login tiap host: 🔑 private key dari `IdentityFile`, 🔑? tanpa `IdentityFile` (ssh otomatis mencoba key default `~/.ssh/id_rsa`, `id_ecdsa`, `id_ed25519`, dan key di ssh-agent; muncul kalau salah satunya ada), 🔒 password tersimpan, 📱 secret 2FA (TOTP) tersimpan. Penjelasan icon-nya juga ada di bawah tabel.
-- Kalau server menolak password yang tersimpan, SSHGO nggak mengirimnya ulang: kamu diminta mengetik password di terminal, lalu perbaiki yang tersimpan lewat `e`.
-- Mau pindah ke login pakai key saja? Tekan `c` di host itu: SSHGO menjalankan `ssh-copy-id` (password diisi otomatis) dan menyalin public key dari `IdentityFile` host itu, atau key default kalau host tidak punya `IdentityFile`. `ssh-copy-id` ikut terpasang bersama OpenSSH di Linux dan macOS, tapi tidak di Windows.
+- Kalau server menolak password yang tersimpan, SSHIN nggak mengirimnya ulang: kamu diminta mengetik password di terminal, lalu perbaiki yang tersimpan lewat `e`.
+- Mau pindah ke login pakai key saja? Tekan `c` di host itu: SSHIN menjalankan `ssh-copy-id` (password diisi otomatis) dan menyalin public key dari `IdentityFile` host itu, atau key default kalau host tidak punya `IdentityFile`. `ssh-copy-id` ikut terpasang bersama OpenSSH di Linux dan macOS, tapi tidak di Windows.
 - Butuh OpenSSH 8.4 atau lebih baru (`SSH_ASKPASS_REQUIRE`) dan keyring yang aktif. Tanpa keyring, host tetap jalan seperti biasa dan `ssh` sendiri yang akan menanyakan password.
 
 ### 2FA (Verification Code)
 
-Kalau server minta kode 2FA setelah login, misalnya `(user@host) Verification code:` dari Google Authenticator, isi kolom **2FA TOTP secret** di form tambah atau edit host. SSHGO lalu membuat kodenya sendiri tiap kali konek, persis seperti aplikasi authenticator.
+Kalau server minta kode 2FA setelah login, misalnya `(user@host) Verification code:` dari Google Authenticator, isi kolom **2FA TOTP secret** di form tambah atau edit host. SSHIN lalu membuat kodenya sendiri tiap kali konek, persis seperti aplikasi authenticator.
 
 - Secret-nya adalah kode base32 yang muncul saat 2FA dipasang (teks di bawah QR code, atau baris pertama `~/.google_authenticator` di server). Spasi dan huruf kecil boleh.
 - Disimpan di keyring OS, sama seperti password, dan diatur dengan cara yang sama di form edit (kosongkan untuk mempertahankan, `Ctrl+D` untuk menghapus). Host dengan secret tersimpan ditandai 📱 di kolom Security.
 - Yang didukung adalah TOTP standar: 6 digit, tiap 30 detik, SHA-1. Ini setelan bawaan Google Authenticator dan modul PAM-nya. Jam komputer kamu harus akurat.
-- Kalau kodenya ditolak, SSHGO nggak mengirim ulang dan minta kamu mengetik kode di terminal.
+- Kalau kodenya ditolak, SSHIN nggak mengirim ulang dan minta kamu mengetik kode di terminal.
 - 2FA lewat push notification (Duo dan sejenisnya) atau SMS tidak bisa diisi otomatis.
 
 ### Tunnel
@@ -175,17 +175,17 @@ localhost:3307  →  VM (host SSH kamu)  →  mydb.xxxx.rds.amazonaws.com:3306
 
 - `a` untuk menambah tunnel: isi nama, pilih host SSH yang sudah ada (←/→), port lokal, lalu host dan port tujuan yang bisa dijangkau dari host SSH itu.
 - `Enter` atau `Spasi` untuk on/off, `e` edit, `d` hapus (tekan dua kali), `r` cek ulang status.
-- Kolom **Last Active** menunjukkan `now` untuk tunnel yang sedang jalan, atau kapan terakhir tunnel itu dinyalakan atau dimatikan lewat SSHGO.
-- Tunnel jalan di background dengan perintah yang sama seperti `ssh -f -N -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes -L 3307:ENDPOINT:3306 host`, jadi tetap hidup setelah SSHGO ditutup. Statusnya tetap terbaca saat SSHGO dibuka lagi.
+- Kolom **Last Active** menunjukkan `now` untuk tunnel yang sedang jalan, atau kapan terakhir tunnel itu dinyalakan atau dimatikan lewat SSHIN.
+- Tunnel jalan di background dengan perintah yang sama seperti `ssh -f -N -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes -L 3307:ENDPOINT:3306 host`, jadi tetap hidup setelah SSHIN ditutup. Statusnya tetap terbaca saat SSHIN dibuka lagi.
 - Password dan kode 2FA yang tersimpan untuk host itu diisi otomatis. Prompt lain tetap ditanyakan di terminal sebelum tunnel pindah ke background.
-- Kalau gagal (misalnya port lokal sudah dipakai), alasannya muncul di layar. Log lengkapnya ada di `~/.config/sshgo/tunnels/<nama>.log`, dan daftar tunnel di `~/.config/sshgo/tunnels.json`.
+- Kalau gagal (misalnya port lokal sudah dipakai), alasannya muncul di layar. Log lengkapnya ada di `~/.config/sshin/tunnels/<nama>.log`, dan daftar tunnel di `~/.config/sshin/tunnels.json`.
 - Belum didukung di Windows, karena butuh ControlMaster OpenSSH.
 
 Beda dengan `f` (Port Forwarding) di bawah: `f` membuka sesi forwarding sekali jalan di terminal, sedangkan tab Tunnels menyimpan tunnel yang bisa dinyalakan kapan saja.
 
 ### Port Forwarding
 
-SSHGO menyediakan tampilan untuk mengatur port forwarding SSH. Tekan `f` saat sebuah host dipilih untuk membuka pengaturan port forwarding:
+SSHIN menyediakan tampilan untuk mengatur port forwarding SSH. Tekan `f` saat sebuah host dipilih untuk membuka pengaturan port forwarding:
 
 **Jenis Forwarding:**
 - **Local (-L)** - Meneruskan port lokal ke host/port remote lewat koneksi SSH
@@ -270,95 +270,95 @@ chrome --proxy-server="socks5://localhost:[port_kamu]"
 
 ### Penggunaan CLI
 
-SSHGO bisa dipakai lewat perintah command-line maupun TUI interaktif:
+SSHIN bisa dipakai lewat perintah command-line maupun TUI interaktif:
 
 ```bash
 # Buka TUI untuk menjelajahi dan konek ke host
-sshgo
+sshin
 
 # Konek langsung ke host tertentu (tercatat di riwayat)
-sshgo my-server
+sshin my-server
 
 # Jalankan perintah di host remote
-sshgo my-server uptime
+sshin my-server uptime
 
 # Jalankan perintah dengan argumen
-sshgo my-server ls -la /var/log
+sshin my-server ls -la /var/log
 
 # Paksa alokasi TTY untuk perintah interaktif
-sshgo -t my-server sudo systemctl restart nginx
+sshin -t my-server sudo systemctl restart nginx
 
 # Buka TUI dengan file config SSH kustom
-sshgo -c /path/to/custom/ssh_config
+sshin -c /path/to/custom/ssh_config
 
 # Konek langsung dengan file config SSH kustom
-sshgo my-server -c /path/to/custom/ssh_config
+sshin my-server -c /path/to/custom/ssh_config
 
 # Tambah host baru lewat form interaktif
-sshgo add
+sshin add
 
 # Tambah host baru dengan hostname yang sudah terisi
-sshgo add hostname
+sshin add hostname
 
 # Tambah host baru ke file config SSH kustom
-sshgo add hostname -c /path/to/custom/ssh_config
+sshin add hostname -c /path/to/custom/ssh_config
 
 # Edit konfigurasi host yang sudah ada
-sshgo edit my-server
+sshin edit my-server
 
 # Edit host di file config SSH kustom
-sshgo edit my-server -c /path/to/custom/ssh_config
+sshin edit my-server -c /path/to/custom/ssh_config
 
 # Pindahkan host ke file config SSH lain (butuh direktif Include)
-sshgo move my-server
+sshin move my-server
 
 # Pindahkan host di file config SSH kustom (butuh direktif Include)
-sshgo move my-server -c /path/to/custom/ssh_config
+sshin move my-server -c /path/to/custom/ssh_config
 
 # Cari host (filter interaktif)
-sshgo search
+sshin search
 
 # Tampilkan info host dalam format JSON untuk scripting
-sshgo info prod-server
-sshgo info prod-server --pretty
+sshin info prod-server
+sshin info prod-server --pretty
 
 # Dengan file config SSH kustom
-sshgo -c /path/to/custom/ssh_config info prod-server
+sshin -c /path/to/custom/ssh_config info prod-server
 
 # Teruskan ke jq
-sshgo info prod-server | jq -r '.result.target.hostname'
-sshgo info prod-server | jq -r '.result.target.user'
+sshin info prod-server | jq -r '.result.target.hostname'
+sshin info prod-server | jq -r '.result.target.user'
 
 # Tampilkan versi
-sshgo --version
+sshin --version
 
 # Matikan pengecekan update (berguna di mesin tanpa internet)
-sshgo --no-update-check
+sshin --no-update-check
 
 # Tampilkan bantuan dan daftar perintah
-sshgo --help
+sshin --help
 ```
 
 ### Info Host (JSON)
 
-`sshgo info <hostname>` mencetak satu objek JSON ke stdout supaya bisa diolah di script dengan `jq`.
+`sshin info <hostname>` mencetak satu objek JSON ke stdout supaya bisa diolah di script dengan `jq`.
 
 ```bash
 # Ambil field tertentu
-sshgo info prod-server | jq -r '.result.target.hostname'
-sshgo info prod-server | jq -r '.result.target.port'
+sshin info prod-server | jq -r '.result.target.hostname'
+sshin info prod-server | jq -r '.result.target.port'
 
 # Cek host yang tidak ditemukan (exit code 2)
-sshgo info does-not-exist | jq -r '.error.code'
+sshin info does-not-exist | jq -r '.error.code'
 ```
 
 ### Shell Completion
 
-SSHGO mendukung shell completion untuk nama host, jadi kamu bisa konek tanpa mengetik nama lengkapnya:
+SSHIN mendukung shell completion untuk nama host, jadi kamu bisa konek tanpa mengetik nama lengkapnya:
 
 ```bash
-sshgo <TAB>           # Tampilkan semua host
-sshgo pro<TAB>        # Lengkapi host yang diawali "pro" (misalnya prod-server)
+sshin <TAB>           # Tampilkan semua host
+sshin pro<TAB>        # Lengkapi host yang diawali "pro" (misalnya prod-server)
 ```
 
 **Cara Mengaktifkan:**
@@ -366,48 +366,48 @@ sshgo pro<TAB>        # Lengkapi host yang diawali "pro" (misalnya prod-server)
 **Bash:**
 ```bash
 # Aktifkan untuk sesi ini
-source <(sshgo completion bash)
+source <(sshin completion bash)
 
 # Aktifkan permanen (tambahkan ke ~/.bashrc)
-echo 'source <(sshgo completion bash)' >> ~/.bashrc
+echo 'source <(sshin completion bash)' >> ~/.bashrc
 ```
 
 **Zsh:**
 ```bash
 # Aktifkan untuk sesi ini
-source <(sshgo completion zsh)
+source <(sshin completion zsh)
 
 # Aktifkan permanen (tambahkan ke ~/.zshrc)
-echo 'source <(sshgo completion zsh)' >> ~/.zshrc
+echo 'source <(sshin completion zsh)' >> ~/.zshrc
 ```
 
 **Fish:**
 ```bash
 # Aktifkan untuk sesi ini
-sshgo completion fish | source
+sshin completion fish | source
 
 # Aktifkan permanen
-sshgo completion fish > ~/.config/fish/completions/sshgo.fish
+sshin completion fish > ~/.config/fish/completions/sshin.fish
 ```
 
 **PowerShell:**
 ```powershell
 # Aktifkan untuk sesi ini
-sshgo completion powershell | Out-String | Invoke-Expression
+sshin completion powershell | Out-String | Invoke-Expression
 
 # Aktifkan permanen (tambahkan ke profil PowerShell)
-Add-Content $PROFILE 'sshgo completion powershell | Out-String | Invoke-Expression'
+Add-Content $PROFILE 'sshin completion powershell | Out-String | Invoke-Expression'
 ```
 
 ### Koneksi Langsung ke Host
 
-SSHGO bisa langsung konek ke host dari command line, jadi gampang dipakai di alur kerja yang sudah ada:
+SSHIN bisa langsung konek ke host dari command line, jadi gampang dipakai di alur kerja yang sudah ada:
 
 ```bash
 # Konek langsung ke host mana pun yang sudah dikonfigurasi
-sshgo production-server
-sshgo db-staging
-sshgo web-01
+sshin production-server
+sshin db-staging
+sshin web-01
 
 # Semua koneksi langsung tercatat di riwayat
 # Buka TUI untuk melihat host yang terakhir kamu koneksikan
@@ -425,19 +425,19 @@ Jalankan perintah di host remote tanpa membuka shell interaktif:
 
 ```bash
 # Jalankan satu perintah
-sshgo prod-server uptime
+sshin prod-server uptime
 
 # Jalankan perintah dengan argumen
-sshgo prod-server ls -la /var/log
+sshin prod-server ls -la /var/log
 
 # Cek pemakaian disk
-sshgo prod-server df -h
+sshin prod-server df -h
 
 # Lihat log (teruskan ke perintah lokal)
-sshgo prod-server 'cat /var/log/nginx/access.log' | grep 404
+sshin prod-server 'cat /var/log/nginx/access.log' | grep 404
 
 # Paksa alokasi TTY untuk perintah interaktif (sudo, vim, dll.)
-sshgo -t prod-server sudo systemctl restart nginx
+sshin -t prod-server sudo systemctl restart nginx
 ```
 
 **Keunggulan:**
@@ -448,11 +448,11 @@ sshgo -t prod-server sudo systemctl restart nginx
 
 ### Backup Konfigurasi
 
-SSHGO otomatis membuat backup file konfigurasi SSH sebelum melakukan perubahan apa pun, supaya konfigurasi kamu tetap aman.
+SSHIN otomatis membuat backup file konfigurasi SSH sebelum melakukan perubahan apa pun, supaya konfigurasi kamu tetap aman.
 
 **Lokasi Backup:**
-- **Unix/Linux/macOS**: `~/.config/sshgo/backups/` (atau `$XDG_CONFIG_HOME/sshgo/backups/` kalau di-set)
-- **Windows**: `%APPDATA%\sshgo\backups\` (cadangan: `%USERPROFILE%\.config\sshgo\backups\`)
+- **Unix/Linux/macOS**: `~/.config/sshin/backups/` (atau `$XDG_CONFIG_HOME/sshin/backups/` kalau di-set)
+- **Windows**: `%APPDATA%\sshin\backups\` (cadangan: `%USERPROFILE%\.config\sshin\backups\`)
 
 **Fitur Utama:**
 - Backup otomatis sebelum setiap perubahan
@@ -467,38 +467,38 @@ SSHGO otomatis membuat backup file konfigurasi SSH sebelum melakukan perubahan a
 **Pemulihan Cepat:**
 ```bash
 # Unix/Linux/macOS
-cp ~/.config/sshgo/backups/config.backup ~/.ssh/config
+cp ~/.config/sshin/backups/config.backup ~/.ssh/config
 
 # Windows
-copy "%APPDATA%\sshgo\backups\config.backup" "%USERPROFILE%\.ssh\config"
+copy "%APPDATA%\sshin\backups\config.backup" "%USERPROFILE%\.ssh\config"
 ```
 
 ### Opsi File Konfigurasi
 
-Secara default, SSHGO memakai file konfigurasi SSH standar di `~/.ssh/config`. Kamu bisa memakai file konfigurasi lain dengan flag `-c`:
+Secara default, SSHIN memakai file konfigurasi SSH standar di `~/.ssh/config`. Kamu bisa memakai file konfigurasi lain dengan flag `-c`:
 
 ```bash
 # Pakai file config kustom di mode TUI
-sshgo -c /path/to/custom/ssh_config
+sshin -c /path/to/custom/ssh_config
 
 # Pakai file config kustom dengan perintah lain
-sshgo add hostname -c /path/to/custom/ssh_config
-sshgo edit hostname -c /path/to/custom/ssh_config
-sshgo move hostname -c /path/to/custom/ssh_config
+sshin add hostname -c /path/to/custom/ssh_config
+sshin edit hostname -c /path/to/custom/ssh_config
+sshin move hostname -c /path/to/custom/ssh_config
 ```
 
 ### Fitur Lanjutan
 
 #### Memindahkan Host Antar File Config
 
-SSHGO punya perintah `move` untuk memindahkan host SSH antar file konfigurasi. **Fitur ini butuh direktif SSH Include di konfigurasi SSH kamu.**
+SSHIN punya perintah `move` untuk memindahkan host SSH antar file konfigurasi. **Fitur ini butuh direktif SSH Include di konfigurasi SSH kamu.**
 
 ```bash
 # Pindahkan host ke file config lain (butuh direktif Include)
-sshgo move my-server
+sshin move my-server
 
 # Pindahkan dengan file config kustom (butuh direktif Include)
-sshgo move my-server -c /path/to/custom/ssh_config
+sshin move my-server -c /path/to/custom/ssh_config
 ```
 
 **⚠️ Syarat Penting:**
@@ -533,7 +533,7 @@ Host personal-server
 
 #### Status Koneksi
 
-SSHGO mengecek koneksi SSH secara asinkron dan menampilkan indikator ketersediaan host:
+SSHIN mengecek koneksi SSH secara asinkron dan menampilkan indikator ketersediaan host:
 
 **Indikator Status:**
 - 🟢 **Online** - Koneksi SSH berhasil (menampilkan waktu respons)
@@ -549,7 +549,7 @@ SSHGO mengecek koneksi SSH secara asinkron dan menampilkan indikator ketersediaa
 
 #### Cek Update Otomatis
 
-SSHGO punya pengecekan versi bawaan yang memberi tahu kalau ada update:
+SSHIN punya pengecekan versi bawaan yang memberi tahu kalau ada update:
 
 **Keunggulan:**
 - **Di background** - Pengecekan versi berjalan asinkron, tidak pernah menghambat saat aplikasi dibuka
@@ -567,10 +567,10 @@ SSHGO punya pengecekan versi bawaan yang memberi tahu kalau ada update:
 
 Lewat flag CLI (sekali jalan):
 ```bash
-sshgo --no-update-check
+sshin --no-update-check
 ```
 
-Lewat `~/.config/sshgo/config.json` (permanen):
+Lewat `~/.config/sshin/config.json` (permanen):
 ```json
 {
   "check_for_updates": false
@@ -579,7 +579,7 @@ Lewat `~/.config/sshgo/config.json` (permanen):
 
 #### Riwayat Port Forwarding
 
-SSHGO mengingat konfigurasi port forwarding kamu supaya mudah dipakai lagi:
+SSHIN mengingat konfigurasi port forwarding kamu supaya mudah dipakai lagi:
 
 **Keunggulan:**
 - **Tersimpan otomatis** - Setup forwarding yang berhasil disimpan otomatis
@@ -591,7 +591,7 @@ SSHGO mengingat konfigurasi port forwarding kamu supaya mudah dipakai lagi:
 ### Catatan per Platform
 
 **Windows:**
-- SSHGO bekerja dengan client OpenSSH bawaan (Windows 10/11)
+- SSHIN bekerja dengan client OpenSSH bawaan (Windows 10/11)
 - Lokasi file konfigurasi: `%USERPROFILE%\.ssh\config`
 - Kompatibel dengan konfigurasi SSH di WSL
 - Mendukung opsi SSH yang sama dengan sistem Unix
@@ -603,11 +603,11 @@ SSHGO mengingat konfigurasi port forwarding kamu supaya mudah dipakai lagi:
 
 ## 🏗️ Konfigurasi
 
-SSHGO bekerja langsung dengan file konfigurasi SSH standar kamu (`~/.ssh/config`). SSHGO menambahkan komentar khusus (seperti `# Tags:`) untuk fitur tambahan, tanpa merusak kompatibilitas dengan tool SSH standar.
+SSHIN bekerja langsung dengan file konfigurasi SSH standar kamu (`~/.ssh/config`). SSHIN menambahkan komentar khusus (seperti `# Tags:`) untuk fitur tambahan, tanpa merusak kompatibilitas dengan tool SSH standar.
 
 ### Dukungan SSH Include
 
-SSHGO mendukung penuh direktif SSH Include, jadi konfigurasi SSH bisa dipecah ke banyak file. Ini sangat membantu kalau host kamu banyak, atau kalau ingin mengelompokkan konfigurasi per environment, proyek, atau tim.
+SSHIN mendukung penuh direktif SSH Include, jadi konfigurasi SSH bisa dipecah ke banyak file. Ini sangat membantu kalau host kamu banyak, atau kalau ingin mengelompokkan konfigurasi per environment, proyek, atau tim.
 
 **Contoh Include:**
 ```ssh
@@ -688,7 +688,7 @@ Host backend-prod
 
 ### Opsi SSH yang Didukung
 
-SSHGO mendukung semua opsi konfigurasi SSH standar:
+SSHIN mendukung semua opsi konfigurasi SSH standar:
 
 **Kolom Bawaan:**
 - `HostName` - Hostname atau alamat IP server
@@ -697,12 +697,12 @@ SSHGO mendukung semua opsi konfigurasi SSH standar:
 - `IdentityFile` - Lokasi file private key
 - `ProxyJump` - Jump server untuk tunneling koneksi (contoh: `user@jumphost:port`)
 - `ProxyCommand` - Perintah jump untuk tunneling koneksi (contoh: `ssh -W %h:%p Jumphost`)
-- `Tags` - Tag kustom (ekstensi SSHGO); tag khusus `hidden` menyembunyikan host dari TUI dan `sshgo search`, tapi host tetap bisa dikoneksikan lewat `sshgo <host>`
+- `Tags` - Tag kustom (ekstensi SSHIN); tag khusus `hidden` menyembunyikan host dari TUI dan `sshin search`, tapi host tetap bisa dikoneksikan lewat `sshin <host>`
 
 Password tidak termasuk di sini karena tidak ditulis ke config SSH; lihat [Simpan Password](#simpan-password-key--password).
 
 **Opsi SSH Tambahan:**
-Kamu bisa menambahkan opsi SSH apa pun lewat kolom "SSH Options" di form interaktif. Tulis dalam format command-line (contoh: `-o Compression=yes -o ServerAliveInterval=60`) dan SSHGO akan otomatis mengubahnya ke format config SSH yang benar.
+Kamu bisa menambahkan opsi SSH apa pun lewat kolom "SSH Options" di form interaktif. Tulis dalam format command-line (contoh: `-o Compression=yes -o ServerAliveInterval=60`) dan SSHIN akan otomatis mengubahnya ke format config SSH yang benar.
 
 **Opsi SSH yang Sering Dipakai:**
 - `Compression` - Aktifkan/matikan kompresi (`yes`/`no`)
@@ -734,11 +734,11 @@ Akan otomatis diubah menjadi:
 
 ### Konfigurasi Aplikasi
 
-SSHGO punya file konfigurasi untuk mengatur perilakunya, termasuk key binding dan pengecekan update.
+SSHIN punya file konfigurasi untuk mengatur perilakunya, termasuk key binding dan pengecekan update.
 
 **Lokasi File Konfigurasi:**
-- **Linux/macOS**: `~/.config/sshgo/config.json`
-- **Windows**: `%APPDATA%\sshgo\config.json`
+- **Linux/macOS**: `~/.config/sshin/config.json`
+- **Windows**: `%APPDATA%\sshin\config.json`
 
 **Contoh Konfigurasi:**
 ```json
@@ -764,10 +764,10 @@ SSHGO punya file konfigurasi untuk mengatur perilakunya, termasuk key binding da
 Kalau kamu sering tidak sengaja menekan ESC sampai aplikasinya tertutup, set `disable_esc_quit` ke `true`. ESC tidak lagi menutup aplikasi, sementara fungsi lainnya tetap jalan.
 
 **Untuk Mesin Tanpa Internet:**
-Kalau SSHGO lambat dibuka karena timeout DNS saat menghubungi GitHub, set `check_for_updates` ke `false`. Kamu juga bisa memakai flag `--no-update-check` untuk sekali jalan tanpa mengubah file config.
+Kalau SSHIN lambat dibuka karena timeout DNS saat menghubungi GitHub, set `check_for_updates` ke `false`. Kamu juga bisa memakai flag `--no-update-check` untuk sekali jalan tanpa mengubah file config.
 
 **Konfigurasi Default:**
-Kalau file konfigurasi belum ada, SSHGO otomatis membuatnya dengan pengaturan default.
+Kalau file konfigurasi belum ada, SSHIN otomatis membuatnya dengan pengaturan default.
 
 ## 🛠️ Pengembangan
 
@@ -780,25 +780,25 @@ Kalau file konfigurasi belum ada, SSHGO otomatis membuatnya dengan pengaturan de
 
 ```bash
 # Clone repository
-git clone https://github.com/chandra-bachtiar/sshgo.git
-cd sshgo
+git clone https://github.com/chaad-grayson/sshin.git
+cd sshin
 
 # Build binary (dengan versi dari git)
 make build-local
 
 # Jalankan
-./dist/sshgo
+./dist/sshin
 
 # Jalankan test
 make test
 ```
 
-Test dijalankan dengan direktori home sementara, jadi tidak pernah menyentuh `~/.ssh` atau `~/.config/sshgo` milikmu.
+Test dijalankan dengan direktori home sementara, jadi tidak pernah menyentuh `~/.ssh` atau `~/.config/sshin` milikmu.
 
 ### Struktur Proyek
 
 ```
-sshgo/
+sshin/
 ├── main.go               # Entry point aplikasi
 ├── cmd/                  # Perintah CLI (Cobra)
 │   ├── root.go           # Perintah utama, mode interaktif, dan koneksi langsung
@@ -811,7 +811,7 @@ sshgo/
 ├── internal/
 │   ├── config/           # Manajemen konfigurasi
 │   │   ├── ssh.go        # Parsing dan pengubahan config SSH
-│   │   ├── appconfig.go  # config.json milik SSHGO
+│   │   ├── appconfig.go  # config.json milik SSHIN
 │   │   └── migrate.go    # Impor pengaturan dari SSHM
 │   ├── connectivity/     # Pengecekan koneksi SSH
 │   │   └── ping.go       # Ping SSH asinkron
@@ -840,7 +840,7 @@ sshgo/
 │       └── version.go
 ├── images/               # Aset dokumentasi
 │   ├── logo.svg          # Logo proyek
-│   └── sshgo.gif         # Animasi demo
+│   └── sshin.gif         # Animasi demo
 ├── install/              # Script instalasi
 │   ├── unix.sh           # Installer Unix/Linux/macOS
 │   ├── windows.ps1       # Installer Windows
@@ -870,14 +870,14 @@ Rilis dibuat otomatis untuk beberapa platform:
 
 | Platform | Arsitektur | Download |
 |----------|------------|----------|
-| Linux | AMD64 | [sshgo_Linux_x86_64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_x86_64.tar.gz) |
-| Linux | ARM64 | [sshgo_Linux_arm64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_arm64.tar.gz) |
-| Linux | ARMv7 | [sshgo_Linux_armv7.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_armv7.tar.gz) |
-| Linux | i386 | [sshgo_Linux_i386.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Linux_i386.tar.gz) |
-| macOS | Intel | [sshgo_Darwin_x86_64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Darwin_x86_64.tar.gz) |
-| macOS | Apple Silicon | [sshgo_Darwin_arm64.tar.gz](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Darwin_arm64.tar.gz) |
-| Windows | AMD64 | [sshgo_Windows_x86_64.zip](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Windows_x86_64.zip) |
-| Windows | i386 | [sshgo_Windows_i386.zip](https://github.com/chandra-bachtiar/sshgo/releases/latest/download/sshgo_Windows_i386.zip) |
+| Linux | AMD64 | [sshin_Linux_x86_64.tar.gz](https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Linux_x86_64.tar.gz) |
+| Linux | ARM64 | [sshin_Linux_arm64.tar.gz](https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Linux_arm64.tar.gz) |
+| Linux | ARMv7 | [sshin_Linux_armv7.tar.gz](https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Linux_armv7.tar.gz) |
+| Linux | i386 | [sshin_Linux_i386.tar.gz](https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Linux_i386.tar.gz) |
+| macOS | Intel | [sshin_Darwin_x86_64.tar.gz](https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Darwin_x86_64.tar.gz) |
+| macOS | Apple Silicon | [sshin_Darwin_arm64.tar.gz](https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Darwin_arm64.tar.gz) |
+| Windows | AMD64 | [sshin_Windows_x86_64.zip](https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Windows_x86_64.zip) |
+| Windows | i386 | [sshin_Windows_i386.zip](https://github.com/chaad-grayson/sshin/releases/latest/download/sshin_Windows_i386.zip) |
 
 Setiap rilis juga menyertakan `checksums.txt` (SHA-256) untuk memverifikasi file yang kamu download.
 
@@ -897,11 +897,11 @@ Kontribusi sangat diterima! Silakan kirim Pull Request. Untuk perubahan besar, b
 
 Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file [LICENSE](LICENSE) untuk detailnya.
 
-SSHGO diturunkan dari [SSHM](https://github.com/Gu1llaum-3/sshm), Copyright (c) 2025 Guillaume Archambault, yang juga berlisensi MIT. Pemberitahuan hak cipta dan izin aslinya tetap disimpan di [LICENSE](LICENSE) sesuai syarat lisensi.
+SSHIN diturunkan dari [SSHM](https://github.com/Gu1llaum-3/sshm), Copyright (c) 2025 Guillaume Archambault, yang juga berlisensi MIT. Pemberitahuan hak cipta dan izin aslinya tetap disimpan di [LICENSE](LICENSE) sesuai syarat lisensi.
 
 ## 🙏 Terima Kasih
 
-- [Guillaume Archambault](https://github.com/Gu1llaum-3) yang membuat [SSHM](https://github.com/Gu1llaum-3/sshm), proyek asal fork SSHGO
+- [Guillaume Archambault](https://github.com/Gu1llaum-3) yang membuat [SSHM](https://github.com/Gu1llaum-3/sshm), proyek asal fork SSHIN
 - [Charm](https://charm.sh/) untuk library TUI-nya yang luar biasa
 - [Cobra](https://cobra.dev/) untuk framework CLI-nya
 - [@yimeng](https://github.com/yimeng) yang menyumbangkan dukungan direktif SSH Include
@@ -913,7 +913,7 @@ SSHGO diturunkan dari [SSHM](https://github.com/Gu1llaum-3/sshm), Copyright (c) 
 
 <div align="center">
 
-**SSHGO dikelola oleh [chandra-bachtiar](https://github.com/chandra-bachtiar), berdasarkan [SSHM](https://github.com/Gu1llaum-3/sshm) yang dibuat dengan ❤️ oleh [Guillaume](https://github.com/Gu1llaum-3)**
+**SSHIN dikelola oleh [chaad-grayson](https://github.com/chaad-grayson), berdasarkan [SSHGO](https://github.com/chandra-bachtiar/sshgo) oleh [chandra-bachtiar](https://github.com/chandra-bachtiar) dan [SSHM](https://github.com/Gu1llaum-3/sshm) yang dibuat dengan ❤️ oleh [Guillaume](https://github.com/Gu1llaum-3)**
 
 ⭐ **Kasih bintang repo ini kalau menurutmu bermanfaat!** ⭐
 

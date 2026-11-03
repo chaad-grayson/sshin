@@ -1,10 +1,10 @@
-# SSHGO Windows Installation Script
+# SSHIN Windows Installation Script
 # Usage: 
-#   Online:  irm https://raw.githubusercontent.com/chandra-bachtiar/sshgo/main/install/windows.ps1 | iex
-#   Local:   .\install\windows.ps1 -LocalBinary ".\sshgo.exe"
+#   Online:  irm https://raw.githubusercontent.com/chaad-grayson/sshin/main/install/windows.ps1 | iex
+#   Local:   .\install\windows.ps1 -LocalBinary ".\sshin.exe"
 
 param(
-    [string]$InstallDir = "$env:LOCALAPPDATA\sshgo",
+    [string]$InstallDir = "$env:LOCALAPPDATA\sshin",
     [switch]$Force = $false,
     [string]$LocalBinary = ""
 )
@@ -25,14 +25,14 @@ function Write-Info { Write-ColorOutput Green $args }
 function Write-Warning { Write-ColorOutput Yellow $args }
 function Write-Error { Write-ColorOutput Red $args }
 
-Write-Info "🚀 Installing SSHGO - SSH Manager"
+Write-Info "🚀 Installing SSHIN - SSH Manager"
 Write-Info ""
 
-# Check if SSHGO is already installed
-$existingSSHGO = Get-Command sshgo -ErrorAction SilentlyContinue
-if ($existingSSHGO -and -not $Force) {
-    $currentVersion = & sshgo --version 2>$null | Select-String "version" | ForEach-Object { $_.ToString().Split()[-1] }
-    Write-Warning "SSHGO is already installed (version: $currentVersion)"
+# Check if SSHIN is already installed
+$existingSSHIN = Get-Command sshin -ErrorAction SilentlyContinue
+if ($existingSSHIN -and -not $Force) {
+    $currentVersion = & sshin --version 2>$null | Select-String "version" | ForEach-Object { $_.ToString().Split()[-1] }
+    Write-Warning "SSHIN is already installed (version: $currentVersion)"
     $response = Read-Host "Do you want to continue with the installation? (y/N)"
     if ($response -ne "y" -and $response -ne "Y") {
         Write-Info "Installation cancelled."
@@ -52,7 +52,7 @@ if ($LocalBinary -ne "") {
     }
     
     Write-Info "Using local binary: $LocalBinary"
-    $targetPath = "$InstallDir\sshgo.exe"
+    $targetPath = "$InstallDir\sshin.exe"
     
     # Create installation directory
     if (-not (Test-Path $InstallDir)) {
@@ -71,7 +71,7 @@ if ($LocalBinary -ne "") {
     # Get latest version
     Write-Info "Fetching latest version..."
     try {
-        $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/chandra-bachtiar/sshgo/releases/latest"
+        $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/chaad-grayson/sshin/releases/latest"
         $latestVersion = $latestRelease.tag_name
         Write-Info "Target version: $latestVersion"
     } catch {
@@ -83,9 +83,9 @@ if ($LocalBinary -ne "") {
     # Map architecture to match GoReleaser format
     $goreleaserArch = if ($arch -eq "amd64") { "x86_64" } else { "i386" }
     
-    # GoReleaser format: sshgo_Windows_x86_64.zip
-    $fileName = "sshgo_Windows_$goreleaserArch.zip"
-    $downloadUrl = "https://github.com/chandra-bachtiar/sshgo/releases/download/$latestVersion/$fileName"
+    # GoReleaser format: sshin_Windows_x86_64.zip
+    $fileName = "sshin_Windows_$goreleaserArch.zip"
+    $downloadUrl = "https://github.com/chaad-grayson/sshin/releases/download/$latestVersion/$fileName"
     $tempFile = "$env:TEMP\$fileName"
 
     Write-Info "Downloading $fileName..."
@@ -105,9 +105,9 @@ if ($LocalBinary -ne "") {
     Write-Info "Extracting..."
     try {
         Expand-Archive -Path $tempFile -DestinationPath $env:TEMP -Force
-        # GoReleaser extracts the binary as just "sshgo.exe", not with platform suffix
-        $extractedBinary = "$env:TEMP\sshgo.exe"
-        $targetPath = "$InstallDir\sshgo.exe"
+        # GoReleaser extracts the binary as just "sshin.exe", not with platform suffix
+        $extractedBinary = "$env:TEMP\sshin.exe"
+        $targetPath = "$InstallDir\sshin.exe"
         
         Move-Item -Path $extractedBinary -Destination $targetPath -Force
     } catch {
@@ -125,12 +125,12 @@ if ($userPath -notlike "*$InstallDir*") {
     Write-Warning "The directory $InstallDir is not in your PATH."
     Write-Info "Adding to user PATH..."
     [Environment]::SetEnvironmentVariable("Path", "$userPath;$InstallDir", "User")
-    Write-Info "Please restart your terminal to use the 'sshgo' command."
+    Write-Info "Please restart your terminal to use the 'sshin' command."
 }
 
 Write-Info ""
-Write-Info "✅ SSHGO successfully installed to: $targetPath"
-Write-Info "You can now use the 'sshgo' command!"
+Write-Info "✅ SSHIN successfully installed to: $targetPath"
+Write-Info "You can now use the 'sshin' command!"
 
 # Verify installation
 if (Test-Path $targetPath) {

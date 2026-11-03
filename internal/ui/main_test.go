@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
-	"github.com/chandra-bachtiar/sshgo/internal/testhome"
-	"github.com/chandra-bachtiar/sshgo/internal/tunnel"
+	"github.com/chaad-grayson/sshin/internal/config"
+	"github.com/chaad-grayson/sshin/internal/testhome"
+	"github.com/chaad-grayson/sshin/internal/tunnel"
 	"github.com/zalando/go-keyring"
 )
 

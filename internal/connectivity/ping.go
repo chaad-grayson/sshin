@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chaad-grayson/sshin/internal/config"
 
 	"golang.org/x/crypto/ssh"
 )

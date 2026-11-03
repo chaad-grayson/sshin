@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
-	"github.com/chandra-bachtiar/sshgo/internal/history"
-	"github.com/chandra-bachtiar/sshgo/internal/secret"
+	"github.com/chaad-grayson/sshin/internal/config"
+	"github.com/chaad-grayson/sshin/internal/history"
+	"github.com/chaad-grayson/sshin/internal/secret"
 
 	"github.com/charmbracelet/bubbles/table"
 )

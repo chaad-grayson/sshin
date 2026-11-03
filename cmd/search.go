@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chaad-grayson/sshin/internal/config"
 
 	"github.com/spf13/cobra"
 )
@@ -26,10 +26,10 @@ var searchCmd = &cobra.Command{
 The search is case-insensitive and will match partial strings.
 
 Examples:
-  sshgo search web          # Search for hosts containing "web"
-  sshgo search --tags dev   # Search only in tags for "dev"
-  sshgo search --names prod # Search only in host names for "prod"
-  sshgo search --format json server # Output results in JSON format`,
+  sshin search web          # Search for hosts containing "web"
+  sshin search --tags dev   # Search only in tags for "dev"
+  sshin search --names prod # Search only in host names for "prod"
+  sshin search --format json server # Output results in JSON format`,
 	Args: cobra.MaximumNArgs(1),
 	Run:  runSearch,
 }

@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chaad-grayson/sshin/internal/config"
 )
 
 // sortHosts sorts hosts according to the current sort mode

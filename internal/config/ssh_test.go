@@ -452,7 +452,7 @@ Include *.conf
 	}
 }
 
-func TestBackupConfigToSSHGODirectory(t *testing.T) {
+func TestBackupConfigToSSHINDirectory(t *testing.T) {
 	// Create temporary directory for test files
 	tempDir := t.TempDir()
 
@@ -497,9 +497,9 @@ func TestBackupConfigToSSHGODirectory(t *testing.T) {
 	}
 
 	// Verify backup directory was created
-	backupDir, err := GetSSHGOBackupDir()
+	backupDir, err := GetSSHINBackupDir()
 	if err != nil {
-		t.Fatalf("GetSSHGOBackupDir() error = %v", err)
+		t.Fatalf("GetSSHINBackupDir() error = %v", err)
 	}
 
 	if _, err := os.Stat(backupDir); os.IsNotExist(err) {

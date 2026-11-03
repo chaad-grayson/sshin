@@ -1,5 +1,5 @@
 // Package tunnel keeps named SSH tunnels (local port forwards) that run in the
-// background and can be turned on and off, also from another sshgo session.
+// background and can be turned on and off, also from another sshin session.
 // Each running tunnel is an ssh ControlMaster: its socket tells whether it
 // runs, and stops it with "ssh -O exit".
 package tunnel
@@ -18,7 +18,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chaad-grayson/sshin/internal/config"
 )
 
 // Tunnel forwards localhost:LocalPort to RemoteHost:RemotePort through Host
@@ -57,7 +57,7 @@ func (t Tunnel) Forward() string {
 }
 
 func dir() (string, error) {
-	d, err := config.GetSSHGOConfigDir()
+	d, err := config.GetSSHINConfigDir()
 	if err != nil {
 		return "", err
 	}
@@ -65,7 +65,7 @@ func dir() (string, error) {
 }
 
 func storeFile() (string, error) {
-	d, err := config.GetSSHGOConfigDir()
+	d, err := config.GetSSHINConfigDir()
 	if err != nil {
 		return "", err
 	}

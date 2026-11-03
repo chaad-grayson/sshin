@@ -67,7 +67,7 @@ func GetDefaultAppConfig() AppConfig {
 
 // GetAppConfigPath returns the path to the application config file
 func GetAppConfigPath() (string, error) {
-	configDir, err := GetSSHGOConfigDir()
+	configDir, err := GetSSHINConfigDir()
 	if err != nil {
 		return "", err
 	}

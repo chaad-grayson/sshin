@@ -82,7 +82,7 @@ func compareVersions(v1, v2 string) int {
 	return 0
 }
 
-// CheckForUpdates checks GitHub for the latest release of sshgo
+// CheckForUpdates checks GitHub for the latest release of sshin
 func CheckForUpdates(ctx context.Context, currentVersion string) (*UpdateInfo, error) {
 	// Skip version check if current version is "dev"
 	if currentVersion == "dev" {
@@ -99,13 +99,13 @@ func CheckForUpdates(ctx context.Context, currentVersion string) (*UpdateInfo, e
 
 	// Create request with context
 	req, err := http.NewRequestWithContext(ctx, "GET",
-		"https://api.github.com/repos/chandra-bachtiar/sshgo/releases/latest", nil)
+		"https://api.github.com/repos/chaad-grayson/sshin/releases/latest", nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 
 	// Set user agent
-	req.Header.Set("User-Agent", "sshgo/"+currentVersion)
+	req.Header.Set("User-Agent", "sshin/"+currentVersion)
 
 	// Make the request
 	resp, err := client.Do(req)

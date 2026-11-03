@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/chandra-bachtiar/sshgo/internal/secret"
-	"github.com/chandra-bachtiar/sshgo/internal/tunnel"
+	"github.com/chaad-grayson/sshin/internal/secret"
+	"github.com/chaad-grayson/sshin/internal/tunnel"
 
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/charmbracelet/bubbles/textinput"

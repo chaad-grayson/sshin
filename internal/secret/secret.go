@@ -9,18 +9,32 @@ import (
 	"github.com/zalando/go-keyring"
 )
 
-const service = "sshgo"
+const service = "sshin"
+
+// oldService is where sshgo (the old name of sshin) kept passwords
+const oldService = "sshgo"
 
 // shortcut: passwords are keyed by host name only, so two config files (-c)
 // with the same host name share one password; key by file too if that matters.
 
-// Get returns the saved password of a host, or "" when there is none
+// Get returns the saved password of a host, or "" when there is none.
+// A password saved by sshgo is moved to sshin the first time it is read.
 func Get(host string) (string, error) {
 	pw, err := keyring.Get(service, host)
+	if !errors.Is(err, keyring.ErrNotFound) {
+		return pw, err
+	}
+	pw, err = keyring.Get(oldService, host)
 	if errors.Is(err, keyring.ErrNotFound) {
 		return "", nil
 	}
-	return pw, err
+	if err != nil {
+		return "", err
+	}
+	if keyring.Set(service, host, pw) == nil {
+		_ = keyring.Delete(oldService, host)
+	}
+	return pw, nil
 }
 
 // Set saves the password of a host
@@ -29,12 +43,14 @@ func Set(host, password string) error {
 }
 
 // Delete removes the saved password of a host, if any
+// (also the sshgo copy, so Get cannot bring it back)
 func Delete(host string) error {
-	err := keyring.Delete(service, host)
-	if errors.Is(err, keyring.ErrNotFound) {
-		return nil
+	for _, svc := range []string{service, oldService} {
+		if err := keyring.Delete(svc, host); err != nil && !errors.Is(err, keyring.ErrNotFound) {
+			return err
+		}
 	}
-	return err
+	return nil
 }
 
 // UpdateBlock applies an edit of a Host block to the saved passwords.

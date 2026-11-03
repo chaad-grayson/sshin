@@ -3,7 +3,7 @@ package ui
 import (
 	"testing"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chaad-grayson/sshin/internal/config"
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"

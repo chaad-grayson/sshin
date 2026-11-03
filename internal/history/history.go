@@ -7,7 +7,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chaad-grayson/sshin/internal/config"
 )
 
 // ConnectionHistory represents the history of SSH connections
@@ -40,7 +40,7 @@ type HistoryManager struct {
 
 // NewHistoryManager creates a new history manager
 func NewHistoryManager() (*HistoryManager, error) {
-	configDir, err := config.GetSSHGOConfigDir()
+	configDir, err := config.GetSSHINConfigDir()
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func NewHistoryManager() (*HistoryManager, error) {
 		return nil, err
 	}
 
-	historyPath := filepath.Join(configDir, "sshgo_history.json")
+	historyPath := filepath.Join(configDir, "sshin_history.json")
 
 	// Migration: check if old history file exists and migrate it
 	if err := migrateOldHistoryFile(historyPath); err != nil {
@@ -75,7 +75,7 @@ func NewHistoryManager() (*HistoryManager, error) {
 	return hm, nil
 }
 
-// migrateOldHistoryFile copies the history file of sshm < 1.6 (~/.ssh/sshm_history.json) to ~/.config/sshgo
+// migrateOldHistoryFile copies the history file of sshm < 1.6 (~/.ssh/sshm_history.json) to ~/.config/sshin
 // TODO: Remove this migration logic in v2.0.0 (introduced in v1.6.0)
 func migrateOldHistoryFile(newHistoryPath string) error {
 	// Check if new file already exists, skip migration

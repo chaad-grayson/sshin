@@ -61,9 +61,9 @@ func GetDefaultSSHConfigPath() (string, error) {
 	}
 }
 
-// GetSSHGOConfigDir returns the SSHGO config directory
-func GetSSHGOConfigDir() (string, error) {
-	return appConfigDir("sshgo")
+// GetSSHINConfigDir returns the SSHIN config directory
+func GetSSHINConfigDir() (string, error) {
+	return appConfigDir("sshin")
 }
 
 // appConfigDir returns the per-user config directory for the named app
@@ -88,9 +88,9 @@ func appConfigDir(name string) (string, error) {
 	return filepath.Join(homeDir, ".config", name), nil
 }
 
-// GetSSHGOBackupDir returns the SSHGO backup directory
-func GetSSHGOBackupDir() (string, error) {
-	configDir, err := GetSSHGOConfigDir()
+// GetSSHINBackupDir returns the SSHIN backup directory
+func GetSSHINBackupDir() (string, error) {
+	configDir, err := GetSSHINConfigDir()
 	if err != nil {
 		return "", err
 	}
@@ -124,10 +124,10 @@ func ensureSSHDirectory() error {
 // configMutex protects SSH config file operations from race conditions
 var configMutex sync.Mutex
 
-// backupConfig creates a backup of the SSH config file in ~/.config/sshgo/backups/
+// backupConfig creates a backup of the SSH config file in ~/.config/sshin/backups/
 func backupConfig(configPath string) error {
 	// Get backup directory and ensure it exists
-	backupDir, err := GetSSHGOBackupDir()
+	backupDir, err := GetSSHINBackupDir()
 	if err != nil {
 		return fmt.Errorf("failed to get backup directory: %w", err)
 	}
@@ -263,7 +263,7 @@ func parseSSHConfigFileWithProcessedFiles(configPath string, processedFiles map[
 		if isVerbatimKeyword(key) {
 			raw = parsed.raw
 		}
-		// sshgo stays lenient: a single-value keyword written with several
+		// sshin stays lenient: a single-value keyword written with several
 		// unquoted words (e.g. a path with spaces) keeps them all
 		value := strings.Join(parsed.args, " ")
 
@@ -280,7 +280,7 @@ func parseSSHConfigFileWithProcessedFiles(configPath string, processedFiles map[
 			}
 		case "match":
 			// A Match block ends the current Host block; its directives
-			// depend on conditions sshgo does not evaluate, so they are skipped
+			// depend on conditions sshin does not evaluate, so they are skipped
 			hosts = appendHostWithAliases(hosts, currentHost)
 			currentHost = nil
 			pendingTags = nil
@@ -424,7 +424,7 @@ func processIncludeDirective(pattern string, baseConfigPath string, processedFil
 			continue
 		}
 
-		// Skip backup files created by sshgo (*.backup)
+		// Skip backup files created by sshin (*.backup)
 		if strings.HasSuffix(match, ".backup") {
 			continue
 		}
@@ -583,7 +583,7 @@ func formatHostNames(names ...string) string {
 }
 
 // hostDirectiveLines returns the indented directive lines of a host block,
-// everything after the Host line, in the order sshgo writes them.
+// everything after the Host line, in the order sshin writes them.
 func hostDirectiveLines(host SSHHost) []string {
 	lines := []string{"    HostName " + formatSSHConfigValue(host.Hostname)}
 	if host.User != "" {

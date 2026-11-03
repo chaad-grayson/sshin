@@ -1,5 +1,5 @@
 version: 2
-project_name: sshgo
+project_name: sshin
 
 before:
   hooks:
@@ -7,9 +7,9 @@ before:
   - go test ./...
 
 builds:
-- id: sshgo
+- id: sshin
   main: ./main.go
-  binary: sshgo
+  binary: sshin
   goos:
   - linux
   - windows
@@ -32,12 +32,12 @@ builds:
   - CGO_ENABLED=0
   ldflags:
   - -s -w
-  - -X github.com/chandra-bachtiar/sshgo/cmd.AppVersion={{.Version}}
+  - -X github.com/chaad-grayson/sshin/cmd.AppVersion={{.Version}}
   flags:
   - -trimpath
 
 archives:
-- id: sshgo
+- id: sshin
   formats: [ "tar.gz" ]
   # Use zip for Windows
   format_overrides:
@@ -78,17 +78,17 @@ changelog:
 # Release configuration
 release:
   github:
-    owner: chandra-bachtiar
-    name: sshgo
+    owner: chaad-grayson
+    name: sshin
   prerelease: auto
   draft: false
   replace_existing_draft: true
   target_commitish: "{{ .Commit }}"
   name_template: "{{.ProjectName}} {{.Version}}"
   header: |
-    ## SSHGO {{.Version}}
+    ## SSHIN {{.Version}}
 
-    Thank you for downloading SSHGO!
+    Thank you for downloading SSHIN!
 
   footer: |
     ## Installation
@@ -96,12 +96,12 @@ release:
     ### Installation Script (Recommended)
     **Unix/Linux/macOS:**
     ```bash
-    curl -sSL https://github.com/chandra-bachtiar/sshgo/raw/main/install/unix.sh | bash
+    curl -sSL https://github.com/chaad-grayson/sshin/raw/main/install/unix.sh | bash
     ```
 
     **Windows (PowerShell):**
     ```powershell
-    iwr -useb https://github.com/chandra-bachtiar/sshgo/raw/main/install/windows.ps1 | iex
+    iwr -useb https://github.com/chaad-grayson/sshin/raw/main/install/windows.ps1 | iex
     ```
 
     ### Manual Installation
@@ -109,13 +109,13 @@ release:
 
     ## Full Changelog
 
-    See all changes at https://github.com/chandra-bachtiar/sshgo/compare/{{.PreviousTag}}...{{.Tag}}
+    See all changes at https://github.com/chaad-grayson/sshin/compare/{{.PreviousTag}}...{{.Tag}}
 
     ---
 
-    📖 **Documentation:** See the updated [README](https://github.com/chandra-bachtiar/sshgo/blob/main/README.md)
+    📖 **Documentation:** See the updated [README](https://github.com/chaad-grayson/sshin/blob/main/README.md)
 
-    🐛 **Issues:** Found a bug? Open an [issue](https://github.com/chandra-bachtiar/sshgo/issues)
+    🐛 **Issues:** Found a bug? Open an [issue](https://github.com/chaad-grayson/sshin/issues)
 
     ---
 

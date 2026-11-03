@@ -8,10 +8,10 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
-	"github.com/chandra-bachtiar/sshgo/internal/history"
-	"github.com/chandra-bachtiar/sshgo/internal/secret"
-	"github.com/chandra-bachtiar/sshgo/internal/ui"
+	"github.com/chaad-grayson/sshin/internal/config"
+	"github.com/chaad-grayson/sshin/internal/history"
+	"github.com/chaad-grayson/sshin/internal/secret"
+	"github.com/chaad-grayson/sshin/internal/ui"
 
 	"github.com/spf13/cobra"
 )
@@ -33,25 +33,25 @@ var noUpdateCheck bool
 
 // RootCmd is the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "sshgo [host] [command...]",
+	Use:   "sshin [host] [command...]",
 	Short: "SSH Manager - A modern SSH connection manager",
-	Long: `SSHGO is a modern SSH manager for your terminal.
+	Long: `SSHIN is a modern SSH manager for your terminal.
 
 Main usage:
-  Running 'sshgo' (without arguments) opens the interactive TUI window to browse, search, and connect to your SSH hosts graphically.
-  Running 'sshgo <host>' connects directly to the specified host and records the connection in your history.
-  Running 'sshgo <host> <command>' executes the command on the remote host and returns the output.
+  Running 'sshin' (without arguments) opens the interactive TUI window to browse, search, and connect to your SSH hosts graphically.
+  Running 'sshin <host>' connects directly to the specified host and records the connection in your history.
+  Running 'sshin <host> <command>' executes the command on the remote host and returns the output.
 
-You can also use sshgo in CLI mode for other operations like adding, editing, or searching hosts.
+You can also use sshin in CLI mode for other operations like adding, editing, or searching hosts.
 
 Hosts are read from your ~/.ssh/config file by default.
 
 Examples:
-  sshgo                           # Open interactive TUI
-  sshgo prod-server               # Connect to host interactively
-  sshgo prod-server uptime        # Execute 'uptime' on remote host
-  sshgo prod-server ls -la /var   # Execute command with arguments
-  sshgo -t prod-server sudo reboot # Force TTY for interactive commands`,
+  sshin                           # Open interactive TUI
+  sshin prod-server               # Connect to host interactively
+  sshin prod-server uptime        # Execute 'uptime' on remote host
+  sshin prod-server ls -la /var   # Execute command with arguments
+  sshin -t prod-server sudo reboot # Force TTY for interactive commands`,
 	Version:       AppVersion,
 	Args:          cobra.ArbitraryArgs,
 	SilenceUsage:  true,
@@ -167,7 +167,7 @@ func connectToHost(hostName string, remoteCommand []string) {
 
 	if !hostFound {
 		fmt.Printf("Error: Host '%s' not found in SSH configuration.\n", hostName)
-		fmt.Println("Use 'sshgo' to see available hosts.")
+		fmt.Println("Use 'sshin' to see available hosts.")
 		os.Exit(1)
 	}
 
@@ -234,16 +234,16 @@ func connectToHost(hostName string, remoteCommand []string) {
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
-	// ssh runs sshgo as its askpass program for hosts with a saved password
+	// ssh runs sshin as its askpass program for hosts with a saved password
 	if secret.IsAskpass() {
 		os.Exit(secret.Askpass(os.Args[1:]))
 	}
 
-	// stderr so JSON output on stdout (sshgo info/search) stays parseable
-	if from, err := config.MigrateFromSSHM(); err != nil {
-		fmt.Fprintf(os.Stderr, "Warning: could not import settings from sshm: %v\n", err)
+	// stderr so JSON output on stdout (sshin info/search) stays parseable
+	if from, err := config.MigrateOldConfig(); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: could not import settings from %s: %v\n", from, err)
 	} else if from != "" {
-		fmt.Fprintf(os.Stderr, "Imported settings and history from sshm (%s)\n", from)
+		fmt.Fprintf(os.Stderr, "Imported settings and history from %s\n", from)
 	}
 
 	if err := RootCmd.Execute(); err != nil {

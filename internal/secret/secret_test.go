@@ -134,3 +134,27 @@ func TestIsCodePrompt(t *testing.T) {
 		}
 	}
 }
+
+func TestGetMovesSSHGOPassword(t *testing.T) {
+	keyring.MockInit()
+	if err := keyring.Set(oldService, "web", "pw"); err != nil {
+		t.Fatal(err)
+	}
+	if pw, err := Get("web"); err != nil || pw != "pw" {
+		t.Fatalf("Get() = %q, %v; want pw", pw, err)
+	}
+	if pw, _ := keyring.Get(service, "web"); pw != "pw" {
+		t.Errorf("password not moved to %s", service)
+	}
+	if _, err := keyring.Get(oldService, "web"); err != keyring.ErrNotFound {
+		t.Errorf("sshgo copy should be gone, got %v", err)
+	}
+
+	keyring.Set(oldService, "db", "pw2")
+	if err := Delete("db"); err != nil {
+		t.Fatal(err)
+	}
+	if pw, _ := Get("db"); pw != "" {
+		t.Errorf("deleted password came back: %q", pw)
+	}
+}

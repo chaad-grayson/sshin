@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chaad-grayson/sshin/internal/config"
 
 	"github.com/spf13/cobra"
 )
@@ -80,7 +80,7 @@ func writeInfoJSON(out io.Writer, pretty bool, resp infoResponse) {
 		b, err = json.Marshal(resp)
 	}
 	if err != nil {
-		_, _ = io.WriteString(out, `{"schema":"sshgo.info.v1","ok":false,"hostname":"","result":null,"error":{"code":"INTERNAL","message":"failed to marshal JSON","details":null}}\n`)
+		_, _ = io.WriteString(out, `{"schema":"sshin.info.v1","ok":false,"hostname":"","result":null,"error":{"code":"INTERNAL","message":"failed to marshal JSON","details":null}}\n`)
 		return
 	}
 	_, _ = out.Write(append(b, '\n'))
@@ -88,7 +88,7 @@ func writeInfoJSON(out io.Writer, pretty bool, resp infoResponse) {
 
 func runInfo(out io.Writer, hostnameArg string, cfgFile string, pretty bool) int {
 	resp := infoResponse{
-		Schema:   "sshgo.info.v1",
+		Schema:   "sshin.info.v1",
 		OK:       false,
 		Hostname: hostnameArg,
 		Result:   nil,

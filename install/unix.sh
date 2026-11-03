@@ -1,13 +1,13 @@
 #!/bin/bash
 
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
-EXECUTABLE_NAME=sshgo
+EXECUTABLE_NAME=sshin
 EXECUTABLE_PATH="$INSTALL_DIR/$EXECUTABLE_NAME"
 USE_SUDO="false"
 OS=""
 ARCH=""
 FORCE_INSTALL="${FORCE_INSTALL:-false}"
-SSHGO_VERSION="${SSHGO_VERSION:-latest}"
+SSHIN_VERSION="${SSHIN_VERSION:-latest}"
 
 RED='\033[0;31m'
 PURPLE='\033[0;35m'
@@ -16,15 +16,15 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 usage() {
-    printf "${PURPLE}SSHGO Installation Script${NC}\n\n"
+    printf "${PURPLE}SSHIN Installation Script${NC}\n\n"
     printf "Usage:\n"
     printf "  Default (latest stable):     ${GREEN}bash install.sh${NC}\n"
-    printf "  Specific version:            ${GREEN}SSHGO_VERSION=v1.8.0 bash install.sh${NC}\n"
-    printf "  Beta/pre-release:            ${GREEN}SSHGO_VERSION=v1.8.1-beta bash install.sh${NC}\n"
+    printf "  Specific version:            ${GREEN}SSHIN_VERSION=v1.8.0 bash install.sh${NC}\n"
+    printf "  Beta/pre-release:            ${GREEN}SSHIN_VERSION=v1.8.1-beta bash install.sh${NC}\n"
     printf "  Force install:               ${GREEN}FORCE_INSTALL=true bash install.sh${NC}\n"
     printf "  Custom install directory:    ${GREEN}INSTALL_DIR=/opt/bin bash install.sh${NC}\n\n"
     printf "Environment variables:\n"
-    printf "  SSHGO_VERSION    - Version to install (default: latest)\n"
+    printf "  SSHIN_VERSION    - Version to install (default: latest)\n"
     printf "  FORCE_INSTALL   - Skip confirmation prompts (default: false)\n"
     printf "  INSTALL_DIR     - Installation directory (default: /usr/local/bin)\n\n"
 }
@@ -51,30 +51,30 @@ setSystem() {
 runAsRoot() {
     local CMD="$*"
     if [ "$USE_SUDO" = "true" ]; then
-        printf "${PURPLE}We need sudo access to install SSHGO to $INSTALL_DIR ${NC}\n"
+        printf "${PURPLE}We need sudo access to install SSHIN to $INSTALL_DIR ${NC}\n"
         CMD="sudo $CMD"
     fi
     $CMD
 }
 
 getLatestVersion() {
-    if [ "$SSHGO_VERSION" = "latest" ]; then
+    if [ "$SSHIN_VERSION" = "latest" ]; then
         printf "${YELLOW}Fetching latest stable version...${NC}\n"
-        LATEST_VERSION=$(curl -s https://api.github.com/repos/chandra-bachtiar/sshgo/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        LATEST_VERSION=$(curl -s https://api.github.com/repos/chaad-grayson/sshin/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [ -z "$LATEST_VERSION" ]; then
             printf "${RED}Failed to fetch latest version${NC}\n"
             exit 1
         fi
     else
-        printf "${YELLOW}Using specified version: $SSHGO_VERSION${NC}\n"
+        printf "${YELLOW}Using specified version: $SSHIN_VERSION${NC}\n"
         # Validate that the specified version exists
-        RELEASE_CHECK=$(curl -s "https://api.github.com/repos/chandra-bachtiar/sshgo/releases/tags/$SSHGO_VERSION" | grep '"tag_name":')
+        RELEASE_CHECK=$(curl -s "https://api.github.com/repos/chaad-grayson/sshin/releases/tags/$SSHIN_VERSION" | grep '"tag_name":')
         if [ -z "$RELEASE_CHECK" ]; then
-            printf "${RED}Version $SSHGO_VERSION not found. Available versions:${NC}\n"
-            curl -s https://api.github.com/repos/chandra-bachtiar/sshgo/releases | grep '"tag_name":' | head -10 | sed -E 's/.*"([^"]+)".*/  - \1/'
+            printf "${RED}Version $SSHIN_VERSION not found. Available versions:${NC}\n"
+            curl -s https://api.github.com/repos/chaad-grayson/sshin/releases | grep '"tag_name":' | head -10 | sed -E 's/.*"([^"]+)".*/  - \1/'
             exit 1
         fi
-        LATEST_VERSION="$SSHGO_VERSION"
+        LATEST_VERSION="$SSHIN_VERSION"
     fi
     printf "${GREEN}Installing version: $LATEST_VERSION${NC}\n"
 }
@@ -98,12 +98,12 @@ downloadBinary() {
         "armv7") GORELEASER_ARCH="armv7" ;;
     esac
     
-    # GoReleaser format: sshgo_Linux_armv7.tar.gz
-    GITHUB_FILE="sshgo_${GORELEASER_OS}_${GORELEASER_ARCH}.tar.gz"
-    GITHUB_URL="https://github.com/chandra-bachtiar/sshgo/releases/download/$LATEST_VERSION/$GITHUB_FILE"
+    # GoReleaser format: sshin_Linux_armv7.tar.gz
+    GITHUB_FILE="sshin_${GORELEASER_OS}_${GORELEASER_ARCH}.tar.gz"
+    GITHUB_URL="https://github.com/chaad-grayson/sshin/releases/download/$LATEST_VERSION/$GITHUB_FILE"
     
     printf "${YELLOW}Downloading $GITHUB_FILE...${NC}\n"
-    curl -L "$GITHUB_URL" --progress-bar --output "sshgo-tmp.tar.gz"
+    curl -L "$GITHUB_URL" --progress-bar --output "sshin-tmp.tar.gz"
     
     if [ $? -ne 0 ]; then
         printf "${RED}Failed to download binary${NC}\n"
@@ -111,25 +111,25 @@ downloadBinary() {
     fi
     
     # Extract the binary
-    tar -xzf "sshgo-tmp.tar.gz"
+    tar -xzf "sshin-tmp.tar.gz"
     if [ $? -ne 0 ]; then
         printf "${RED}Failed to extract binary${NC}\n"
         exit 1
     fi
     
-    # GoReleaser extracts the binary as just "sshgo", not with the platform suffix
-    EXTRACTED_BINARY="./sshgo"
+    # GoReleaser extracts the binary as just "sshin", not with the platform suffix
+    EXTRACTED_BINARY="./sshin"
     if [ ! -f "$EXTRACTED_BINARY" ]; then
         printf "${RED}Could not find extracted binary: $EXTRACTED_BINARY${NC}\n"
         exit 1
     fi
     
-    mv "$EXTRACTED_BINARY" "sshgo-tmp"
-    rm -f "sshgo-tmp.tar.gz"
+    mv "$EXTRACTED_BINARY" "sshin-tmp"
+    rm -f "sshin-tmp.tar.gz"
 }
 
 install() {
-    printf "${YELLOW}Installing SSHGO...${NC}\n"
+    printf "${YELLOW}Installing SSHIN...${NC}\n"
     
     # Create the install directory if needed, as the user first so that a
     # directory under $HOME doesn't end up owned by root
@@ -148,7 +148,7 @@ install() {
         runAsRoot mv "$EXECUTABLE_PATH" "$OLD_BACKUP"
     fi
     
-    chmod +x "sshgo-tmp"
+    chmod +x "sshin-tmp"
     if [ $? -ne 0 ]; then
         printf "${RED}Failed to set permissions${NC}\n"
         # Restore backup if installation fails
@@ -158,7 +158,7 @@ install() {
         exit 1
     fi
 
-    runAsRoot mv "sshgo-tmp" "$EXECUTABLE_PATH"
+    runAsRoot mv "sshin-tmp" "$EXECUTABLE_PATH"
     if [ $? -ne 0 ]; then
         printf "${RED}Failed to install binary${NC}\n"
         # Restore backup if installation fails
@@ -175,13 +175,13 @@ install() {
 }
 
 cleanup() {
-    rm -f "sshgo-tmp" "sshgo-tmp.tar.gz" "sshgo-${OS}-${ARCH}"
+    rm -f "sshin-tmp" "sshin-tmp.tar.gz" "sshin-${OS}-${ARCH}"
 }
 
 checkExisting() {
-    if command -v sshgo >/dev/null 2>&1; then
-        CURRENT_VERSION=$(sshgo --version 2>/dev/null | grep -o 'version.*' | cut -d' ' -f2 || echo "unknown")
-        printf "${YELLOW}SSHGO is already installed (version: $CURRENT_VERSION)${NC}\n"
+    if command -v sshin >/dev/null 2>&1; then
+        CURRENT_VERSION=$(sshin --version 2>/dev/null | grep -o 'version.*' | cut -d' ' -f2 || echo "unknown")
+        printf "${YELLOW}SSHIN is already installed (version: $CURRENT_VERSION)${NC}\n"
         
         # Check if FORCE_INSTALL is set
         if [ "$FORCE_INSTALL" = "true" ]; then
@@ -217,7 +217,7 @@ main() {
         exit 0
     fi
     
-    printf "${PURPLE}Installing SSHGO - SSH Connection Manager${NC}\n\n"
+    printf "${PURPLE}Installing SSHIN - SSH Connection Manager${NC}\n\n"
     
     # Set up system detection
     setSystem
@@ -234,16 +234,16 @@ main() {
     install
     cleanup
     
-    printf "\n${GREEN}✅ SSHGO was installed successfully to: ${NC}$EXECUTABLE_PATH\n"
-    printf "${GREEN}You can now use 'sshgo' command to manage your SSH connections!${NC}\n\n"
+    printf "\n${GREEN}✅ SSHIN was installed successfully to: ${NC}$EXECUTABLE_PATH\n"
+    printf "${GREEN}You can now use 'sshin' command to manage your SSH connections!${NC}\n\n"
     
     # Show version
     printf "${YELLOW}Verifying installation...${NC}\n"
-    if command -v sshgo >/dev/null 2>&1; then
+    if command -v sshin >/dev/null 2>&1; then
         # Use the full path to ensure we're using the newly installed version
         "$EXECUTABLE_PATH" --version 2>/dev/null || echo "Version check failed, but installation completed"
     else
-        printf "${RED}Warning: 'sshgo' command not found in PATH. You may need to restart your terminal or add $INSTALL_DIR to your PATH.${NC}\n"
+        printf "${RED}Warning: 'sshin' command not found in PATH. You may need to restart your terminal or add $INSTALL_DIR to your PATH.${NC}\n"
     fi
 }
 

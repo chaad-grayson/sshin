@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-// useTempConfigDir points the sshgo config directory to a temporary one
+// useTempConfigDir points the sshin config directory to a temporary one
 func useTempConfigDir(t *testing.T) string {
 	t.Helper()
 	home := t.TempDir()

@@ -1,5 +1,5 @@
 // Package testhome runs a package's tests with a throwaway home directory, so
-// no test can read or write the user's real ~/.ssh or ~/.config/sshgo.
+// no test can read or write the user's real ~/.ssh or ~/.config/sshin.
 package testhome
 
 import (
@@ -12,7 +12,7 @@ import (
 // Run points HOME (and its Windows and XDG equivalents) to a temp dir, runs
 // the tests and returns their exit code. Use it from TestMain.
 func Run(m *testing.M) int {
-	home, err := os.MkdirTemp("", "sshgo-test-home-*")
+	home, err := os.MkdirTemp("", "sshin-test-home-*")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return 1

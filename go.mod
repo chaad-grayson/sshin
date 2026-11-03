@@ -1,4 +1,4 @@
-module github.com/chandra-bachtiar/sshgo
+module github.com/chaad-grayson/sshin
 
 go 1.27.1
 

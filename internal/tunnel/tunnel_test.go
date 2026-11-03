@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chandra-bachtiar/sshgo/internal/testhome"
+	"github.com/chaad-grayson/sshin/internal/testhome"
 )
 
 func TestMain(m *testing.M) { os.Exit(testhome.Run(m)) }

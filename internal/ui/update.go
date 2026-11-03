@@ -6,10 +6,10 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/chandra-bachtiar/sshgo/internal/config"
-	"github.com/chandra-bachtiar/sshgo/internal/connectivity"
-	"github.com/chandra-bachtiar/sshgo/internal/secret"
-	"github.com/chandra-bachtiar/sshgo/internal/version"
+	"github.com/chaad-grayson/sshin/internal/config"
+	"github.com/chaad-grayson/sshin/internal/connectivity"
+	"github.com/chaad-grayson/sshin/internal/secret"
+	"github.com/chaad-grayson/sshin/internal/version"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"

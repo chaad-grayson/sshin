@@ -14,12 +14,12 @@ import (
 )
 
 const (
-	envHost   = "SSHGO_ASKPASS_HOST"
-	envTarget = "SSHGO_ASKPASS_TARGET"
+	envHost   = "SSHIN_ASKPASS_HOST"
+	envTarget = "SSHIN_ASKPASS_TARGET"
 )
 
 // SSHEnv returns the environment to run ssh with for host: when the host has a
-// saved password or TOTP secret, ssh is told to ask sshgo for them
+// saved password or TOTP secret, ssh is told to ask sshin for them
 // (SSH_ASKPASS, OpenSSH >= 8.4). It returns nil (keep the current environment)
 // when there is none or the keyring cannot be read, so ssh prompts on the
 // terminal as usual.
@@ -75,7 +75,7 @@ func parseTarget(sshG string) (string, error) {
 	return user + "@" + hostname, nil
 }
 
-// IsAskpass reports whether sshgo was started by ssh as its askpass program
+// IsAskpass reports whether sshin was started by ssh as its askpass program
 func IsAskpass() bool {
 	return os.Getenv(envHost) != ""
 }
@@ -88,7 +88,7 @@ func Askpass(args []string) int {
 	prompt := strings.Join(args, " ")
 	answer, err := answer(prompt, os.Getenv(envHost), os.Getenv(envTarget))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "sshgo: %v\n", err)
+		fmt.Fprintf(os.Stderr, "sshin: %v\n", err)
 		return 1
 	}
 	fmt.Println(answer)
@@ -103,7 +103,7 @@ func answer(prompt, host, target string) (string, error) {
 			if firstTry(markerPath("totp"), time.Now()) {
 				return TOTP(s, time.Now())
 			}
-			prompt = "sshgo: the code from the saved TOTP secret was rejected, type one (check the secret with e in sshgo, and the clock)\n" + prompt
+			prompt = "sshin: the code from the saved TOTP secret was rejected, type one (check the secret with e in sshin, and the clock)\n" + prompt
 		}
 	case isPasswordPrompt(prompt, target):
 		if pw, err := Get(host); err == nil && pw != "" {
@@ -111,7 +111,7 @@ func answer(prompt, host, target string) (string, error) {
 				return pw, nil
 			}
 			// ssh asks again: the server rejected the saved password
-			prompt = "sshgo: the saved password was rejected, type it (and fix it with e in sshgo)\n" + prompt
+			prompt = "sshin: the saved password was rejected, type it (and fix it with e in sshin)\n" + prompt
 		}
 	}
 	return askTTY(prompt)
@@ -122,7 +122,7 @@ func answer(prompt, host, target string) (string, error) {
 // shortcut: one tiny file per connection is left in the temp dir, cleaned
 // with it; remove it after the login if it ever matters
 func markerPath(kind string) string {
-	return filepath.Join(os.TempDir(), fmt.Sprintf("sshgo-askpass-%d-%s", os.Getppid(), kind))
+	return filepath.Join(os.TempDir(), fmt.Sprintf("sshin-askpass-%d-%s", os.Getppid(), kind))
 }
 
 // firstTry reports whether the saved password has not been sent yet to this

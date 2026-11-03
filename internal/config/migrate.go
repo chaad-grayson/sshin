@@ -7,50 +7,54 @@ import (
 	"path/filepath"
 )
 
-// MigrateFromSSHM copies the sshm config directory (config.json, history,
-// port forwards, backups) to the sshgo one the first time sshgo runs.
-// It returns the sshm directory it copied from, or "" when there was nothing to do.
-// The sshm directory is left untouched so sshm keeps working.
-func MigrateFromSSHM() (string, error) {
-	newDir, err := GetSSHGOConfigDir()
-	if err != nil {
-		return "", err
-	}
-	oldDir, err := appConfigDir("sshm")
+// MigrateOldConfig copies the config directory (config.json, history,
+// port forwards, backups) of sshgo, the old name of sshin, or else of sshm,
+// to the sshin one the first time sshin runs.
+// It returns the directory it copied from, or "" when there was nothing to do.
+// The old directory is left untouched so the old tool keeps working.
+func MigrateOldConfig() (string, error) {
+	newDir, err := GetSSHINConfigDir()
 	if err != nil {
 		return "", err
 	}
 	if _, err := os.Stat(newDir); !os.IsNotExist(err) {
-		return "", err // sshgo already set up (or stat failed)
+		return "", err // sshin already set up (or stat failed)
 	}
-	if info, err := os.Stat(oldDir); err != nil || !info.IsDir() {
-		return "", nil // no sshm install to migrate from
+	for _, name := range []string{"sshgo", "sshm"} {
+		oldDir, err := appConfigDir(name)
+		if err != nil {
+			return "", err
+		}
+		if info, err := os.Stat(oldDir); err != nil || !info.IsDir() {
+			continue
+		}
+		return oldDir, migrateDir(oldDir, newDir, name+"_history.json")
 	}
+	return "", nil // nothing to migrate from
+}
 
+func migrateDir(oldDir, newDir, oldHistoryName string) error {
 	// Copy into a sibling temp dir and rename it at the end, so a failed copy
-	// never leaves a half-filled sshgo directory that would block a retry
+	// never leaves a half-filled sshin directory that would block a retry
 	if err := os.MkdirAll(filepath.Dir(newDir), 0755); err != nil {
-		return "", err
+		return err
 	}
-	tmpDir, err := os.MkdirTemp(filepath.Dir(newDir), ".sshgo-migrate-*")
+	tmpDir, err := os.MkdirTemp(filepath.Dir(newDir), ".sshin-migrate-*")
 	if err != nil {
-		return "", err
+		return err
 	}
 	defer os.RemoveAll(tmpDir)
 
 	if err := copyTree(oldDir, tmpDir); err != nil {
-		return "", err
+		return err
 	}
-	oldHistory := filepath.Join(tmpDir, "sshm_history.json")
+	oldHistory := filepath.Join(tmpDir, oldHistoryName)
 	if _, err := os.Stat(oldHistory); err == nil {
-		if err := os.Rename(oldHistory, filepath.Join(tmpDir, "sshgo_history.json")); err != nil {
-			return "", err
+		if err := os.Rename(oldHistory, filepath.Join(tmpDir, "sshin_history.json")); err != nil {
+			return err
 		}
 	}
-	if err := os.Rename(tmpDir, newDir); err != nil {
-		return "", err
-	}
-	return oldDir, nil
+	return os.Rename(tmpDir, newDir)
 }
 
 // copyTree copies the regular files and directories under src into dst,

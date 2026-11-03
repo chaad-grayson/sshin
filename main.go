@@ -1,6 +1,6 @@
 package main
 
-import "github.com/chandra-bachtiar/sshgo/cmd"
+import "github.com/chaad-grayson/sshin/cmd"
 
 func main() {
 	cmd.Execute()

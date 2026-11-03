@@ -2,7 +2,7 @@ package ui
 
 import (
 	"fmt"
-	"github.com/chandra-bachtiar/sshgo/internal/config"
+	"github.com/chaad-grayson/sshin/internal/config"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"

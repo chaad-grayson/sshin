@@ -5,12 +5,12 @@ VERSION ?= dev
 
 # Go build flags
 # "=" (not ":="): expand at use, so build-local's git VERSION applies
-LDFLAGS = -s -w -X github.com/chandra-bachtiar/sshgo/cmd.AppVersion=$(VERSION)
+LDFLAGS = -s -w -X github.com/chaad-grayson/sshin/cmd.AppVersion=$(VERSION)
 
 # Build with specific version
 build:
 	@mkdir -p dist
-	go build -ldflags="$(LDFLAGS)" -o dist/sshgo .
+	go build -ldflags="$(LDFLAGS)" -o dist/sshin .
 
 # Build with git version
 build-local: VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
