@@ -246,7 +246,7 @@ func (m *addFormModel) getFirstInputForTab(tab int) int {
 	case tabGeneral:
 		return nameInput
 	case tabAdvanced:
-		return optionsInput
+		return proxyJumpInput
 	default:
 		return nameInput
 	}
@@ -256,11 +256,11 @@ func (m *addFormModel) getFirstInputForTab(tab int) int {
 func (m *addFormModel) getInputsForCurrentTab() []int {
 	switch m.currentTab {
 	case tabGeneral:
-		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, totpInput, proxyJumpInput, proxyCommandInput, tagsInput}
+		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, totpInput, tagsInput}
 	case tabAdvanced:
-		return []int{optionsInput, remoteCommandInput, requestTTYInput}
+		return []int{proxyJumpInput, proxyCommandInput, optionsInput, remoteCommandInput, requestTTYInput}
 	default:
-		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, totpInput, proxyJumpInput, proxyCommandInput, tagsInput}
+		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, totpInput, tagsInput}
 	}
 }
 
@@ -398,8 +398,6 @@ func (m *addFormModel) renderGeneralTab() string {
 		{identityInput, "Identity File"},
 		{passwordInput, "Password (saved in the OS keyring)"},
 		{totpInput, "2FA TOTP secret (saved in the OS keyring)"},
-		{proxyJumpInput, "ProxyJump"},
-		{proxyCommandInput, "ProxyCommand"},
 		{tagsInput, "Tags (comma-separated)"},
 	}
 
@@ -432,6 +430,8 @@ func (m *addFormModel) renderAdvancedTab() string {
 		index int
 		label string
 	}{
+		{proxyJumpInput, "ProxyJump"},
+		{proxyCommandInput, "ProxyCommand"},
 		{optionsInput, "SSH Options"},
 		{remoteCommandInput, "Remote Command"},
 		{requestTTYInput, "Request TTY"},

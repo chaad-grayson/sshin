@@ -315,19 +315,19 @@ func (m *editFormModel) updateFocus() tea.Cmd {
 func (m *editFormModel) getPropertiesForCurrentTab() []int {
 	switch m.currentTab {
 	case 0: // General
-		return []int{0, 1, 2, 3, editPasswordInput, editTOTPInput, 4, 5, 7} // hostname, user, port, identity, password, totp, proxyjump, proxycommand, tags
+		return []int{0, 1, 2, 3, editPasswordInput, editTOTPInput, 7} // hostname, user, port, identity, password, totp, tags
 	case 1: // Advanced
-		return []int{6, 8, 9} // options, remotecommand, requesttty
+		return []int{4, 5, 6, 8, 9} // proxyjump, proxycommand, options, remotecommand, requesttty
 	default:
-		return []int{0, 1, 2, 3, editPasswordInput, editTOTPInput, 4, 5, 7}
+		return []int{0, 1, 2, 3, editPasswordInput, editTOTPInput, 7}
 	}
 }
 
 // getFirstPropertyForTab returns the first property index for a given tab
 func (m *editFormModel) getFirstPropertyForTab(tab int) int {
-	properties := []int{0, 1, 2, 3, 4, 5, 7} // General tab
+	properties := []int{0} // General tab
 	if tab == 1 {
-		properties = []int{6, 8, 9} // Advanced tab
+		properties = []int{4} // Advanced tab
 	}
 	if len(properties) > 0 {
 		return properties[0]
@@ -589,8 +589,6 @@ func (m *editFormModel) renderEditGeneralTab() string {
 		{3, "Identity File"},
 		{editPasswordInput, "Password (saved in the OS keyring)"},
 		{editTOTPInput, "2FA TOTP secret (saved in the OS keyring)"},
-		{4, "Proxy Jump"},
-		{5, "Proxy Command"},
 		{7, "Tags (comma-separated)"},
 	}
 
@@ -629,6 +627,8 @@ func (m *editFormModel) renderEditAdvancedTab() string {
 		index int
 		label string
 	}{
+		{4, "Proxy Jump"},
+		{5, "Proxy Command"},
 		{6, "SSH Options"},
 		{8, "Remote Command"},
 		{9, "Request TTY"},
