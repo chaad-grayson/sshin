@@ -29,7 +29,7 @@ SSHGO adalah tool command-line untuk mengelola dan terhubung ke host SSH kamu. D
 ### 🚀 **Fitur Utama**
 - **🎨 Tampilan TUI** - Jelajahi host SSH kamu lewat antarmuka terminal yang interaktif
 - **⚡ Koneksi Cepat** - Langsung terhubung ke host mana pun lewat TUI atau CLI dengan `sshgo <host>`
-- **🔑 Simpan Password** - Untuk server yang minta private key *dan* password; password disimpan di keyring OS dan diisi otomatis
+- **🔑 Simpan Password & 2FA** - Untuk server yang minta private key *dan* password atau kode verifikasi; password dan secret TOTP disimpan di keyring OS dan diisi otomatis
 - **🔄 Port Forwarding** - Atur forwarding Local, Remote, dan Dynamic (SOCKS) dengan mudah, lengkap dengan riwayatnya
 - **📝 Kelola dengan Mudah** - Tambah, edit, pindah, dan kelola konfigurasi SSH tanpa repot
 - **🏷️ Tag** - Kelompokkan host dengan tag; tag khusus `hidden` menyembunyikan host dari daftar tapi host tetap bisa dikoneksikan
@@ -114,6 +114,7 @@ sshgo
 - `d` - Hapus host yang dipilih
 - `m` - Pindahkan host ke file config lain (butuh direktif SSH Include)
 - `f` - Atur port forwarding
+- `c` - Salin public key kamu ke host yang dipilih (`ssh-copy-id`)
 - `p` - Cek ulang status semua host
 - `H` - Tampilkan/sembunyikan host `hidden`
 - `q` - Keluar
@@ -148,7 +149,20 @@ Beberapa server minta password selain private key (misalnya dengan `Authenticati
 - Password disimpan di keyring OS (Keychain di macOS, Secret Service seperti GNOME Keyring atau KWallet di Linux, Credential Manager di Windows), tidak pernah di `~/.ssh/config` atau file SSHGO mana pun.
 - SSHGO hanya menjawab prompt password milik host itu (`user@hostname`), jadi host ProxyJump tidak akan pernah menerimanya. Prompt lain, seperti passphrase key atau konfirmasi host key baru, tetap ditanyakan di terminal kamu.
 - Di form edit: biarkan kolom kosong untuk mempertahankan password yang tersimpan, ketik password baru untuk menggantinya, atau tekan `Ctrl+D` di kolom itu untuk menghapusnya. Menghapus host juga ikut menghapus password-nya.
+- Host yang punya password tersimpan ditandai 🔑 di tabel.
+- Kalau server menolak password yang tersimpan, SSHGO nggak mengirimnya ulang: kamu diminta mengetik password di terminal, lalu perbaiki yang tersimpan lewat `e`.
+- Mau pindah ke login pakai key saja? Tekan `c` di host itu: SSHGO menjalankan `ssh-copy-id` (password diisi otomatis) dan menyalin public key dari `IdentityFile` host itu, atau key default kalau host tidak punya `IdentityFile`. `ssh-copy-id` ikut terpasang bersama OpenSSH di Linux dan macOS, tapi tidak di Windows.
 - Butuh OpenSSH 8.4 atau lebih baru (`SSH_ASKPASS_REQUIRE`) dan keyring yang aktif. Tanpa keyring, host tetap jalan seperti biasa dan `ssh` sendiri yang akan menanyakan password.
+
+### 2FA (Verification Code)
+
+Kalau server minta kode 2FA setelah login, misalnya `(user@host) Verification code:` dari Google Authenticator, isi kolom **2FA TOTP secret** di form tambah atau edit host. SSHGO lalu membuat kodenya sendiri tiap kali konek, persis seperti aplikasi authenticator.
+
+- Secret-nya adalah kode base32 yang muncul saat 2FA dipasang (teks di bawah QR code, atau baris pertama `~/.google_authenticator` di server). Spasi dan huruf kecil boleh.
+- Disimpan di keyring OS, sama seperti password, dan diatur dengan cara yang sama di form edit (kosongkan untuk mempertahankan, `Ctrl+D` untuk menghapus). Host dengan secret tersimpan juga ditandai 🔑.
+- Yang didukung adalah TOTP standar: 6 digit, tiap 30 detik, SHA-1. Ini setelan bawaan Google Authenticator dan modul PAM-nya. Jam komputer kamu harus akurat.
+- Kalau kodenya ditolak, SSHGO nggak mengirim ulang dan minta kamu mengetik kode di terminal.
+- 2FA lewat push notification (Duo dan sejenisnya) atau SMS tidak bisa diisi otomatis.
 
 ### Port Forwarding
 

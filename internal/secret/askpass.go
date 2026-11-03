@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"golang.org/x/term"
 )
@@ -17,11 +19,14 @@ const (
 )
 
 // SSHEnv returns the environment to run ssh with for host: when the host has a
-// saved password, ssh is told to ask sshgo for it (SSH_ASKPASS, OpenSSH >= 8.4).
-// It returns nil (keep the current environment) when there is no password or
-// the keyring cannot be read, so ssh prompts on the terminal as usual.
+// saved password or TOTP secret, ssh is told to ask sshgo for them
+// (SSH_ASKPASS, OpenSSH >= 8.4). It returns nil (keep the current environment)
+// when there is none or the keyring cannot be read, so ssh prompts on the
+// terminal as usual.
 func SSHEnv(configFile, host string) []string {
-	if pw, err := Get(host); err != nil || pw == "" {
+	pw, _ := Get(host)
+	totp, _ := Get(TOTPKey(host))
+	if pw == "" && totp == "" {
 		return nil
 	}
 	target, err := sshTarget(configFile, host)
@@ -76,7 +81,8 @@ func IsAskpass() bool {
 }
 
 // Askpass answers one ssh prompt and returns the exit code: the saved password
-// for the password prompt of the target host, the user's own answer (typed on
+// for the password prompt of the target host, a code from the saved TOTP secret
+// for its verification code prompt, the user's own answer (typed on
 // the terminal) for anything else, such as a key passphrase or a host key check.
 func Askpass(args []string) int {
 	prompt := strings.Join(args, " ")
@@ -90,14 +96,45 @@ func Askpass(args []string) int {
 }
 
 func answer(prompt, host, target string) (string, error) {
-	if isPasswordPrompt(prompt, target) {
-		// shortcut: a wrong saved password is sent again on each retry (3 by
-		// default) until ssh gives up; fix it in the edit form
+	switch {
+	// Checked first: "One-time password:" also ends with "password:"
+	case isCodePrompt(prompt, target):
+		if s, err := Get(TOTPKey(host)); err == nil && s != "" {
+			if firstTry(markerPath("totp"), time.Now()) {
+				return TOTP(s, time.Now())
+			}
+			prompt = "sshgo: the code from the saved TOTP secret was rejected, type one (check the secret with e in sshgo, and the clock)\n" + prompt
+		}
+	case isPasswordPrompt(prompt, target):
 		if pw, err := Get(host); err == nil && pw != "" {
-			return pw, nil
+			if firstTry(markerPath("password"), time.Now()) {
+				return pw, nil
+			}
+			// ssh asks again: the server rejected the saved password
+			prompt = "sshgo: the saved password was rejected, type it (and fix it with e in sshgo)\n" + prompt
 		}
 	}
 	return askTTY(prompt)
+}
+
+// markerPath is the file that records that the saved password was sent to
+// the ssh process that runs this askpass (each prompt is a new askpass process)
+// shortcut: one tiny file per connection is left in the temp dir, cleaned
+// with it; remove it after the login if it ever matters
+func markerPath(kind string) string {
+	return filepath.Join(os.TempDir(), fmt.Sprintf("sshgo-askpass-%d-%s", os.Getppid(), kind))
+}
+
+// firstTry reports whether the saved password has not been sent yet to this
+// ssh process, and records that it is sent now. A marker older than a minute
+// belongs to an earlier ssh process that had the same pid.
+func firstTry(marker string, now time.Time) bool {
+	if info, err := os.Stat(marker); err == nil && now.Sub(info.ModTime()) < time.Minute {
+		return false
+	}
+	_ = os.WriteFile(marker, nil, 0o600)
+	_ = os.Chtimes(marker, now, now)
+	return true
 }
 
 // isPasswordPrompt matches the password prompts of the target only
@@ -106,6 +143,21 @@ func answer(prompt, host, target string) (string, error) {
 func isPasswordPrompt(prompt, target string) bool {
 	p := strings.ToLower(strings.TrimSpace(prompt))
 	return target != "" && strings.Contains(p, strings.ToLower(target)) && strings.HasSuffix(p, "password:")
+}
+
+// isCodePrompt matches the one-time code prompts of the target, such as
+// "(user@host) Verification code:" of the google-authenticator PAM module
+func isCodePrompt(prompt, target string) bool {
+	p := strings.ToLower(strings.TrimSpace(prompt))
+	if target == "" || !strings.Contains(p, strings.ToLower(target)) {
+		return false
+	}
+	for _, s := range []string{"verification code:", "one-time password:", "otp:", "authenticator code:"} {
+		if strings.HasSuffix(p, s) {
+			return true
+		}
+	}
+	return false
 }
 
 // askTTY asks the prompt on the terminal, as ssh would have done itself

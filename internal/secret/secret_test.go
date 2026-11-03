@@ -1,7 +1,9 @@
 package secret
 
 import (
+	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/zalando/go-keyring"
 )
@@ -79,5 +81,56 @@ func TestUpdateBlock(t *testing.T) {
 	}
 	if get("y") != "" {
 		t.Errorf("no password: y=%q", get("y"))
+	}
+}
+
+func TestFirstTry(t *testing.T) {
+	marker := filepath.Join(t.TempDir(), "marker")
+	now := time.Now()
+	if !firstTry(marker, now) {
+		t.Error("first prompt: the saved password must be sent")
+	}
+	if firstTry(marker, now.Add(2*time.Second)) {
+		t.Error("second prompt of the same ssh: the password was rejected, ask the user")
+	}
+	if !firstTry(marker, now.Add(2*time.Minute)) {
+		t.Error("an old marker from a reused pid must not block the password")
+	}
+}
+
+func TestTOTP(t *testing.T) {
+	// RFC 6238 test vectors (SHA-1), last 6 digits
+	secret := "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ" // "12345678901234567890"
+	for unix, want := range map[int64]string{59: "287082", 1111111109: "081804", 2000000000: "279037"} {
+		if got, err := TOTP(secret, time.Unix(unix, 0)); err != nil || got != want {
+			t.Errorf("TOTP(%d) = %q, %v, want %q", unix, got, err, want)
+		}
+	}
+}
+
+func TestParseTOTPSecret(t *testing.T) {
+	if got, err := ParseTOTPSecret(" gezd gnbv gy3t qojq== "); err != nil || got != "GEZDGNBVGY3TQOJQ" {
+		t.Errorf("ParseTOTPSecret() = %q, %v", got, err)
+	}
+	for _, bad := range []string{"", "not base32!", "12345678"} {
+		if _, err := ParseTOTPSecret(bad); err == nil {
+			t.Errorf("ParseTOTPSecret(%q) should fail", bad)
+		}
+	}
+}
+
+func TestIsCodePrompt(t *testing.T) {
+	target := "chad@18.143.119.254"
+	tests := map[string]bool{
+		"(chad@18.143.119.254) Verification code: ": true,
+		"(chad@18.143.119.254) One-time password: ": true,
+		"(jump@bastion) Verification code: ":        false,
+		"chad@18.143.119.254's password: ":          false,
+		"(chad@18.143.119.254) Password: ":          false,
+	}
+	for prompt, want := range tests {
+		if got := isCodePrompt(prompt, target); got != want {
+			t.Errorf("isCodePrompt(%q) = %v, want %v", prompt, got, want)
+		}
 	}
 }

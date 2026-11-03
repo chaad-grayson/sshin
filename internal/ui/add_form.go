@@ -50,7 +50,7 @@ func NewAddForm(hostname string, styles Styles, width, height int, configFile st
 		}
 	}
 
-	inputs := make([]textinput.Model, 12)
+	inputs := make([]textinput.Model, 13)
 
 	// Name input
 	inputs[nameInput] = textinput.New()
@@ -93,6 +93,14 @@ func NewAddForm(hostname string, styles Styles, width, height int, configFile st
 	inputs[passwordInput].EchoCharacter = '•'
 	inputs[passwordInput].CharLimit = 256
 	inputs[passwordInput].Width = 50
+
+	// TOTP secret input: answers "Verification code" prompts, saved in the OS keyring
+	inputs[totpInput] = textinput.New()
+	inputs[totpInput].Placeholder = "optional, base32 key for \"Verification code\""
+	inputs[totpInput].EchoMode = textinput.EchoPassword
+	inputs[totpInput].EchoCharacter = '•'
+	inputs[totpInput].CharLimit = 256
+	inputs[totpInput].Width = 50
 
 	// ProxyJump input
 	inputs[proxyJumpInput] = textinput.New()
@@ -161,6 +169,7 @@ const (
 	requestTTYInput
 	// General tab, after Identity File (added last to keep the indexes above)
 	passwordInput
+	totpInput
 )
 
 // Messages for communication with parent model
@@ -247,11 +256,11 @@ func (m *addFormModel) getFirstInputForTab(tab int) int {
 func (m *addFormModel) getInputsForCurrentTab() []int {
 	switch m.currentTab {
 	case tabGeneral:
-		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, proxyJumpInput, proxyCommandInput, tagsInput}
+		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, totpInput, proxyJumpInput, proxyCommandInput, tagsInput}
 	case tabAdvanced:
 		return []int{optionsInput, remoteCommandInput, requestTTYInput}
 	default:
-		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, proxyJumpInput, proxyCommandInput, tagsInput}
+		return []int{nameInput, hostnameInput, userInput, portInput, identityInput, passwordInput, totpInput, proxyJumpInput, proxyCommandInput, tagsInput}
 	}
 }
 
@@ -373,7 +382,7 @@ func (m *addFormModel) getMinimumHeight() int {
 	// Fields in current tab
 	var fieldsCount int
 	if m.currentTab == tabGeneral {
-		fieldsCount = 9 // 9 fields in general tab
+		fieldsCount = 10 // 10 fields in general tab
 	} else {
 		fieldsCount = 3 // 3 fields in advanced tab
 	}
@@ -437,6 +446,7 @@ func (m *addFormModel) renderGeneralTab() string {
 		{portInput, "Port"},
 		{identityInput, "Identity File"},
 		{passwordInput, "Password (saved in the OS keyring)"},
+		{totpInput, "2FA TOTP secret (saved in the OS keyring)"},
 		{proxyJumpInput, "ProxyJump"},
 		{proxyCommandInput, "ProxyCommand"},
 		{tagsInput, "Tags (comma-separated)"},
@@ -537,6 +547,13 @@ func (m *addFormModel) submitForm() tea.Cmd {
 		remoteCommand := strings.TrimSpace(m.inputs[remoteCommandInput].Value())
 		requestTTY := strings.TrimSpace(m.inputs[requestTTYInput].Value())
 		password := m.inputs[passwordInput].Value() // not trimmed: spaces can be part of it
+		totp := m.inputs[totpInput].Value()
+		if totp != "" {
+			var err error
+			if totp, err = secret.ParseTOTPSecret(totp); err != nil {
+				return addFormSubmitMsg{err: err}
+			}
+		}
 
 		// Set defaults
 		if user == "" {
@@ -588,6 +605,11 @@ func (m *addFormModel) submitForm() tea.Cmd {
 		if err == nil && password != "" {
 			if err = secret.Set(name, password); err != nil {
 				err = fmt.Errorf("host saved, but not its password: %w", err)
+			}
+		}
+		if err == nil && totp != "" {
+			if err = secret.Set(secret.TOTPKey(name), totp); err != nil {
+				err = fmt.Errorf("host saved, but not its TOTP secret: %w", err)
 			}
 		}
 		return addFormSubmitMsg{hostname: name, err: err}

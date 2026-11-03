@@ -5,6 +5,7 @@ import (
 
 	"github.com/chandra-bachtiar/sshgo/internal/config"
 	"github.com/chandra-bachtiar/sshgo/internal/history"
+	"github.com/chandra-bachtiar/sshgo/internal/secret"
 
 	"github.com/charmbracelet/bubbles/table"
 )
@@ -26,6 +27,9 @@ func (m *Model) calculateDynamicColumnWidths(hosts []config.SSHHost) (int, int, 
 	for _, host := range hosts {
 		// Name column includes status indicator (2 chars) + space (1 char) + name
 		nameLength := 3 + len(host.Name)
+		if m.hasPassword(host.Name) {
+			nameLength += 3 // passwordMark is 3 columns wide
+		}
 		if nameLength > maxNameLength {
 			maxNameLength = nameLength
 		}
@@ -152,8 +156,13 @@ func (m *Model) updateTableRows() {
 			}
 		}
 
+		name := statusIndicator + " " + host.Name
+		if m.hasPassword(host.Name) {
+			name += passwordMark
+		}
+
 		rows = append(rows, table.Row{
-			statusIndicator + " " + host.Name,
+			name,
 			host.Hostname,
 			// host.User,      // Commented to save space
 			// host.Port,      // Commented to save space
@@ -167,6 +176,25 @@ func (m *Model) updateTableRows() {
 	// Update table height and columns based on current terminal size
 	m.updateTableHeight()
 	m.updateTableColumns()
+}
+
+// passwordMark follows the name of the hosts that have a saved password or TOTP secret
+const passwordMark = " 🔑"
+
+// hasPassword reports whether host has a saved password or TOTP secret,
+// asking the keyring once per host until m.passwords is reset
+func (m *Model) hasPassword(host string) bool {
+	if m.passwords == nil {
+		m.passwords = map[string]bool{}
+	}
+	has, ok := m.passwords[host]
+	if !ok {
+		pw, _ := secret.Get(host)
+		totp, _ := secret.Get(secret.TOTPKey(host))
+		has = pw != "" || totp != ""
+		m.passwords[host] = has
+	}
+	return has
 }
 
 // updateTableHeight dynamically adjusts table height based on terminal size

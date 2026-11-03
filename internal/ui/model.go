@@ -108,6 +108,10 @@ type Model struct {
 	// Error handling
 	errorMessage string
 	showingError bool
+	messageOK    bool // the message reports a success, not an error
+
+	// passwords caches which hosts have a saved password (nil = reload)
+	passwords map[string]bool
 }
 
 // applyVisibilityFilter returns hosts filtered according to the showHidden flag.

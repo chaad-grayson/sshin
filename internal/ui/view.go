@@ -83,7 +83,12 @@ func (m Model) renderListView() string {
 			BorderForeground(lipgloss.Color("9")).
 			Align(lipgloss.Center)
 
-		components = append(components, errorStyle.Render("❌ "+m.errorMessage))
+		icon := "❌ "
+		if m.messageOK {
+			errorStyle = errorStyle.Foreground(lipgloss.Color("10")).Background(lipgloss.Color("22")).BorderForeground(lipgloss.Color("10"))
+			icon = "✅ "
+		}
+		components = append(components, errorStyle.Render(icon+m.errorMessage))
 	}
 
 	// Add indicator when hidden hosts are shown

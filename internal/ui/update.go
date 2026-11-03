@@ -169,8 +169,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if string(msg) == "clear" {
 			m.showingError = false
 			m.errorMessage = ""
+			m.messageOK = false
 		}
 		return m, nil
+
+	case copyIDDoneMsg:
+		if msg.err != nil {
+			return m, m.showMessage(fmt.Sprintf("ssh-copy-id on %s failed: %v", msg.host, msg.err), false)
+		}
+		return m, m.showMessage("Key copied to "+msg.host+": the next logins use it", true)
 
 	case addFormSubmitMsg:
 		if msg.err != nil {
@@ -194,6 +201,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 			m.allHosts = hosts
+			m.passwords = nil // a password may have been added, moved or removed
 			m.hosts = m.sortHosts(m.applyVisibilityFilter(hosts))
 
 			// Reapply search filter if there is one active
@@ -239,6 +247,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 			m.allHosts = hosts
+			m.passwords = nil // a password may have been added, moved or removed
 			m.hosts = m.sortHosts(m.applyVisibilityFilter(hosts))
 
 			// Reapply search filter if there is one active
@@ -285,6 +294,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 			m.allHosts = hosts
+			m.passwords = nil // a password may have been added, moved or removed
 			m.hosts = m.sortHosts(m.applyVisibilityFilter(hosts))
 
 			// Reapply search filter if there is one active
@@ -523,6 +533,7 @@ func (m Model) handleListViewKeys(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				if err == nil {
 					// The host is gone either way: a stale keyring entry is harmless
 					_ = secret.Delete(m.deleteHost.Name)
+					_ = secret.Delete(secret.TOTPKey(m.deleteHost.Name))
 				}
 			}
 			if err != nil {
@@ -550,6 +561,7 @@ func (m Model) handleListViewKeys(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 			m.allHosts = hosts
+			m.passwords = nil // a password may have been added, moved or removed
 			m.hosts = m.sortHosts(m.applyVisibilityFilter(hosts))
 
 			// Reapply search filter if there is one active
@@ -672,6 +684,18 @@ func (m Model) handleListViewKeys(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 		}
+	case "c":
+		if !m.searchMode && !m.deleteMode {
+			// Copy the public key to the selected host
+			selected := m.table.SelectedRow()
+			if len(selected) > 0 {
+				c, err := m.copyIDCmd(extractHostNameFromTableRow(selected[0]))
+				if err != nil {
+					return m, m.showMessage(err.Error(), false)
+				}
+				return m, c
+			}
+		}
 	case "p":
 		if !m.searchMode && !m.deleteMode {
 			// Ping all hosts
@@ -783,6 +807,14 @@ func (m *Model) applySearchFilter() {
 	}
 	m.updateTableRows()
 	m.table.SetCursor(0)
+}
+
+// showMessage shows msg above the search bar for a few seconds
+func (m *Model) showMessage(msg string, ok bool) tea.Cmd {
+	m.errorMessage = msg
+	m.showingError = true
+	m.messageOK = ok
+	return tea.Tick(4*time.Second, func(time.Time) tea.Msg { return errorMsg("clear") })
 }
 
 // focusTable gives the keyboard focus back to the host table
