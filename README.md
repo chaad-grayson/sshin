@@ -115,6 +115,7 @@ sshgo
 - `m` - Pindahkan host ke file config lain (butuh direktif SSH Include)
 - `f` - Atur port forwarding
 - `c` - Salin public key kamu ke host yang dipilih (`ssh-copy-id`)
+- `t` - Pindah ke tab Tunnels (dan kembali)
 - `p` - Cek ulang status semua host
 - `H` - Tampilkan/sembunyikan host `hidden`
 - `q` - Keluar
@@ -149,7 +150,7 @@ Beberapa server minta password selain private key (misalnya dengan `Authenticati
 - Password disimpan di keyring OS (Keychain di macOS, Secret Service seperti GNOME Keyring atau KWallet di Linux, Credential Manager di Windows), tidak pernah di `~/.ssh/config` atau file SSHGO mana pun.
 - SSHGO hanya menjawab prompt password milik host itu (`user@hostname`), jadi host ProxyJump tidak akan pernah menerimanya. Prompt lain, seperti passphrase key atau konfirmasi host key baru, tetap ditanyakan di terminal kamu.
 - Di form edit: biarkan kolom kosong untuk mempertahankan password yang tersimpan, ketik password baru untuk menggantinya, atau tekan `Ctrl+D` di kolom itu untuk menghapusnya. Menghapus host juga ikut menghapus password-nya.
-- Host yang punya password tersimpan ditandai 🔑 di tabel.
+- Kolom **Security** di tabel menunjukkan cara login tiap host: 🔑 private key dari `IdentityFile`, 🔑? tanpa `IdentityFile` (ssh otomatis mencoba key default `~/.ssh/id_rsa`, `id_ecdsa`, `id_ed25519`, dan key di ssh-agent; muncul kalau salah satunya ada), 🔒 password tersimpan, 📱 secret 2FA (TOTP) tersimpan. Penjelasan icon-nya juga ada di bawah tabel.
 - Kalau server menolak password yang tersimpan, SSHGO nggak mengirimnya ulang: kamu diminta mengetik password di terminal, lalu perbaiki yang tersimpan lewat `e`.
 - Mau pindah ke login pakai key saja? Tekan `c` di host itu: SSHGO menjalankan `ssh-copy-id` (password diisi otomatis) dan menyalin public key dari `IdentityFile` host itu, atau key default kalau host tidak punya `IdentityFile`. `ssh-copy-id` ikut terpasang bersama OpenSSH di Linux dan macOS, tapi tidak di Windows.
 - Butuh OpenSSH 8.4 atau lebih baru (`SSH_ASKPASS_REQUIRE`) dan keyring yang aktif. Tanpa keyring, host tetap jalan seperti biasa dan `ssh` sendiri yang akan menanyakan password.
@@ -159,10 +160,28 @@ Beberapa server minta password selain private key (misalnya dengan `Authenticati
 Kalau server minta kode 2FA setelah login, misalnya `(user@host) Verification code:` dari Google Authenticator, isi kolom **2FA TOTP secret** di form tambah atau edit host. SSHGO lalu membuat kodenya sendiri tiap kali konek, persis seperti aplikasi authenticator.
 
 - Secret-nya adalah kode base32 yang muncul saat 2FA dipasang (teks di bawah QR code, atau baris pertama `~/.google_authenticator` di server). Spasi dan huruf kecil boleh.
-- Disimpan di keyring OS, sama seperti password, dan diatur dengan cara yang sama di form edit (kosongkan untuk mempertahankan, `Ctrl+D` untuk menghapus). Host dengan secret tersimpan juga ditandai 🔑.
+- Disimpan di keyring OS, sama seperti password, dan diatur dengan cara yang sama di form edit (kosongkan untuk mempertahankan, `Ctrl+D` untuk menghapus). Host dengan secret tersimpan ditandai 📱 di kolom Security.
 - Yang didukung adalah TOTP standar: 6 digit, tiap 30 detik, SHA-1. Ini setelan bawaan Google Authenticator dan modul PAM-nya. Jam komputer kamu harus akurat.
 - Kalau kodenya ditolak, SSHGO nggak mengirim ulang dan minta kamu mengetik kode di terminal.
 - 2FA lewat push notification (Duo dan sejenisnya) atau SMS tidak bisa diisi otomatis.
+
+### Tunnel
+
+Tab **Tunnels** (tekan `t`) menyimpan tunnel yang bisa kamu nyalakan dan matikan, misalnya untuk database RDS yang cuma bisa diakses dari sebuah VM:
+
+```
+localhost:3307  →  VM (host SSH kamu)  →  mydb.xxxx.rds.amazonaws.com:3306
+```
+
+- `a` untuk menambah tunnel: isi nama, pilih host SSH yang sudah ada (←/→), port lokal, lalu host dan port tujuan yang bisa dijangkau dari host SSH itu.
+- `Enter` atau `Spasi` untuk on/off, `e` edit, `d` hapus (tekan dua kali), `r` cek ulang status.
+- Kolom **Last Active** menunjukkan `now` untuk tunnel yang sedang jalan, atau kapan terakhir tunnel itu dinyalakan atau dimatikan lewat SSHGO.
+- Tunnel jalan di background dengan perintah yang sama seperti `ssh -f -N -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes -L 3307:ENDPOINT:3306 host`, jadi tetap hidup setelah SSHGO ditutup. Statusnya tetap terbaca saat SSHGO dibuka lagi.
+- Password dan kode 2FA yang tersimpan untuk host itu diisi otomatis. Prompt lain tetap ditanyakan di terminal sebelum tunnel pindah ke background.
+- Kalau gagal (misalnya port lokal sudah dipakai), alasannya muncul di layar. Log lengkapnya ada di `~/.config/sshgo/tunnels/<nama>.log`, dan daftar tunnel di `~/.config/sshgo/tunnels.json`.
+- Belum didukung di Windows, karena butuh ControlMaster OpenSSH.
+
+Beda dengan `f` (Port Forwarding) di bawah: `f` membuka sesi forwarding sekali jalan di terminal, sedangkan tab Tunnels menyimpan tunnel yang bisa dinyalakan kapan saja.
 
 ### Port Forwarding
 

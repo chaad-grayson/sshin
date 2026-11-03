@@ -43,6 +43,10 @@ func (m Model) View() string {
 		if m.fileSelectorForm != nil {
 			return m.fileSelectorForm.View()
 		}
+	case ViewTunnelForm:
+		if m.tunnels.form != nil {
+			return m.tunnels.form.view(m.styles)
+		}
 	case ViewList:
 		return m.renderListView()
 	}
@@ -91,6 +95,11 @@ func (m Model) renderListView() string {
 		components = append(components, errorStyle.Render(icon+m.errorMessage))
 	}
 
+	components = append(components, m.renderTabs())
+	if m.tunnels.active {
+		return m.styles.App.Render(lipgloss.JoinVertical(lipgloss.Left, append(components, m.renderTunnelTab()...)...))
+	}
+
 	// Add indicator when hidden hosts are shown
 	if m.showHidden {
 		hiddenBannerStyle := lipgloss.NewStyle().
@@ -116,6 +125,8 @@ func (m Model) renderListView() string {
 		// The table is focused, use the focused style with the primary color
 		components = append(components, m.styles.TableFocused.Render(m.table.View()))
 	}
+
+	components = append(components, m.styles.HelpText.Render(securityLegend))
 
 	// Add the help text
 	var helpText string

@@ -104,6 +104,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Update table height and columns based on new window size
 		m.updateTableHeight()
 		m.updateTableColumns()
+		if m.tunnels.active {
+			m.reloadTunnels()
+		}
 
 		// Update sub-forms if they exist
 		if m.addForm != nil {
@@ -173,6 +176,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 		return m, nil
 
+	case tunnelStartedMsg:
+		return m.tunnelStarted(msg)
+
 	case copyIDDoneMsg:
 		if msg.err != nil {
 			return m, m.showMessage(fmt.Sprintf("ssh-copy-id on %s failed: %v", msg.host, msg.err), false)
@@ -201,7 +207,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 			m.allHosts = hosts
-			m.passwords = nil // a password may have been added, moved or removed
+			m.secrets = nil // a password may have been added, moved or removed
 			m.hosts = m.sortHosts(m.applyVisibilityFilter(hosts))
 
 			// Reapply search filter if there is one active
@@ -247,7 +253,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 			m.allHosts = hosts
-			m.passwords = nil // a password may have been added, moved or removed
+			m.secrets = nil // a password may have been added, moved or removed
 			m.hosts = m.sortHosts(m.applyVisibilityFilter(hosts))
 
 			// Reapply search filter if there is one active
@@ -294,7 +300,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 			m.allHosts = hosts
-			m.passwords = nil // a password may have been added, moved or removed
+			m.secrets = nil // a password may have been added, moved or removed
 			m.hosts = m.sortHosts(m.applyVisibilityFilter(hosts))
 
 			// Reapply search filter if there is one active
@@ -407,6 +413,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		// Handle view-specific key presses
 		switch m.viewMode {
+		case ViewTunnelForm:
+			return m.handleTunnelFormKeys(msg)
 		case ViewAdd:
 			if m.addForm != nil {
 				var newForm *addFormModel
@@ -468,8 +476,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m Model) handleListViewKeys(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	key := msg.String()
+	if m.tunnels.active {
+		return m.handleTunnelKeys(msg)
+	}
 
 	switch key {
+	case "t":
+		if !m.searchMode && !m.deleteMode {
+			m.showTunnels()
+			return m, nil
+		}
 	case "esc", "ctrl+c":
 		if m.deleteMode {
 			// Exit delete mode
@@ -561,7 +577,7 @@ func (m Model) handleListViewKeys(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 			m.allHosts = hosts
-			m.passwords = nil // a password may have been added, moved or removed
+			m.secrets = nil // a password may have been added, moved or removed
 			m.hosts = m.sortHosts(m.applyVisibilityFilter(hosts))
 
 			// Reapply search filter if there is one active

@@ -2,7 +2,6 @@ package ui
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/chandra-bachtiar/sshgo/internal/config"
@@ -55,6 +54,7 @@ func NewModel(hosts []config.SSHHost, configFile string, searchMode bool, curren
 		allHosts:       hosts,
 		historyManager: historyManager,
 		pingManager:    pingManager,
+		defaultKey:     hasDefaultKey(),
 		sortMode:       SortByName,
 		configFile:     configFile,
 		currentVersion: currentVersion,
@@ -90,51 +90,16 @@ func NewModel(hosts []config.SSHHost, configFile string, searchMode bool, curren
 	columns := []table.Column{
 		{Title: "Name", Width: nameWidth},
 		{Title: "Hostname", Width: hostnameWidth},
+		{Title: "Security", Width: securityWidth},
 		// {Title: "User", Width: 12},                  // Commented to save space
 		// {Title: "Port", Width: 6},                   // Commented to save space
 		{Title: "Tags", Width: tagsWidth},
 		{Title: "Last Login", Width: lastLoginWidth},
 	}
 
-	// Convert hosts to table rows
-	var rows []table.Row
-	for _, host := range sortedHosts {
-		// Get ping status indicator
-		statusIndicator := m.getPingStatusIndicator(host.Name)
-
-		// Format tags for display
-		var tagsStr string
-		if len(host.Tags) > 0 {
-			// Add the # prefix to each tag and join them with spaces
-			var formattedTags []string
-			for _, tag := range host.Tags {
-				formattedTags = append(formattedTags, "#"+tag)
-			}
-			tagsStr = strings.Join(formattedTags, " ")
-		}
-
-		// Format last login information
-		var lastLoginStr string
-		if historyManager != nil {
-			if lastConnect, exists := historyManager.GetLastConnectionTime(host.Name); exists {
-				lastLoginStr = formatTimeAgo(lastConnect)
-			}
-		}
-
-		rows = append(rows, table.Row{
-			statusIndicator + " " + host.Name,
-			host.Hostname,
-			// host.User,        // Commented to save space
-			// host.Port,        // Commented to save space
-			tagsStr,
-			lastLoginStr,
-		})
-	}
-
 	// Create the table with initial height (will be updated on first WindowSizeMsg)
 	t := table.New(
 		table.WithColumns(columns),
-		table.WithRows(rows),
 		table.WithFocused(!searchMode),
 		table.WithHeight(10), // Initial height, will be recalculated dynamically
 	)
@@ -154,6 +119,7 @@ func NewModel(hosts []config.SSHHost, configFile string, searchMode bool, curren
 	m.table = t
 	m.searchInput = ti
 	m.filteredHosts = sortedHosts
+	m.updateTableRows()
 
 	// Initialize table styles based on initial focus state
 	m.updateTableStyles()

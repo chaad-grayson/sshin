@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/chandra-bachtiar/sshgo/internal/config"
@@ -27,9 +29,6 @@ func (m *Model) calculateDynamicColumnWidths(hosts []config.SSHHost) (int, int, 
 	for _, host := range hosts {
 		// Name column includes status indicator (2 chars) + space (1 char) + name
 		nameLength := 3 + len(host.Name)
-		if m.hasPassword(host.Name) {
-			nameLength += 3 // passwordMark is 3 columns wide
-		}
 		if nameLength > maxNameLength {
 			maxNameLength = nameLength
 		}
@@ -70,7 +69,8 @@ func (m *Model) calculateDynamicColumnWidths(hosts []config.SSHHost) (int, int, 
 
 	// Calculate available width (minus borders and separators)
 	// Table has borders (2 chars) + column separators (3 chars between 4 columns)
-	availableWidth := m.width - 5
+	// The Security column has a fixed width
+	availableWidth := m.width - 5 - securityWidth - 1
 
 	totalNeededWidth := maxNameLength + maxHostnameLength + maxTagsLength + maxLastLoginLength
 
@@ -156,14 +156,10 @@ func (m *Model) updateTableRows() {
 			}
 		}
 
-		name := statusIndicator + " " + host.Name
-		if m.hasPassword(host.Name) {
-			name += passwordMark
-		}
-
 		rows = append(rows, table.Row{
-			name,
+			statusIndicator + " " + host.Name,
 			host.Hostname,
+			m.securityIcons(host),
 			// host.User,      // Commented to save space
 			// host.Port,      // Commented to save space
 			tagsStr,
@@ -178,23 +174,63 @@ func (m *Model) updateTableRows() {
 	m.updateTableColumns()
 }
 
-// passwordMark follows the name of the hosts that have a saved password or TOTP secret
-const passwordMark = " 🔑"
+// Icons of the Security column, explained by securityLegend under the table
+const (
+	iconKey        = "🔑"
+	iconDefaultKey = "🔑?"
+	iconPassword   = "🔒"
+	iconTOTP       = "📱"
+	// "🔑? 🔒 📱" (9 columns) and the cell padding
+	securityWidth  = 11
+	securityLegend = " " + iconKey + " key (IdentityFile) • " + iconDefaultKey + " default key (~/.ssh/id_*, agent) • " +
+		iconPassword + " password • " + iconTOTP + " 2FA (TOTP)"
+)
 
-// hasPassword reports whether host has a saved password or TOTP secret,
-// asking the keyring once per host until m.passwords is reset
-func (m *Model) hasPassword(host string) bool {
-	if m.passwords == nil {
-		m.passwords = map[string]bool{}
+// hasDefaultKey reports whether ssh has a key to try on a host without
+// IdentityFile: one of its default key files, or a running ssh-agent
+func hasDefaultKey() bool {
+	if os.Getenv("SSH_AUTH_SOCK") != "" {
+		return true
 	}
-	has, ok := m.passwords[host]
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return false
+	}
+	for _, name := range []string{"id_rsa", "id_ecdsa", "id_ecdsa_sk", "id_ed25519", "id_ed25519_sk"} {
+		if _, err := os.Stat(filepath.Join(home, ".ssh", name)); err == nil {
+			return true
+		}
+	}
+	return false
+}
+
+// securityIcons returns the Security column of host: its key from the SSH
+// config, its password and TOTP secret from the keyring, which is asked once
+// per host until m.secrets is reset
+func (m *Model) securityIcons(host config.SSHHost) string {
+	if m.secrets == nil {
+		m.secrets = map[string]string{}
+	}
+	saved, ok := m.secrets[host.Name]
 	if !ok {
-		pw, _ := secret.Get(host)
-		totp, _ := secret.Get(secret.TOTPKey(host))
-		has = pw != "" || totp != ""
-		m.passwords[host] = has
+		var icons []string
+		if pw, _ := secret.Get(host.Name); pw != "" {
+			icons = append(icons, iconPassword)
+		}
+		if totp, _ := secret.Get(secret.TOTPKey(host.Name)); totp != "" {
+			icons = append(icons, iconTOTP)
+		}
+		saved = strings.Join(icons, " ")
+		m.secrets[host.Name] = saved
 	}
-	return has
+	key := iconKey
+	if host.Identity == "" && len(host.ExtraIdentities) == 0 {
+		if !m.defaultKey {
+			return saved
+		}
+		key = iconDefaultKey
+	}
+	return strings.TrimSpace(key + " " + saved)
 }
 
 // updateTableHeight dynamically adjusts table height based on terminal size
@@ -212,7 +248,7 @@ func (m *Model) updateTableHeight() {
 	// - App margins/spacing: 3 lines
 	// - Safety margin: 3 lines (to ensure UI elements are always visible)
 	// Total reserved: 14 lines minimum to preserve essential UI elements
-	reservedHeight := 14
+	reservedHeight := 16 // + 1 for the SSH / Tunnels tabs, + 1 for the icon legend
 	availableHeight := m.height - reservedHeight
 	hostCount := len(m.table.Rows())
 
@@ -273,6 +309,7 @@ func (m *Model) updateTableColumns() {
 	columns := []table.Column{
 		{Title: nameTitle, Width: nameWidth},
 		{Title: "Hostname", Width: hostnameWidth},
+		{Title: "Security", Width: securityWidth},
 		// {Title: "User", Width: userWidth},      // Commented to save space
 		// {Title: "Port", Width: portWidth},      // Commented to save space
 		{Title: "Tags", Width: tagsWidth},

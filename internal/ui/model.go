@@ -42,6 +42,7 @@ const (
 	ViewPortForward
 	ViewHelp
 	ViewFileSelector
+	ViewTunnelForm
 )
 
 // PortForwardType defines the type of port forwarding
@@ -110,8 +111,14 @@ type Model struct {
 	showingError bool
 	messageOK    bool // the message reports a success, not an error
 
-	// passwords caches which hosts have a saved password (nil = reload)
-	passwords map[string]bool
+	// Tunnels tab of the list view
+	tunnels tunnelTab
+
+	// secrets caches the keyring icons of each host (nil = reload)
+	secrets map[string]string
+
+	// defaultKey: ssh has a default key file or an agent to try on hosts without IdentityFile
+	defaultKey bool
 }
 
 // applyVisibilityFilter returns hosts filtered according to the showHidden flag.

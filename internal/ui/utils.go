@@ -95,7 +95,7 @@ func (m *Model) getPingStatusIndicator(hostName string) string {
 func extractHostNameFromTableRow(firstColumn string) string {
 	// The first column format is: "🟢 hostname" or "⚫ hostname" etc.
 	// We need to remove the emoji and space to get just the hostname
-	parts := strings.Fields(strings.TrimSuffix(firstColumn, passwordMark))
+	parts := strings.Fields(firstColumn)
 	if len(parts) >= 2 {
 		// Return everything after the first part (the emoji)
 		return strings.Join(parts[1:], " ")
