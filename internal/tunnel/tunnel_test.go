@@ -1,10 +1,9 @@
 package tunnel
 
 import (
-	"net"
 	"os"
-	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -21,6 +20,7 @@ func TestValidate(t *testing.T) {
 	}
 	bad := []func(*Tunnel){
 		func(t *Tunnel) { t.Name = "has space" },
+		func(t *Tunnel) { t.Name = strings.Repeat("a", 33) },
 		func(t *Tunnel) { t.Host = "" },
 		func(t *Tunnel) { t.LocalPort = 0 },
 		func(t *Tunnel) { t.RemoteHost = "a:b" },
@@ -36,9 +36,9 @@ func TestValidate(t *testing.T) {
 }
 
 func TestArgs(t *testing.T) {
-	got := rds.args("/c", "/s.sock", "/l.log")
-	want := []string{"-F", "/c", "-f", "-N", "-M", "-S", "/s.sock", "-E", "/l.log",
-		"-o", "ControlPersist=no", "-o", "ServerAliveInterval=30", "-o", "ServerAliveCountMax=3",
+	got := rds.args("/c", "/l.log", "-f", "-M", "-S", "/s.sock", "-o", "ControlPersist=no")
+	want := []string{"-F", "/c", "-f", "-M", "-S", "/s.sock", "-o", "ControlPersist=no",
+		"-N", "-E", "/l.log", "-o", "ServerAliveInterval=30", "-o", "ServerAliveCountMax=3",
 		"-o", "ExitOnForwardFailure=yes", "-L", "3307:db.example.rds.amazonaws.com:3306", "vm"}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("args =\n%v\nwant\n%v", got, want)
@@ -63,25 +63,5 @@ func TestSaveLoad(t *testing.T) {
 	got, _ = Load()
 	if len(got) != 1 || time.Since(got[0].LastActive) > time.Minute {
 		t.Errorf("Touch() did not set LastActive: %v", got)
-	}
-}
-
-func TestRunning(t *testing.T) {
-	if rds.Running() {
-		t.Fatal("no socket: must be off")
-	}
-	sock, _ := rds.path(".sock")
-	os.MkdirAll(filepath.Dir(sock), 0o700)
-	l, err := net.Listen("unix", sock)
-	if err != nil {
-		t.Skip("unix sockets unavailable:", err)
-	}
-	if !rds.Running() {
-		t.Error("listening socket: must be on")
-	}
-	l.Close()
-	os.WriteFile(sock, nil, 0o600) // stale file left by a dead ssh
-	if rds.Running() {
-		t.Error("stale socket file: must be off")
 	}
 }

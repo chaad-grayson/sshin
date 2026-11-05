@@ -177,8 +177,9 @@ localhost:3307  →  VM (host SSH kamu)  →  mydb.xxxx.rds.amazonaws.com:3306
 - `Enter` atau `Spasi` untuk on/off, `e` edit, `d` hapus (tekan dua kali), `r` cek ulang status.
 - Kolom **Last Active** menunjukkan `now` untuk tunnel yang sedang jalan, atau kapan terakhir tunnel itu dinyalakan atau dimatikan lewat SSHIN.
 - Tunnel jalan di background dengan perintah yang sama seperti `ssh -f -N -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes -L 3307:ENDPOINT:3306 host`, jadi tetap hidup setelah SSHIN ditutup. Statusnya tetap terbaca saat SSHIN dibuka lagi.
+- Linux dan macOS: tunnel tetap hidup setelah SSHIN atau terminalnya ditutup. Windows: OpenSSH di Windows tidak punya `-f` dan ControlMaster, jadi `ssh` jalan sebagai proses latar dari SSHIN (dilacak lewat `<nama>.pid`). Tunnel tetap hidup setelah SSHIN ditutup, tapi ikut berhenti kalau jendela terminalnya ditutup.
 - Password dan kode 2FA yang tersimpan untuk host itu diisi otomatis. Prompt lain tetap ditanyakan di terminal sebelum tunnel pindah ke background.
-- Kalau gagal (misalnya port lokal sudah dipakai), alasannya muncul di layar. Log lengkapnya ada di `~/.config/sshin/tunnels/<nama>.log`, dan daftar tunnel di `~/.config/sshin/tunnels.json`.
+- Kalau gagal (misalnya port lokal sudah dipakai), alasannya muncul di layar. Log lengkapnya ada di `~/.config/sshin/tunnels/<nama>.log` (Windows: `%APPDATA%\sshin\tunnels\`), dan daftar tunnel di `~/.config/sshin/tunnels.json`.
 - Belum didukung di Windows, karena butuh ControlMaster OpenSSH.
 
 Beda dengan `f` (Port Forwarding) di bawah: `f` membuka sesi forwarding sekali jalan di terminal, sedangkan tab Tunnels menyimpan tunnel yang bisa dinyalakan kapan saja.

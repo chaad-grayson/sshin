@@ -1,19 +1,18 @@
 // Package tunnel keeps named SSH tunnels (local port forwards) that run in the
 // background and can be turned on and off, also from another sshin session.
-// Each running tunnel is an ssh ControlMaster: its socket tells whether it
-// runs, and stops it with "ssh -O exit".
+// How a tunnel runs in the background depends on the OS: see tunnel_unix.go
+// and tunnel_windows.go.
 package tunnel
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -32,13 +31,14 @@ type Tunnel struct {
 	LastActive time.Time `json:"last_active,omitzero"`
 }
 
-var validName = regexp.MustCompile(`^[A-Za-z0-9._-]+$`)
+// 32 at most: macOS limits a unix socket path to 104 bytes
+var validName = regexp.MustCompile(`^[A-Za-z0-9._-]{1,32}$`)
 
 // Validate checks the fields of t
 func (t Tunnel) Validate() error {
 	switch {
 	case !validName.MatchString(t.Name):
-		return errors.New("name: letters, digits, '.', '_' and '-' only")
+		return errors.New("name: up to 32 letters, digits, '.', '_' and '-'")
 	case t.Host == "":
 		return errors.New("choose an SSH host")
 	case t.LocalPort < 1 || t.LocalPort > 65535:
@@ -135,74 +135,61 @@ func (t Tunnel) path(ext string) (string, error) {
 	return filepath.Join(d, t.Name+ext), nil
 }
 
-// Running reports whether the ssh process of t is up
-func (t Tunnel) Running() bool {
-	sock, err := t.path(".sock")
-	if err != nil {
-		return false
-	}
-	c, err := net.DialTimeout("unix", sock, 300*time.Millisecond)
-	if err != nil {
-		return false
-	}
-	c.Close()
-	return true
+// Starter is the ssh command that opens a tunnel. It runs in the foreground,
+// so ssh can ask its prompts on the terminal, until the tunnel is up, then
+// the tunnel stays on in the background. It fits tea.Exec.
+type Starter struct {
+	*exec.Cmd
+	run func() error
 }
 
-// StartCmd returns the ssh command that opens t and goes to the background
-// once connected (-f), so prompts it may need are asked on the terminal first.
-// Its messages go to a log file: LastError reads them when it fails.
-func (t Tunnel) StartCmd(configFile string) (*exec.Cmd, error) {
-	if runtime.GOOS == "windows" {
-		// shortcut: needs ssh ControlMaster, which Windows OpenSSH lacks; track the pid there if needed
-		return nil, errors.New("tunnels are not supported on Windows yet")
+func (s *Starter) Run() error { return s.run() }
+
+func (s *Starter) SetStdin(r io.Reader) {
+	if s.Stdin == nil {
+		s.Stdin = r
 	}
-	sock, err := t.path(".sock")
-	if err != nil {
-		return nil, err
+}
+
+func (s *Starter) SetStdout(w io.Writer) {
+	if s.Stdout == nil {
+		s.Stdout = w
 	}
+}
+
+func (s *Starter) SetStderr(w io.Writer) {
+	if s.Stderr == nil {
+		s.Stderr = w
+	}
+}
+
+// prepare makes the tunnels dir and empties the log of t, so each run starts
+// with an empty log. It returns the log path.
+func (t Tunnel) prepare() (string, error) {
 	log, err := t.path(".log")
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	if err := os.MkdirAll(filepath.Dir(sock), 0o700); err != nil {
-		return nil, err
+	if err := os.MkdirAll(filepath.Dir(log), 0o700); err != nil {
+		return "", err
 	}
-	// Start each run with an empty log; a stale socket would block -M
-	if err := os.WriteFile(log, nil, 0o600); err != nil {
-		return nil, err
-	}
-	_ = os.Remove(sock)
-	return exec.Command("ssh", t.args(configFile, sock, log)...), nil
+	return log, os.WriteFile(log, nil, 0o600)
 }
 
-func (t Tunnel) args(configFile, sock, log string) []string {
+func (t Tunnel) args(configFile, log string, extra ...string) []string {
 	var args []string
 	if configFile != "" {
 		args = append(args, "-F", configFile)
 	}
+	args = append(args, extra...)
 	return append(args,
-		"-f", "-N", "-M", "-S", sock, "-E", log,
-		"-o", "ControlPersist=no",
+		"-N", "-E", log,
 		"-o", "ServerAliveInterval=30",
 		"-o", "ServerAliveCountMax=3",
 		"-o", "ExitOnForwardFailure=yes",
 		"-L", t.Forward(),
 		t.Host,
 	)
-}
-
-// Stop stops the ssh process of t
-func (t Tunnel) Stop() error {
-	sock, err := t.path(".sock")
-	if err != nil {
-		return err
-	}
-	out, err := exec.Command("ssh", "-S", sock, "-O", "exit", t.Host).CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("%v: %s", err, strings.TrimSpace(string(out)))
-	}
-	return nil
 }
 
 // LastError returns what ssh logged on the last start, for a failed one

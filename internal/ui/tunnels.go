@@ -150,7 +150,7 @@ func (m Model) handleTunnelKeys(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			return m, m.showMessage(err.Error(), false)
 		}
 		c.Env = secret.SSHEnv(m.configFile, t.Host)
-		return m, tea.ExecProcess(c, func(err error) tea.Msg { return tunnelStartedMsg{t, err} })
+		return m, tea.Exec(c, func(err error) tea.Msg { return tunnelStartedMsg{t, err} })
 	case "e":
 		if t.Running() {
 			return m, m.showMessage("stop "+t.Name+" before editing it", false)
