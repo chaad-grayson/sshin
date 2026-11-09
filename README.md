@@ -561,8 +561,20 @@ SSHIN punya pengecekan versi bawaan yang memberi tahu kalau ada update:
 - **Bisa diatur** - Bisa dimatikan untuk lingkungan offline atau tanpa internet
 
 **Notifikasi update muncul:**
-- Di TUI utama sebagai notifikasi kecil
+- Di TUI utama sebagai notifikasi kecil, lengkap dengan perintah update untuk OS kamu
 - Hanya kalau ada versi stabil yang lebih baru
+
+**Cara update** (jalankan ulang installer, versi lama langsung ditimpa):
+
+Linux/macOS:
+```bash
+curl -sSL https://raw.githubusercontent.com/chaad-grayson/sshin/main/install/unix.sh | bash
+```
+
+Windows (PowerShell, jawab `y` saat ditanya):
+```powershell
+irm https://raw.githubusercontent.com/chaad-grayson/sshin/main/install/windows.ps1 | iex
+```
 
 **Mematikan pengecekan update:**
 

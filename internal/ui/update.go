@@ -158,6 +158,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Handle version check result
 		if msg != nil {
 			m.updateInfo = msg
+			m.updateTableHeight()
 		}
 		return m, nil
 

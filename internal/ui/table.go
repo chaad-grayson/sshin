@@ -252,6 +252,9 @@ func (m *Model) updateTableHeight() {
 	if !m.showBanner() {
 		reservedHeight -= bannerHeight
 	}
+	if m.updateInfo != nil && m.updateInfo.Available {
+		reservedHeight++ // update command line under the update banner
+	}
 	availableHeight := m.height - reservedHeight
 	hostCount := len(m.table.Rows())
 

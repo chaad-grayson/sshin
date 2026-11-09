@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -142,4 +143,12 @@ func CheckForUpdates(ctx context.Context, currentVersion string) (*UpdateInfo, e
 		ReleaseURL:  release.HTMLURL,
 		ReleaseName: release.Name,
 	}, nil
+}
+
+// UpdateCommand returns the one-line installer command that upgrades sshin on this OS.
+func UpdateCommand() string {
+	if runtime.GOOS == "windows" {
+		return "irm https://raw.githubusercontent.com/chaad-grayson/sshin/main/install/windows.ps1 | iex"
+	}
+	return "curl -sSL https://raw.githubusercontent.com/chaad-grayson/sshin/main/install/unix.sh | bash"
 }

@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
+
+	"github.com/chaad-grayson/sshin/internal/version"
 )
 
 // View renders the complete user interface
@@ -65,9 +67,10 @@ func (m Model) renderListView() string {
 
 	// Add update notification if available (between title and search)
 	if m.updateInfo != nil && m.updateInfo.Available {
-		updateText := fmt.Sprintf("🚀 Update available: %s → %s",
+		updateText := fmt.Sprintf("🚀 Update available: %s → %s\nUpdate: %s",
 			m.updateInfo.CurrentVer,
-			m.updateInfo.LatestVer)
+			m.updateInfo.LatestVer,
+			version.UpdateCommand())
 
 		updateStyle := lipgloss.NewStyle().
 			Foreground(lipgloss.Color("10")). // Green color
@@ -218,33 +221,6 @@ func (m Model) renderDeleteConfirmation() string {
 		Width(maxw + 4) // +4 = internal margin (2 spaces of left/right padding)
 
 	return box.Render(raw)
-}
-
-// renderUpdateNotification renders the update notification banner
-func (m Model) renderUpdateNotification() string {
-	if m.updateInfo == nil || !m.updateInfo.Available {
-		return ""
-	}
-
-	// Create the notification message
-	message := fmt.Sprintf("🚀 Update available: %s → %s",
-		m.updateInfo.CurrentVer,
-		m.updateInfo.LatestVer)
-
-	// Add release URL if available
-	if m.updateInfo.ReleaseURL != "" {
-		message += fmt.Sprintf(" • View release: %s", m.updateInfo.ReleaseURL)
-	}
-
-	// Style the notification with a bright color to make it stand out
-	notificationStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#00FF00")). // Bright green
-		Bold(true).
-		Padding(0, 1).
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("#00AA00")) // Darker green border
-
-	return notificationStyle.Render(message)
 }
 
 // bannerHeight is the number of lines of the ASCII title (with its blank lines)
