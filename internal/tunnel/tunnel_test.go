@@ -65,3 +65,22 @@ func TestSaveLoad(t *testing.T) {
 		t.Errorf("Touch() did not set LastActive: %v", got)
 	}
 }
+
+func TestListenerPIDs(t *testing.T) {
+	out := `
+Active Connections
+
+  Proto  Local Address          Foreign Address        State           PID
+  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       1000
+  TCP    127.0.0.1:15432        0.0.0.0:0              ABHÖREN         4242
+  TCP    127.0.0.1:15432        127.0.0.1:50000        ESTABLISHED     4242
+  TCP    127.0.0.1:50000        127.0.0.1:15432        ESTABLISHED     777
+  TCP    [::1]:15432            [::]:0                 LISTENING       4242
+  TCP    127.0.0.1:154320       0.0.0.0:0              LISTENING       9
+  UDP    0.0.0.0:15432          *:*                                    5
+`
+	got := listenerPIDs(out, 15432)
+	if len(got) != 1 || !got[4242] {
+		t.Fatalf("listenerPIDs = %v, want only 4242", got)
+	}
+}

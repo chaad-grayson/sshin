@@ -216,3 +216,24 @@ func ParsePort(s string) int {
 	p, _ := strconv.Atoi(strings.TrimSpace(s))
 	return p
 }
+
+// listenerPIDs returns the pids that listen on TCP port, read from the output
+// of "netstat -ano" (Windows). A listening socket is the one whose foreign
+// address is 0.0.0.0:0 or [::]:0; the state column is localized, so it is not used.
+func listenerPIDs(netstat string, port int) map[int]bool {
+	pids := map[int]bool{}
+	suffix := ":" + strconv.Itoa(port)
+	for _, line := range strings.Split(netstat, "\n") {
+		f := strings.Fields(line)
+		if len(f) != 5 || f[0] != "TCP" || !strings.HasSuffix(f[1], suffix) {
+			continue
+		}
+		if f[2] != "0.0.0.0:0" && f[2] != "[::]:0" {
+			continue
+		}
+		if pid, err := strconv.Atoi(f[4]); err == nil {
+			pids[pid] = true
+		}
+	}
+	return pids
+}

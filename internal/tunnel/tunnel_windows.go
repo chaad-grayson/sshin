@@ -3,7 +3,6 @@ package tunnel
 import (
 	"errors"
 	"fmt"
-	"net"
 	"os"
 	"os/exec"
 	"strconv"
@@ -30,29 +29,37 @@ func (t Tunnel) pid() (int, error) {
 	return strconv.Atoi(strings.TrimSpace(string(data)))
 }
 
-// listening reports whether something accepts connections on the local port of t
-func (t Tunnel) listening() bool {
-	c, err := net.DialTimeout("tcp", net.JoinHostPort("localhost", strconv.Itoa(t.LocalPort)), 300*time.Millisecond)
+// listeners returns the pids listening on the local port of t. It reads the
+// socket table instead of connecting: a test connection would go through the
+// tunnel to the remote service, and services such as MySQL count aborted
+// connections and then block the SSH server's address.
+func (t Tunnel) listeners() map[int]bool {
+	out, err := exec.Command("netstat", "-ano", "-p", "TCP").Output()
 	if err != nil {
-		return false
+		return nil
 	}
-	c.Close()
-	return true
+	pids := listenerPIDs(string(out), t.LocalPort)
+	if out6, err := exec.Command("netstat", "-ano", "-p", "TCPv6").Output(); err == nil {
+		for pid := range listenerPIDs(string(out6), t.LocalPort) {
+			pids[pid] = true
+		}
+	}
+	return pids
 }
 
-// Running reports whether the ssh process of t is up. The port check guards
-// against a pid that Windows gave to another process after ssh exited.
+// listening reports whether anything listens on the local port of t
+func (t Tunnel) listening() bool {
+	return len(t.listeners()) > 0
+}
+
+// Running reports whether the ssh process of t is up: the pid in its pid file
+// listens on its local port (which also rules out a pid Windows reused)
 func (t Tunnel) Running() bool {
 	pid, err := t.pid()
 	if err != nil {
 		return false
 	}
-	p, err := os.FindProcess(pid) // fails when no such process exists
-	if err != nil {
-		return false
-	}
-	p.Release()
-	return t.listening()
+	return t.listeners()[pid]
 }
 
 // StartCmd returns the command that starts ssh for t and returns once the
@@ -97,7 +104,7 @@ func (t Tunnel) StartCmd(configFile string) (*Starter, error) {
 				}
 				return err
 			case <-tick.C:
-				if t.listening() {
+				if t.listeners()[c.Process.Pid] {
 					return nil
 				}
 			}
