@@ -2,6 +2,9 @@ package connectivity
 
 import (
 	"context"
+	"io"
+	"net"
+	"runtime"
 	"testing"
 	"time"
 
@@ -140,5 +143,54 @@ func TestPingHost_Basic(t *testing.T) {
 	status := pm.GetStatus("test")
 	if status == StatusUnknown {
 		t.Error("Expected status to be set after ping attempt")
+	}
+}
+
+// The probe must not speak SSH to the server: any handshake can count as a
+// failed login in fail2ban.
+func TestPingHost_SendsNothing(t *testing.T) {
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer ln.Close()
+	got := make(chan int, 1)
+	go func() {
+		c, err := ln.Accept()
+		if err != nil {
+			got <- -1
+			return
+		}
+		defer c.Close()
+		_ = c.SetReadDeadline(time.Now().Add(2 * time.Second))
+		n, _ := io.Copy(io.Discard, c)
+		got <- int(n)
+	}()
+
+	host, port, _ := net.SplitHostPort(ln.Addr().String())
+	res := NewPingManager(time.Second, "").PingHost(context.Background(), config.SSHHost{Name: "t", Hostname: host, Port: port})
+	if res.Status != StatusOnline {
+		t.Fatalf("status = %v, err = %v", res.Status, res.Error)
+	}
+	if n := <-got; n != 0 {
+		t.Fatalf("probe sent %d bytes to the server", n)
+	}
+}
+
+func TestPingHost_ProxyCommandBanner(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("uses sh")
+	}
+	pm := NewPingManager(2*time.Second, "")
+	cases := map[string]PingStatus{
+		`printf 'SSH-2.0-test\r\n'; sleep 5`: StatusOnline,
+		`printf 'HTTP/1.1 400\r\n'`:          StatusOffline,
+		`exit 1`:                             StatusOffline,
+	}
+	for cmd, want := range cases {
+		res := pm.PingHost(context.Background(), config.SSHHost{Name: "p", ProxyCommand: cmd})
+		if res.Status != want {
+			t.Errorf("%q: status = %v, want %v (err %v)", cmd, res.Status, want, res.Error)
+		}
 	}
 }
